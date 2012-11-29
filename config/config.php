@@ -14,7 +14,18 @@
 | path to your installation.
 |
 */
-$config['base_url']	= '';
+if($_SERVER['SERVER_NAME'] == 'www.lithefire.net'){
+	$config['base_url']	= 'http://'.$_SERVER['SERVER_NAME'].'/dev/exam/';
+}elseif(in_array($_SERVER['SERVER_NAME'], array("::1", "localhost", "127.0.0.1"))){
+	$config['base_url']	= 'http://'.$_SERVER['SERVER_NAME'].'/dev/exam/';
+}else{
+	$config['base_url'] = '';
+}
+
+$modules_location = '../common_modules';
+
+// don't need to touch :)
+$config['modules_locations'] = array(APPPATH . $modules_location .'/' => '../'.$modules_location.'/'); 
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +37,7 @@ $config['base_url']	= '';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -356,7 +367,18 @@ $config['rewrite_short_tags'] = FALSE;
 |
 */
 $config['proxy_ips'] = '';
-
+$config['fr_db'] = 'lithefzj_engine';
+$config['swp_engine_db'] = 'lithefzj_swp_engine';
+$config['fsm_db'] = 'lithefzj_frs';
+$config['layout_file'] = 'layout';
+$config['DSN'] = "mysql:host=localhost;port=3306;dbname=lithefzj_pos";
+$config['DSN_FR'] = "mysql:host=localhost;port=3306;dbname=lithefzj_engine";
+$config['USER'] = "lithefzj_darryl";
+$config['PASS'] = "LeyyeL03@!";
+putenv("TZ=ASIA/Manila");
+$path = 'C:/xampp/application/inc';
+$path2 = '/home/lithefzj/application/inc';
+set_include_path(get_include_path() . PATH_SEPARATOR . $path. PATH_SEPARATOR . $path2);
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */
