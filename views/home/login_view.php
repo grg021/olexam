@@ -30,7 +30,7 @@ html,body{height:100%}
 
 	background-color: #FFF;
 
-	background-image: url(/dev/ogs/images/login.png);
+	background-image: url(/images/login.png);
 
 	background-repeat: no-repeat;
 
