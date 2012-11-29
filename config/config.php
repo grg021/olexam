@@ -376,7 +376,7 @@ $config['DSN_FR'] = "mysql:host=localhost;port=3306;dbname=lithefzj_engine";
 $config['USER'] = "lithefzj_darryl";
 $config['PASS'] = "LeyyeL03@!";
 putenv("TZ=ASIA/Manila");
-$path = 'C:/xampp/application/inc';
+$path = 'C:\xampp\application\inc';
 $path2 = '/home/lithefzj/application/inc';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path. PATH_SEPARATOR . $path2);
 
