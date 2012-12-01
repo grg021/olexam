@@ -15,9 +15,9 @@
 |
 */
 if($_SERVER['SERVER_NAME'] == 'www.lithefire.net'){
-	$config['base_url']	= 'http://'.$_SERVER['SERVER_NAME'].'/dev/exam/';
+	$config['base_url']	= 'http://'.$_SERVER['SERVER_NAME'].'/dev/e-online/';
 }elseif(in_array($_SERVER['SERVER_NAME'], array("::1", "localhost", "127.0.0.1"))){
-	$config['base_url']	= 'http://'.$_SERVER['SERVER_NAME'].'/dev/exam/';
+	$config['base_url']	= 'http://'.$_SERVER['SERVER_NAME'].'/dev/e-online/';
 }else{
 	$config['base_url'] = '';
 }
