@@ -67,7 +67,7 @@ position:relative;
 		
 		<script type="text/javascript" src="/js/commonjs/ExtCommon.js"></script>-->
 <div id="maincontent">
-	<h1>Online Exam Tool</h1>
+	<h1>E-Online</h1>
 <!--
   <div id="left">
 	<h1>SWP</h1>
