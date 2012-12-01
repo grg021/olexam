@@ -32,7 +32,7 @@ class Home extends CI_Controller{
 
 			$data['header'] = 'Header Section';
             $data['footer'] = 'Footer Section';
-			$data['title'] = "SWP: Dashboard";
+			$data['title'] = "Dashboard | E-Online";
             $data['userId'] = $this->session->userData('userId');
             $data['userName'] = $this->session->userData('userName');
 
