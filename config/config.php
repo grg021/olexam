@@ -378,8 +378,7 @@ $config['PASS'] = "LeyyeL03@!";
 putenv("TZ=ASIA/Manila");
 $path = 'C:\xampp\application\inc';
 $path2 = '/home/lithefzj/application/inc';
-$path3 = '/Volumes/Macintosh HD/Users/grg021/Sites/CodeIgniter_2.1.3/inc';
-set_include_path(get_include_path() . PATH_SEPARATOR . $path. PATH_SEPARATOR . $path2. PATH_SEPARATOR . $path3);
+set_include_path(get_include_path() . PATH_SEPARATOR . $path. PATH_SEPARATOR . $path2);
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */
