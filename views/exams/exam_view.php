@@ -151,7 +151,7 @@
  			var _window = new Ext.Panel({
  		        title: 'Manage Exams',
  		        width: '100%',
- 		        height: 420,
+ 		        height:'auto',
  		        renderTo: 'mainBody',
  		        draggable: false,
  		        layout: 'fit',
@@ -170,6 +170,108 @@
 
  		},
  			setForm: function(){
+ 			var author_store = new Ext.data.Store({
+ 						proxy: new Ext.data.HttpProxy({
+ 							url: "http://www.lithefire.net/dev/ils/book/getTempBookAuthor",
+ 							method: "POST"
+ 							}),
+ 						reader: new Ext.data.JsonReader({
+ 								root: "data",
+ 								id: "id",
+ 								totalProperty: "totalCount",
+ 								fields: [
+ 											{ name: "AUTHIDNO"},
+ 											{ name: "AUTHOR"}
+ 										]
+ 						}),
+ 						remoteSort: true,
+ 						baseParams: {start: 0, limit: 25}
+ 					});	
+ 			var question_grid = new Ext.grid.GridPanel({
+ 				id: 'question_grid',
+ 				height: 150,
+ 				width: '100%',
+ 				border: true,
+ 				style: {marginBottom: '10px'},
+ 				ds: author_store,
+ 				cm:  new Ext.grid.ColumnModel(
+ 						[
+                                                    
+ 						  { header: "Code", width: 60, sortable: true, dataIndex: "AUTHOR" },
+ 						  { header: "Question", width: 300, sortable: true, dataIndex: "AUTHOR" }
+ 						]
+ 				),
+ 				sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+ 	        	loadMask: true,
+ 	        	bbar:
+ 	        		new Ext.PagingToolbar({
+ 		        		autoShow: true,
+ 				        pageSize: 25,
+ 				        store: author_store,
+ 				        displayInfo: true,
+ 				        displayMsg: 'Displaying Results {0} - {1} of {2}',
+ 				        emptyMsg: "No Data Found."
+ 				    }),
+ 				tbar: [new Ext.form.ComboBox({
+                    fieldLabel: 'Search',
+                    hiddenName:'searchby-form',
+                    id: 'searchby',
+					//store: Objstore,
+                    typeAhead: true,
+                    triggerAction: 'all',
+                    emptyText:'Search By...',
+                    selectOnFocus:true,
+
+                    store: new Ext.data.SimpleStore({
+				         id:0
+				        ,fields:
+				            [
+				             'myId',   //numeric value is the key
+				             'myText' //the text value is the value
+
+				            ]
+
+
+				         , data: [['id', 'ID'], ['sd', 'Short Description'], ['ld', 'Long Description']]
+
+			        }),
+				    valueField:'myId',
+				    displayField:'myText',
+				    mode:'local',
+                    width:100,
+                    hidden: true
+
+                }), {
+					xtype:'tbtext',
+					text:'Search:'
+				},'   ', new Ext.app.SearchField({ store: author_store, width:250}),
+ 					    {
+ 					     	xtype: 'tbfill'
+ 					 	},{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'ADD',
+							icon: '/images/icons/application_add.png',
+ 							cls:'x-btn-text-icon',
+
+ 					     	handler: olexam_category.app.AddAuthor,
+ 					     	//disabled: true,
+ 					     	id: 'add_author_button'
+ 					     	
+
+ 					 	},'-',{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'DELETE',
+							icon: '/images/icons/application_delete.png',
+ 							cls:'x-btn-text-icon',
+
+ 					     	handler: olexam_category.app.DeleteAuthor,
+ 					     	//disabled: true,
+ 					     	id: 'delete_author_button'
+
+ 					 	}
+ 	    			 ]
+ 	    	});
+			olexam_category.app.Qgrid = question_grid;
  		    var form = new Ext.form.FormPanel({
  		        labelWidth: 150,
  		        url:"http://www.lithefire.net/dev/ils/filereference/addCategory",
@@ -186,27 +288,57 @@
                         {
 
                             xtype:'textfield',
- 		            fieldLabel: 'CODE *',
+ 		            fieldLabel: 'Code *',
                             autoCreate : {tag: "input", type: "text", size: "20", autocomplete: "off", maxlength: "128"},
  		            name: 'DESCRIPTION',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'DESCRIPTION'
  		        },
- 		        {
+ 		        		{
 
                             xtype:'textfield',
- 		            fieldLabel: 'TITLE *',
+ 		            fieldLabel: 'Title *',
                             autoCreate : {tag: "input", type: "text", size: "20", autocomplete: "off", maxlength: "128"},
  		            name: 'ACRONYM',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'ACRONYM'
+ 		        },
+ 		        		{
+
+                            xtype:'combo',
+ 		            fieldLabel: 'Category *',
+                    autoCreate : {tag: "input", type: "text", size: "20", autocomplete: "off", maxlength: "128"},
+ 		            name: 'category',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'category'
  		        }
 
- 		        ]
- 					}
- 		        ]
+ 		        		]
+ 					},
+						{
+						xtype: 'tabpanel',
+						activeTab: 0,
+						items: [
+							{
+								xtype: 'panel',
+								title: 'Questions',
+								height: 420,
+								items: olexam_category.app.Qgrid
+							},
+							{
+								xtype: 'panel',
+								title: 'Answer Sheet'
+							},
+							{
+								xtype: 'panel',
+								title: 'Permission'
+							}
+						]
+					}
+ 					]
  		    });
 
  		    olexam_category.app.Form = form;
@@ -220,7 +352,7 @@
  		    _window = new Ext.Window({
  		        title: 'New Exam',
  		        width: 510,
- 		        height:250,
+ 		        height: 420,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
