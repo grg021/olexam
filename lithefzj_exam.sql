@@ -32,7 +32,7 @@ CREATE TABLE `module` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(6,'Questions','questions',4,NULL,NULL,NULL,1),(7,'Exams','exam',4,NULL,NULL,NULL,1);
+INSERT INTO `module` VALUES (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',4,NULL,NULL,NULL,1),(9,'Question Classifications','questionclassifications',4,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +68,7 @@ CREATE TABLE `module_category` (
 
 LOCK TABLES `module_category` WRITE;
 /*!40000 ALTER TABLE `module_category` DISABLE KEYS */;
-INSERT INTO `module_category` VALUES (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE EXAMS','/images/icons/package.png',NULL,1);
+INSERT INTO `module_category` VALUES (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1);
 /*!40000 ALTER TABLE `module_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,6 +145,58 @@ LOCK TABLES `module_group_users` WRITE;
 /*!40000 ALTER TABLE `module_group_users` DISABLE KEYS */;
 INSERT INTO `module_group_users` VALUES (1,1,'darryl.anaud',1),(2,NULL,'richard.base',1),(3,NULL,'maribeth.rivas',1),(4,NULL,'niz.nolasco',1),(5,NULL,'apple.aala',2),(6,NULL,'test.admin',3);
 /*!40000 ALTER TABLE `module_group_users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_exam_classification`
+--
+
+DROP TABLE IF EXISTS `tbl_exam_classification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_exam_classification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(45) DEFAULT NULL,
+  `code` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code_UNIQUE` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_exam_classification`
+--
+
+LOCK TABLES `tbl_exam_classification` WRITE;
+/*!40000 ALTER TABLE `tbl_exam_classification` DISABLE KEYS */;
+INSERT INTO `tbl_exam_classification` VALUES (4,'fdsaa','ex002');
+/*!40000 ALTER TABLE `tbl_exam_classification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_question_classification`
+--
+
+DROP TABLE IF EXISTS `tbl_question_classification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_question_classification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(45) DEFAULT NULL,
+  `code` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code_UNIQUE` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_question_classification`
+--
+
+LOCK TABLES `tbl_question_classification` WRITE;
+/*!40000 ALTER TABLE `tbl_question_classification` DISABLE KEYS */;
+INSERT INTO `tbl_question_classification` VALUES (4,'Multiple Choice','qc0001'),(5,'Yes or No','qc0002'),(6,'test','qc0003'),(7,'a1','12111'),(8,'321','123');
+/*!40000 ALTER TABLE `tbl_question_classification` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -239,4 +291,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-06 15:07:38
+-- Dump completed on 2013-02-02 22:31:09
