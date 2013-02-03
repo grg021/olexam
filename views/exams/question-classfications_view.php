@@ -24,8 +24,8 @@
  								id: "id",
  								totalProperty: "totalCount",
  								fields: [
- 											{ name: "id"},
- 											{ name: "code"},
+ 											{ name: "QUCLCODE"},
+ 											{ name: "QUCLIDNO"},
  											{ name: "description"}
  										]
  						}),
@@ -34,9 +34,8 @@
  					});
  					
     var colModel = new Ext.grid.ColumnModel([
-        {header: "Id", width: 40, sortable: true, dataIndex: 'id'},
-        {header: "Code", width: 60, sortable: true, dataIndex: 'code'},
-        {header: "Description", width: 120, sortable: true, dataIndex: 'description'}
+        {header: "Id", width: 75, sortable: true, dataIndex: 'QUCLIDNO'},
+        {header: "Description", width: 150, sortable: true, dataIndex: 'description'}
     ]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -124,7 +123,7 @@
  			olexam_category.app.Grid.getStore().load({params:{start: 0, limit: 25}});
 
  			var _window = new Ext.Panel({
- 		        title: 'Manage Exams',
+ 		        title: 'Question Classification',
  		        width: '100%',
  		        height:'auto',
  		        renderTo: 'mainBody',
@@ -158,22 +157,11 @@
  					title:'Fields w/ Asterisks are required.',
  					width:'auto',
  					height:'auto',
- 					items:[
-                        {
-
-                            xtype:'textfield',
- 		            fieldLabel: 'Code *',
-                            autoCreate : {tag: "input", type: "text", size: "20", autocomplete: "off", maxlength: "128"},
- 		            name: 'code',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'code'
- 		        },
- 		        		{
-
-                            xtype:'textfield',
- 		            fieldLabel: 'Description *',
-                            autoCreate : {tag: "input", type: "text", size: "20", autocomplete: "off", maxlength: "128"},
+ 					items:[    
+ 		        {
+                    xtype:'textfield',
+ 		            fieldLabel: 'Description*',
+                    autoCreate : {tag: "input", type: "text", size: "20", autocomplete: "off", maxlength: "128"},
  		            name: 'description',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
@@ -196,7 +184,7 @@
  		    _window = new Ext.Window({
  		        title: 'New Exam',
  		        width: 510,
- 		        height: 250,
+ 		        height: 160,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -250,13 +238,13 @@
 
  			if(ExtCommon.util.validateSelectionGrid(olexam_category.app.Grid.getId())){//check if user has selected an item in the grid
  			var sm = olexam_category.app.Grid.getSelectionModel();
- 			var id = sm.getSelected().data.id;
+ 			var id = sm.getSelected().data.QUCLIDNO;
 
  			olexam_category.app.setForm();
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:250,
+ 		        height:160,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -326,7 +314,7 @@
 
 			if(ExtCommon.util.validateSelectionGrid(olexam_category.app.Grid.getId())){//check if user has selected an item in the grid
 			var sm = olexam_category.app.Grid.getSelectionModel();
-			var id = sm.getSelected().data.id;
+			var id = sm.getSelected().data.QUCLIDNO;
 			Ext.Msg.show({
    			title:'Delete',
   			msg: 'Are you sure you want to delete this record?',
