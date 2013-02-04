@@ -16,41 +16,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`lithefzj_exam` /*!40100 DEFAULT CHARACT
 
 USE `lithefzj_exam`;
 
-/*Table structure for table `FILEEXCL` */
-
-DROP TABLE IF EXISTS `FILEEXCL`;
-
-CREATE TABLE `FILEEXCL` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(45) DEFAULT NULL,
-  `code` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
-/*Data for the table `FILEEXCL` */
-
-insert  into `FILEEXCL`(`id`,`description`,`code`) values (4,'fdsaa','ex002');
-
-/*Table structure for table `FILEQUCL` */
-
-DROP TABLE IF EXISTS `FILEQUCL`;
-
-CREATE TABLE `FILEQUCL` (
-  `QUCLCODE` int(11) NOT NULL AUTO_INCREMENT,
-  `QUCLIDNO` varchar(5) NOT NULL,
-  `DESCRIPTION` varchar(45) DEFAULT NULL,
-  `DCREATED` date DEFAULT NULL,
-  `TCREATED` time DEFAULT NULL,
-  `DMODIFIED` date DEFAULT NULL,
-  `TMODIFIED` time DEFAULT NULL,
-  PRIMARY KEY (`QUCLCODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-
-/*Data for the table `FILEQUCL` */
-
-insert  into `FILEQUCL`(`QUCLCODE`,`QUCLIDNO`,`DESCRIPTION`,`DCREATED`,`TCREATED`,`DMODIFIED`,`TMODIFIED`) values (4,'qc000','Multiple Choice',NULL,NULL,NULL,NULL),(5,'qc000','Yes or No',NULL,NULL,NULL,NULL),(6,'qc000','test',NULL,NULL,NULL,NULL),(7,'12111','a1',NULL,NULL,NULL,NULL),(8,'123','321',NULL,NULL,NULL,NULL);
-
 /*Table structure for table `module` */
 
 DROP TABLE IF EXISTS `module`;
@@ -65,11 +30,11 @@ CREATE TABLE `module` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module` */
 
-insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/generateScaffolding/FILEEXCL',1,NULL,NULL,NULL,1);
+insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0);
 
 /*Table structure for table `module_category` */
 
@@ -82,7 +47,7 @@ CREATE TABLE `module_category` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_category` */
 
@@ -111,11 +76,11 @@ CREATE TABLE `module_group_access` (
   `group_id` int(20) DEFAULT NULL,
   `module_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_group_access` */
 
-insert  into `module_group_access`(`id`,`group_id`,`module_id`) values (1,1,1),(2,1,2),(3,1,4),(4,2,4),(5,1,5),(6,3,5),(7,3,4),(8,1,6),(9,1,8),(10,1,9);
+insert  into `module_group_access`(`id`,`group_id`,`module_id`) values (1,1,1),(2,1,2),(3,1,4),(4,2,4),(5,1,5),(6,3,5),(7,3,4),(8,1,6),(9,1,8),(10,1,9),(11,1,10),(12,1,11);
 
 /*Table structure for table `module_group_users` */
 

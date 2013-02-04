@@ -1604,10 +1604,10 @@ class Ion_auth_model extends CI_Model
 		    $link = substr($link, 0, $pos-1);
 		}
 		$this->db->select("is_public");
-		$this->db->where("link", $link);
+		$this->db->where("link = '$link'");
 		
 		$public = $this->db->get("module");
-		
+	//	die($this->db->last_query());
 		
 		$is_public = 1;
 		if($public->num_rows()>0){
