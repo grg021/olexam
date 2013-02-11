@@ -16,6 +16,22 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`lithefzj_exam` /*!40100 DEFAULT CHARACT
 
 USE `lithefzj_exam`;
 
+/*Table structure for table `choice` */
+
+DROP TABLE IF EXISTS `choice`;
+
+CREATE TABLE `choice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(250) DEFAULT NULL,
+  `dcreated` datetime DEFAULT NULL,
+  `dmodified` datetime DEFAULT NULL,
+  `createdby` varchar(30) DEFAULT NULL,
+  `modifiedby` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `choice` */
+
 /*Table structure for table `exam` */
 
 DROP TABLE IF EXISTS `exam`;
@@ -24,26 +40,24 @@ CREATE TABLE `exam` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `description` varchar(150) DEFAULT NULL,
-  `timeopen` datetime DEFAULT NULL,
-  `timeclose` datetime DEFAULT NULL,
   `timePerQuestion` int(4) DEFAULT NULL,
-  `timePerTest` int(5) DEFAULT NULL,
-  `facultyId` int(11) DEFAULT NULL,
-  `DCREATED` datetime DEFAULT NULL,
-  `DMODIFIED` datetime DEFAULT NULL,
-  `IS_DELETE` tinyint(1) DEFAULT NULL,
+  `dcreated` datetime DEFAULT NULL,
+  `dmodified` datetime DEFAULT NULL,
+  `createdby` varchar(30) DEFAULT NULL,
+  `modifiedby` varchar(30) DEFAULT NULL,
+  `is_delete` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `exam` */
 
-insert  into `exam`(`id`,`name`,`description`,`timeopen`,`timeclose`,`timePerQuestion`,`timePerTest`,`facultyId`,`DCREATED`,`DMODIFIED`,`IS_DELETE`) values (1,'exam1','description1',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL);
+insert  into `exam`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'exam1','description1',NULL,NULL,NULL,NULL,NULL,NULL);
 
-/*Table structure for table `examSession` */
+/*Table structure for table `exam_session` */
 
-DROP TABLE IF EXISTS `examSession`;
+DROP TABLE IF EXISTS `exam_session`;
 
-CREATE TABLE `examSession` (
+CREATE TABLE `exam_session` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dateTaken` varchar(45) DEFAULT NULL,
   `exam_id` int(11) DEFAULT NULL,
@@ -51,21 +65,7 @@ CREATE TABLE `examSession` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-/*Data for the table `examSession` */
-
-/*Table structure for table `examinee` */
-
-DROP TABLE IF EXISTS `examinee`;
-
-CREATE TABLE `examinee` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `username` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-/*Data for the table `examinee` */
+/*Data for the table `exam_session` */
 
 /*Table structure for table `module` */
 
@@ -81,11 +81,11 @@ CREATE TABLE `module` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module` */
 
-insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0);
+insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'exam','exam',7,NULL,NULL,NULL,1);
 
 /*Table structure for table `module_category` */
 
@@ -98,11 +98,11 @@ CREATE TABLE `module_category` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_category` */
 
-insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0);
+insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0),(7,'exam','/images/icons/application.png',NULL,1);
 
 /*Table structure for table `module_group` */
 
@@ -155,8 +155,13 @@ DROP TABLE IF EXISTS `question`;
 
 CREATE TABLE `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_categories_id` int(11) DEFAULT NULL,
   `exam_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `dcreated` datetime DEFAULT NULL,
+  `dmodified` datetime DEFAULT NULL,
+  `createdby` varchar(30) DEFAULT NULL,
+  `modifiedby` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -175,20 +180,19 @@ CREATE TABLE `question_answers` (
 
 /*Data for the table `question_answers` */
 
-/*Table structure for table `question_categories` */
+/*Table structure for table `question_choices` */
 
-DROP TABLE IF EXISTS `question_categories`;
+DROP TABLE IF EXISTS `question_choices`;
 
-CREATE TABLE `question_categories` (
+CREATE TABLE `question_choices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `category` varchar(45) DEFAULT NULL,
-  `description` varchar(45) DEFAULT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `choice_id` int(11) DEFAULT NULL,
+  `correct_flag` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Data for the table `question_categories` */
-
-insert  into `question_categories`(`id`,`category`,`description`) values (1,'category1','description1'),(2,'category2','description2');
+/*Data for the table `question_choices` */
 
 /*Table structure for table `tbl_exam_classification` */
 
