@@ -25,7 +25,10 @@
 	 								id: "id",
 	 								totalProperty: "totalCount",
 	 								fields: [
-		{ name: 'id'},{ name: 'name'},{ name: 'description'},{ name: 'timePerQuestion'},{ name: 'dcreated'},{ name: 'dmodified'},{ name: 'createdby'},{ name: 'modifiedby'},{ name: 'is_delete'}
+										{ name: 'id'},
+										{ name: 'name'},
+										{ name: 'description'},
+										{ name: 'timePerQuestion'}
 		]
  						}),
  						remoteSort: true,
@@ -33,12 +36,15 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-		{header: "id", width: 100, sortable: true, dataIndex: 'id'},{header: "name", width: 100, sortable: true, dataIndex: 'name'},{header: "description", width: 100, sortable: true, dataIndex: 'description'},{header: "timePerQuestion", width: 100, sortable: true, dataIndex: 'timePerQuestion'},{header: "dcreated", width: 100, sortable: true, dataIndex: 'dcreated'},{header: "dmodified", width: 100, sortable: true, dataIndex: 'dmodified'},{header: "createdby", width: 100, sortable: true, dataIndex: 'createdby'},{header: "modifiedby", width: 100, sortable: true, dataIndex: 'modifiedby'},{header: "is_delete", width: 100, sortable: true, dataIndex: 'is_delete'}
+			{header: "id", width: 75, sortable: true, dataIndex: 'id'},
+			{header: "name", width: 150, sortable: true, dataIndex: 'name'},
+			{header: "description", width: 250, sortable: true, dataIndex: 'description'},
+			{header: "timePerQuestion", width: 100, sortable: true, dataIndex: 'timePerQuestion'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
  				id: 'examgrid',
- 				height: 300,
+ 				height: 390,
  				width: '100%',
  				border: true,
  				ds: Objstore,
@@ -112,20 +118,155 @@
  					     	handler: exam.app.Delete
 
  					 	}
- 	    			 ]
+ 	    			 ],
+ 	    			 listeners: {
+ 	    			 	rowclick: function(grid, r, e){
+ 	    			 		var record = grid.getStore().getAt(r);  
+
+						    var data = record.get("id");
+ 	    			 		exam.app.qGrid.getStore().setBaseParam("id", data);
+ 	    			 		exam.app.qGrid.getStore().load();
+ 	    			 	}
+ 	    			 }
  	    	});
 
  			exam.app.Grid = grid;
  			exam.app.Grid.getStore().load({params:{start: 0, limit: 25}});
 
+			var qStore = new Ext.data.Store({
+ 						proxy: new Ext.data.HttpProxy({
+ 							url: "<?php echo site_url('exam/getquestion') ?>",
+ 							method: "POST"
+ 							}),
+ 						reader: new Ext.data.JsonReader({
+ 								root: "data",
+ 								id: "id",
+ 								totalProperty: "totalCount",
+ 								fields: [
+									{ name: 'id'},
+									{ name: 'classification_id'},
+									{ name: 'description'}
+ 								]
+ 						}),
+ 						remoteSort: true,
+ 						baseParams: {start: 0, limit: 25}
+ 					});
+
+
+ 			var questionGrid = new Ext.grid.GridPanel({
+ 				id: 'question_grid',
+ 				height: 390,
+ 				width: 'auto',
+ 				border: true,
+ 				ds: qStore,
+ 				cm:  new Ext.grid.ColumnModel(
+ 						[
+ 						{header: "id", width: 75, sortable: true, dataIndex: 'id'},
+						{header: "Description", width: 150, sortable: true, dataIndex: 'description'},
+						{header: "Classification", width: 250, sortable: true, dataIndex: 'classification_id'}
+ 						]
+ 				),
+ 				sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+ 	        	loadMask: true,
+ 	        	bbar:
+ 	        		new Ext.PagingToolbar({
+ 		        		autoShow: true,
+ 				        pageSize: 25,
+ 				        store: qStore,
+ 				        displayInfo: true,
+ 				        displayMsg: 'Displaying Results {0} - {1} of {2}',
+ 				        emptyMsg: "No Data Found."
+ 				    }),
+ 				tbar: [new Ext.form.ComboBox({
+                    fieldLabel: 'Search',
+                    hiddenName:'searchby-form',
+                    id: 'searchby',
+					//store: Objstore,
+                    typeAhead: true,
+                    triggerAction: 'all',
+                    emptyText:'Search By...',
+                    selectOnFocus:true,
+
+                    store: new Ext.data.SimpleStore({
+				         id:0
+				        ,fields:
+				            [
+				             'myId',   //numeric value is the key
+				             'myText' //the text value is the value
+
+				            ]
+
+
+				         , data: [['id', 'ID'], ['sd', 'Short Description'], ['ld', 'Long Description']]
+
+			        }),
+				    valueField:'myId',
+				    displayField:'myText',
+				    mode:'local',
+                    width:100,
+                    hidden: true
+
+                }), {
+					xtype:'tbtext',
+					text:'Search:'
+				},'   ', new Ext.app.SearchField({ store: qStore, width:150}),
+ 					    {
+ 					     	xtype: 'tbfill'
+ 					 	},{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'ADD',
+							icon: '/images/icons/application_add.png',
+ 							cls:'x-btn-text-icon',
+
+ 					     	handler: exam.app.qAdd
+
+ 					 	},'-',{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'EDIT',
+							icon: '/images/icons/application_edit.png',
+ 							cls:'x-btn-text-icon',
+
+ 					     	handler: exam.app.qEdit
+
+ 					 	},'-',{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'DELETE',
+							icon: '/images/icons/application_delete.png',
+ 							cls:'x-btn-text-icon',
+
+ 					     	handler: exam.app.qDelete
+ 					 	}
+ 	    			 ]
+ 	    	});
+
+ 			exam.app.qGrid = questionGrid;
+		
  			var _window = new Ext.Panel({
  		        title: 'Exams',
  		        width: '100%',
- 		        height:'auto',
+ 		        height: 420,
  		        renderTo: 'mainBody',
  		        draggable: false,
  		        layout: 'fit',
- 		        items: [exam.app.Grid],
+ 		        items: [
+ 		        {
+ 		        	layout: 'column',
+ 		        	height: 'auto',
+ 		        	items: [
+ 		        	{
+ 		        		columnWidth: .5,
+ 		        		layout: 'form',
+ 		        		height: 'auto',
+ 		        		items: exam.app.Grid
+ 		        	},
+ 		        	{
+ 		        		columnWidth: .5,
+ 		        		layout: 'form',
+ 		        		height: 'auto',
+ 		        		items: exam.app.qGrid
+ 		        	}
+ 		        	]
+ 		        }],
  		        resizable: false
  	        });
 
@@ -150,14 +291,6 @@
  					items:[
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'id*',
- 		            name: 'id',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'id'
- 		        },
-				{
-                    xtype:'textfield',
  		            fieldLabel: 'name*',
  		            name: 'name',
  		            allowBlank:false,
@@ -179,49 +312,7 @@
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'timePerQuestion'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'dcreated*',
- 		            name: 'dcreated',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'dcreated'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'dmodified*',
- 		            name: 'dmodified',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'dmodified'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'createdby*',
- 		            name: 'createdby',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'createdby'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'modifiedby*',
- 		            name: 'modifiedby',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'modifiedby'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'is_delete*',
- 		            name: 'is_delete',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'is_delete'
- 		        }    
- 		        
-
+ 		        }  
  		        		]
  					}
  					]
@@ -239,7 +330,7 @@
  		    _window = new Ext.Window({
  		        title: 'New exam',
  		        width: 510,
- 		        height: 365,
+ 		        height: 210,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -297,7 +388,7 @@
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:365,
+ 		        height: 210,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -365,7 +456,6 @@
 		
 		Delete: function(){
 
-
 			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
 			var sm = exam.app.Grid.getSelectionModel();
 			var id = sm.getSelected().data.id;
@@ -419,7 +509,110 @@
 	                }else return;
 
 
+		},
+		
+		setFormQ: function(){
+
+ 		    var form = new Ext.form.FormPanel({
+ 		        labelWidth: 150,
+ 		        url: "<?php echo site_url('exam/addquestion') ?>",
+ 		        method: 'POST',
+ 		        defaultType: 'textfield',
+ 		        frame: true,
+ 		        items: [ {
+ 					xtype:'fieldset',
+ 					title:'Fields w/ Asterisks are required.',
+ 					width:'auto',
+ 					height:'auto',
+ 					items:[
+				{
+                    xtype:'textfield',
+ 		            fieldLabel: 'Classification*',
+ 		            name: 'classification_id',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'classification_id'
+ 		        },
+				{
+                    xtype:'textfield',
+ 		            fieldLabel: 'Description*',
+ 		            name: 'description',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'description'
+ 		        }
+ 		        		]
+ 					}
+ 					]
+ 		    });
+
+ 		    exam.app.Form2 = form;
+ 	},
+		
+		qAdd: function(){
+			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
+ 			var sm = exam.app.Grid.getSelectionModel();
+ 			var id = sm.getSelected().data.id;
+			
+			exam.app.setFormQ();
+
+ 		  	var _window;
+
+ 		    _window = new Ext.Window({
+ 		        title: 'New Question',
+ 		        width: 510,
+ 		        height: 210,
+ 		        layout: 'fit',
+ 		        plain:true,
+ 		        modal: true,
+ 		        bodyStyle:'padding:5px;',
+ 		        buttonAlign:'center',
+ 		        items: exam.app.Form2,
+ 		        buttons: [{
+ 		         	text: 'Save',
+                    icon: '/images/icons/disk.png',  
+                    cls:'x-btn-text-icon',
+ 	                handler: function () {
+ 			            if(ExtCommon.util.validateFormFields(exam.app.Form2)){//check if all forms are filled up
+ 		                exam.app.Form2.getForm().submit({
+ 			                success: function(f,action){
+                 		    	Ext.MessageBox.alert('Status', action.result.data);
+                  		    	 Ext.Msg.show({
+  								     title: 'Status',
+ 								     msg: action.result.data,
+  								     buttons: Ext.Msg.OK,
+  								     icon: 'icon'
+  								 });
+ 				                ExtCommon.util.refreshGrid(exam.app.Grid.getId());
+ 				                _window.destroy();
+ 			                },
+ 			                failure: function(f,a){
+ 								Ext.Msg.show({
+ 									title: 'Error Alert',
+ 									msg: a.result.data,
+ 									icon: Ext.Msg.ERROR,
+ 									buttons: Ext.Msg.OK
+ 								});
+ 			                },
+ 			                waitMsg: 'Saving Data...'
+ 		                });
+ 	                }else return;
+ 	                }
+ 	            },{
+ 		            text: 'Cancel',
+                    icon: '/images/icons/cancel.png', 
+                    cls:'x-btn-text-icon',
+ 		            handler: function(){
+ 			            _window.destroy();
+ 		            }
+ 		        }]
+ 		    });
+ 		  	_window.show();
+			
 		}
+		},
+		qEdit: function(){},
+		qDelete: function(){}
 		
 		}
 		}();
