@@ -47,11 +47,11 @@ CREATE TABLE `exam` (
   `modifiedby` varchar(30) DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `exam` */
 
-insert  into `exam`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'exam1','description1',NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `exam`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'exam1','description1',NULL,NULL,NULL,NULL,NULL,NULL),(2,'Test2','Test',3,'2013-02-14 15:59:07',NULL,'darryl.anaud',NULL,NULL);
 
 /*Table structure for table `exam_session` */
 
@@ -81,11 +81,11 @@ CREATE TABLE `module` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module` */
 
-insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'exam','exam',7,NULL,NULL,NULL,1);
+insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'exam','exam',7,NULL,NULL,NULL,1),(14,'Question','Question',8,NULL,NULL,NULL,1);
 
 /*Table structure for table `module_category` */
 
@@ -98,11 +98,11 @@ CREATE TABLE `module_category` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_category` */
 
-insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0),(7,'exam','/images/icons/application.png',NULL,1);
+insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0),(7,'exam','/images/icons/application.png',NULL,1),(8,'Question','/images/icons/application.png',NULL,1);
 
 /*Table structure for table `module_group` */
 
@@ -156,16 +156,18 @@ DROP TABLE IF EXISTS `question`;
 CREATE TABLE `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `exam_id` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
+  `classification_id` int(11) DEFAULT NULL,
   `description` varchar(250) DEFAULT NULL,
   `dcreated` datetime DEFAULT NULL,
   `dmodified` datetime DEFAULT NULL,
   `createdby` varchar(30) DEFAULT NULL,
   `modifiedby` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `question` */
+
+insert  into `question`(`id`,`exam_id`,`classification_id`,`description`,`dcreated`,`dmodified`,`createdby`,`modifiedby`) values (4,1,1,'Test 2','2013-02-14 15:55:37',NULL,'darryl.anaud',NULL),(5,2,1,'1234','2013-02-14 16:02:49',NULL,'darryl.anaud',NULL),(3,1,1,'Test','2013-02-14 15:25:23',NULL,'darryl.anaud',NULL);
 
 /*Table structure for table `question_answers` */
 

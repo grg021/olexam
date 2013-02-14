@@ -3,6 +3,7 @@ class exam extends MY_Controller{
 
 		function exam(){
 			parent::__construct();
+			
 		}
 
 
@@ -12,9 +13,10 @@ class exam extends MY_Controller{
 			$data['userId'] = $this->session->userData('userId');
 			$data['userName'] = $this->session->userData('userName');
 			$this->layout->view('exam/exam_view', $data);
+			
 		}
 
-		function getexam(){
+		function getExam(){
         
 	        $start=$this->input->post('start');
 	        $limit=$this->input->post('limit');
@@ -60,7 +62,7 @@ class exam extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function addexam(){
+		function addExam(){
 	        $db = 'default';
 	        $table = 'exam';
 			$input = $this->input->post();
@@ -84,7 +86,7 @@ class exam extends MY_Controller{
 	        die(json_encode($data));
     	}
 
-		function loadexam(){
+		function loadExam(){
 	        $db = "default";
 	        
 	        $id=$this->input->post('id');
@@ -106,7 +108,7 @@ class exam extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function updateexam(){
+		function updateExam(){
 	        $db = 'default';
 	
 	        $table = "exam";
@@ -142,7 +144,7 @@ class exam extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function deleteexam(){
+		function deleteExam(){
 	        $table = "exam";
 	        $param = "id";
 	       
@@ -166,10 +168,10 @@ class exam extends MY_Controller{
 	        $query = $this->input->post('query');
 	
 	        $records = array();
-	        $table = "exam a LEFT JOIN question b ON a.id = b.exam_id";
-	        $fields = array("a.id","b.classification_id","b.description");
+	        $table = "question ";
+	        $fields = array("id","classification_id","description");
 	        $db = 'default';
-	        $filter = "b.exam_id = '$id'";
+	        $filter = "exam_id = '$id'";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
 	            $sort = "id DESC";
@@ -178,11 +180,9 @@ class exam extends MY_Controller{
 	        }
 			
 			if(!empty($query)){
- 				"(id LIKE '%$query%' OR name LIKE '%$query%' OR description LIKE '%$query%' OR timePerQuestion LIKE '%$query%')";
+ 				"(id LIKE '%$query%' description LIKE '%$query%')";
 	    	}
 			 
-			
-			
 			$records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group);
 	
 	        $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
@@ -205,21 +205,23 @@ class exam extends MY_Controller{
 		function addquestion(){
 	        $db = 'default';
 	        $table = 'question';
-			$input = $this->input->post();
+			$post = $this->input->post();
 			$id=$this->input->post('id');
 			
+			$input = $post;
+			unset($input['id']);
 			$input['dcreated'] = date("Y-m-d H:i:s");
 			$input['createdby'] = $this->session->userData("userName");
 			$input['exam_id'] = $id;
 			
 			
-			/* uncomment for checking duplicates (change $fieldname)
+			// uncomment for checking duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' and exam_id = '$id'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
-	        }*/
+	        }
 	        
 	        //uncomment for FRs
 			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);

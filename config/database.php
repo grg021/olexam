@@ -80,6 +80,22 @@ $db['fr']['swap_pre'] = '';
 $db['fr']['autoinit'] = TRUE;
 $db['fr']['stricton'] = FALSE;
 
+$db['exam']['hostname'] = 'localhost';
+$db['exam']['username'] = 'lithefzj_darryl';
+$db['exam']['password'] = 'LeyyeL03@!';
+$db['exam']['database'] = 'lithefzj_exam';
+$db['exam']['dbdriver'] = 'mysql';
+$db['exam']['dbprefix'] = '';
+$db['exam']['pconnect'] = TRUE;
+$db['exam']['db_debug'] = TRUE;
+$db['exam']['cache_on'] = FALSE;
+$db['exam']['cachedir'] = '';
+$db['exam']['char_set'] = 'utf8';
+$db['exam']['dbcollat'] = 'utf8_general_ci';
+$db['exam']['swap_pre'] = '';
+$db['exam']['autoinit'] = TRUE;
+$db['exam']['stricton'] = FALSE;
+
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

@@ -1,8 +1,8 @@
-<?php $this->load->view('Question/Question_view');?>
+
 		<div id="mainBody"></div>
 		<script type="text/javascript">
-		 Ext.namespace("exam");
-		 exam.app = function()
+		 Ext.namespace("Question");
+		 Question.app = function()
 		 {
 		 	return{
 	 		init: function()
@@ -17,7 +17,7 @@
 	
 	 			var Objstore = new Ext.data.Store({
 	 						proxy: new Ext.data.HttpProxy({
-	 							url: "<?php echo site_url('exam/getExam') ?>",
+	 							url: "<?php echo site_url('Question/getQuestion') ?>",
 	 							method: "POST"
 	 							}),
 	 						reader: new Ext.data.JsonReader({
@@ -25,10 +25,7 @@
 	 								id: "id",
 	 								totalProperty: "totalCount",
 	 								fields: [
-										{ name: 'id'},
-										{ name: 'name'},
-										{ name: 'description'},
-										{ name: 'timePerQuestion'}
+		{ name: 'id'},{ name: 'exam_id'},{ name: 'classification_id'},{ name: 'description'},{ name: 'dcreated'},{ name: 'dmodified'},{ name: 'createdby'},{ name: 'modifiedby'}
 		]
  						}),
  						remoteSort: true,
@@ -36,15 +33,12 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-			{header: "id", width: 75, sortable: true, dataIndex: 'id'},
-			{header: "name", width: 150, sortable: true, dataIndex: 'name'},
-			{header: "description", width: 250, sortable: true, dataIndex: 'description'},
-			{header: "timePerQuestion", width: 100, sortable: true, dataIndex: 'timePerQuestion'}
+		{header: "id", width: 100, sortable: true, dataIndex: 'id'},{header: "exam_id", width: 100, sortable: true, dataIndex: 'exam_id'},{header: "classification_id", width: 100, sortable: true, dataIndex: 'classification_id'},{header: "description", width: 100, sortable: true, dataIndex: 'description'},{header: "dcreated", width: 100, sortable: true, dataIndex: 'dcreated'},{header: "dmodified", width: 100, sortable: true, dataIndex: 'dmodified'},{header: "createdby", width: 100, sortable: true, dataIndex: 'createdby'},{header: "modifiedby", width: 100, sortable: true, dataIndex: 'modifiedby'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
- 				id: 'examgrid',
- 				height: 390,
+ 				id: 'Questiongrid',
+ 				height: 300,
  				width: '100%',
  				border: true,
  				ds: Objstore,
@@ -99,7 +93,7 @@
 							icon: '/images/icons/application_add.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: exam.app.Add
+ 					     	handler: Question.app.Add
 
  					 	},'-',{
  					     	xtype: 'tbbutton',
@@ -107,7 +101,7 @@
 							icon: '/images/icons/application_edit.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: exam.app.Edit
+ 					     	handler: Question.app.Edit
 
  					 	},'-',{
  					     	xtype: 'tbbutton',
@@ -115,59 +109,27 @@
 							icon: '/images/icons/application_delete.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: exam.app.Delete
+ 					     	handler: Question.app.Delete
 
  					 	}
- 	    			 ],
- 	    			 listeners: {
- 	    			 	rowclick: function(grid, r, e){
- 	    			 		var record = grid.getStore().getAt(r);  
-
-						    var data = record.get("id");
-						   // console.log(data);
- 	    			 		Question.app.Grid.getStore().setBaseParam("exam_id", data);
- 	    			 		Question.app.Grid.getStore().load();
- 	    			 	}
- 	    			 }
+ 	    			 ]
  	    	});
 
- 			exam.app.Grid = grid;
- 			exam.app.Grid.getStore().load({params:{start: 0, limit: 25}});
+ 			Question.app.Grid = grid;
+ 		//	Question.app.Grid.getStore().load({params:{start: 0, limit: 25}});
 
-	
-
- 			exam.app.qGrid = Question.app.Grid;
-		
- 			var _window = new Ext.Panel({
- 		        title: 'Exams',
+ 			/*var _window = new Ext.Panel({
+ 		        title: 'Question',
  		        width: '100%',
- 		        height: 420,
+ 		        height:'auto',
  		        renderTo: 'mainBody',
  		        draggable: false,
  		        layout: 'fit',
- 		        items: [
- 		        {
- 		        	layout: 'column',
- 		        	height: 'auto',
- 		        	items: [
- 		        	{
- 		        		columnWidth: .5,
- 		        		layout: 'form',
- 		        		height: 'auto',
- 		        		items: exam.app.Grid
- 		        	},
- 		        	{
- 		        		columnWidth: .5,
- 		        		layout: 'form',
- 		        		height: 'auto',
- 		        		items: exam.app.qGrid
- 		        	}
- 		        	]
- 		        }],
+ 		        items: [Question.app.Grid],
  		        resizable: false
  	        });
 
- 	        _window.render();
+ 	        _window.render();*/
 
 
  		},
@@ -176,7 +138,7 @@
 
  		    var form = new Ext.form.FormPanel({
  		        labelWidth: 150,
- 		        url: "<?php echo site_url('exam/addExam') ?>",
+ 		        url: "<?php echo site_url('Question/addQuestion') ?>",
  		        method: 'POST',
  		        defaultType: 'textfield',
  		        frame: true,
@@ -186,61 +148,53 @@
  					width:'auto',
  					height:'auto',
  					items:[
+				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<?php echo site_url("filereference/getCombo/FILEQUCL/QUCLCODE/DESCRIPTION/DESCRIPTION")?>", "Question Type", false, false),
+				
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'name*',
- 		            name: 'name',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'name'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'description*',
+ 		            fieldLabel: 'Description*',
  		            name: 'description',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'description'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'timePerQuestion*',
- 		            name: 'timePerQuestion',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'timePerQuestion'
- 		        }  
+ 		        } 
+ 		        
+
  		        		]
  					}
  					]
  		    });
 
- 		    exam.app.Form = form;
+ 		    Question.app.Form = form;
  		},
 		
  		Add: function(){
 
- 			exam.app.setForm();
-
+ 			Question.app.setForm();
+ 			
+ 			var sm = exam.app.Grid.getSelectionModel();
+ 			var id = sm.getSelected().data.id;
+			//console.log(sm);
  		  	var _window;
 
  		    _window = new Ext.Window({
- 		        title: 'New exam',
+ 		        title: 'New Question',
  		        width: 510,
- 		        height: 210,
+ 		        height: 190,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
  		        bodyStyle:'padding:5px;',
  		        buttonAlign:'center',
- 		        items: exam.app.Form,
+ 		        items: Question.app.Form,
  		        buttons: [{
  		         	text: 'Save',
                     icon: '/images/icons/disk.png',  
                     cls:'x-btn-text-icon',
  	                handler: function () {
- 			            if(ExtCommon.util.validateFormFields(exam.app.Form)){//check if all forms are filled up
- 		                exam.app.Form.getForm().submit({
+ 			            if(ExtCommon.util.validateFormFields(Question.app.Form)){//check if all forms are filled up
+ 		                Question.app.Form.getForm().submit({
+ 		                	params: {id: id},
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
                   		    	 Ext.Msg.show({
@@ -249,7 +203,7 @@
   								     buttons: Ext.Msg.OK,
   								     icon: 'icon'
   								 });
- 				                ExtCommon.util.refreshGrid(exam.app.Grid.getId());
+ 				                ExtCommon.util.refreshGrid(Question.app.Grid.getId());
  				                _window.destroy();
  			                },
  			                failure: function(f,a){
@@ -277,34 +231,34 @@
  		},
 		
 		Edit: function(){
- 			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
- 			var sm = exam.app.Grid.getSelectionModel();
+ 			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId())){//check if user has selected an item in the grid
+ 			var sm = Question.app.Grid.getSelectionModel();
  			var id = sm.getSelected().data.id;
 
- 			exam.app.setForm();
+ 			Question.app.setForm();
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height: 210,
+ 		        height:340,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
  		        bodyStyle:'padding:5px;',
  		        buttonAlign:'center',
- 		        items: exam.app.Form,
+ 		        items: Question.app.Form,
  		        buttons: [{
  		         	text: 'Save',
                     icon: '/images/icons/disk.png',  
                     cls:'x-btn-text-icon',
  		            handler: function () {
- 			            if(ExtCommon.util.validateFormFields(exam.app.Form)){//check if all forms are filled up
- 		                exam.app.Form.getForm().submit({
- 			                url: "<?php echo site_url('exam/updateExam') ?>",
+ 			            if(ExtCommon.util.validateFormFields(Question.app.Form)){//check if all forms are filled up
+ 		                Question.app.Form.getForm().submit({
+ 			                url: "<?php echo site_url('Question/updateQuestion') ?>",
  			                params: {id: id},
  			                method: 'POST',
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
- 				                ExtCommon.util.refreshGrid(exam.app.Grid.getId());
+ 				                ExtCommon.util.refreshGrid(Question.app.Grid.getId());
  				                _window.destroy();
  			                },
  			                failure: function(f,a){
@@ -329,8 +283,8 @@
  		        }]
  		    });
 
- 		  	exam.app.Form.getForm().load({
- 				url: "<?php echo site_url('exam/loadExam') ?>",
+ 		  	Question.app.Form.getForm().load({
+ 				url: "<?php echo site_url('Question/loadQuestion') ?>",
  				method: 'POST',
  				params: {id: id},
  				timeout: 300000,
@@ -353,8 +307,9 @@
 		
 		Delete: function(){
 
-			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
-			var sm = exam.app.Grid.getSelectionModel();
+
+			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId())){//check if user has selected an item in the grid
+			var sm = Question.app.Grid.getSelectionModel();
 			var id = sm.getSelected().data.id;
 			Ext.Msg.show({
    			title:'Delete Selected',
@@ -363,7 +318,7 @@
    			fn: function(btn, text){
    			if (btn == 'ok'){
    			Ext.Ajax.request({
-                            url: "<?php echo site_url('exam/deleteExam') ?>",
+                            url: "<?php echo site_url('Question/deleteQuestion') ?>",
 							params:{ id: id},
 							method: "POST",
 							timeout:300000000,
@@ -371,7 +326,7 @@
                 		    	var response = Ext.decode(responseObj.responseText);
 						if(response.success == true)
 						{
-							exam.app.qGrid.getStore().load({params:{start:0, limit: 25}});
+							Question.app.Grid.getStore().load({params:{start:0, limit: 25}});
 							return;
 
 						}
@@ -406,107 +361,12 @@
 	                }else return;
 
 
-		},
-		
-		setFormQ: function(){
-
- 		    var form = new Ext.form.FormPanel({
- 		        labelWidth: 150,
- 		        url: "<?php echo site_url('exam/addquestion') ?>",
- 		        method: 'POST',
- 		        defaultType: 'textfield',
- 		        frame: true,
- 		        items: [ {
- 					xtype:'fieldset',
- 					title:'Fields w/ Asterisks are required.',
- 					width:'auto',
- 					height:'auto',
- 					items:[
-				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<?php echo site_url("filereference/getCombo/FILEQUCL/QUCLCODE/DESCRIPTION/DESCRIPTION")?>", "Question Type", false, false),
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'Description*',
- 		            name: 'description',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'description'
- 		        }
- 		        		]
- 					}
- 					]
- 		    });
-
- 		    exam.app.Form2 = form;
- 	},
-		
-		qAdd: function(){
-			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
- 			var sm = exam.app.Grid.getSelectionModel();
- 			var id = sm.getSelected().data.id;
-			
-			exam.app.setFormQ();
-
- 		  	var _window;
-
- 		    _window = new Ext.Window({
- 		        title: 'New Question',
- 		        width: 510,
- 		        height: 210,
- 		        layout: 'fit',
- 		        plain:true,
- 		        modal: true,
- 		        bodyStyle:'padding:5px;',
- 		        buttonAlign:'center',
- 		        items: exam.app.Form2,
- 		        buttons: [{
- 		         	text: 'Save',
-                    icon: '/images/icons/disk.png',  
-                    cls:'x-btn-text-icon',
- 	                handler: function () {
- 			            if(ExtCommon.util.validateFormFields(exam.app.Form2)){//check if all forms are filled up
- 		                exam.app.Form2.getForm().submit({
- 		                	params: {id: id},
- 			                success: function(f,action){
-                 		    	Ext.MessageBox.alert('Status', action.result.data);
-                  		    	 Ext.Msg.show({
-  								     title: 'Status',
- 								     msg: action.result.data,
-  								     buttons: Ext.Msg.OK,
-  								     icon: 'icon'
-  								 });
- 				                ExtCommon.util.refreshGrid(exam.app.Grid.getId());
- 				                _window.destroy();
- 			                },
- 			                failure: function(f,a){
- 								Ext.Msg.show({
- 									title: 'Error Alert',
- 									msg: a.result.data,
- 									icon: Ext.Msg.ERROR,
- 									buttons: Ext.Msg.OK
- 								});
- 			                },
- 			                waitMsg: 'Saving Data...'
- 		                });
- 	                }else return;
- 	                }
- 	            },{
- 		            text: 'Cancel',
-                    icon: '/images/icons/cancel.png', 
-                    cls:'x-btn-text-icon',
- 		            handler: function(){
- 			            _window.destroy();
- 		            }
- 		        }]
- 		    });
- 		  	_window.show();
-			
-		}
 		}
 		
 		}
 		}();
 
-	 Ext.onReady(exam.app.init, exam.app);
+	 Ext.onReady(Question.app.init, Question.app);
 	
 	</script>
 		
