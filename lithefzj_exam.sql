@@ -16,57 +16,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`lithefzj_exam` /*!40100 DEFAULT CHARACT
 
 USE `lithefzj_exam`;
 
-/*Table structure for table `choice` */
-
-DROP TABLE IF EXISTS `choice`;
-
-CREATE TABLE `choice` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(250) DEFAULT NULL,
-  `dcreated` datetime DEFAULT NULL,
-  `dmodified` datetime DEFAULT NULL,
-  `createdby` varchar(30) DEFAULT NULL,
-  `modifiedby` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*Data for the table `choice` */
-
-/*Table structure for table `exam` */
-
-DROP TABLE IF EXISTS `exam`;
-
-CREATE TABLE `exam` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `description` varchar(150) DEFAULT NULL,
-  `timePerQuestion` int(4) DEFAULT NULL,
-  `dcreated` datetime DEFAULT NULL,
-  `dmodified` datetime DEFAULT NULL,
-  `createdby` varchar(30) DEFAULT NULL,
-  `modifiedby` varchar(30) DEFAULT NULL,
-  `is_delete` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
-/*Data for the table `exam` */
-
-insert  into `exam`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'exam1','description1',NULL,NULL,NULL,NULL,NULL,NULL),(2,'Test2','Test',3,'2013-02-14 15:59:07',NULL,'darryl.anaud',NULL,NULL);
-
-/*Table structure for table `exam_session` */
-
-DROP TABLE IF EXISTS `exam_session`;
-
-CREATE TABLE `exam_session` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dateTaken` varchar(45) DEFAULT NULL,
-  `exam_id` int(11) DEFAULT NULL,
-  `examinee_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-/*Data for the table `exam_session` */
-
 /*Table structure for table `module` */
 
 DROP TABLE IF EXISTS `module`;
@@ -81,11 +30,11 @@ CREATE TABLE `module` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module` */
 
-insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'exam','exam',7,NULL,NULL,NULL,1),(14,'Question','Question',8,NULL,NULL,NULL,1);
+insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'exam','exam',7,NULL,NULL,NULL,1),(14,'Question','Question',8,NULL,NULL,NULL,1),(15,'Tbl_faculty_evaluation_session','Tbl_faculty_evaluation_session',7,NULL,NULL,NULL,1);
 
 /*Table structure for table `module_category` */
 
@@ -98,7 +47,7 @@ CREATE TABLE `module_category` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_category` */
 
@@ -149,39 +98,6 @@ CREATE TABLE `module_group_users` (
 
 insert  into `module_group_users`(`id`,`user_id`,`username`,`group_id`) values (1,1,'darryl.anaud',1),(2,NULL,'richard.base',1),(3,NULL,'maribeth.rivas',1),(4,NULL,'niz.nolasco',1),(5,NULL,'apple.aala',2),(6,NULL,'test.admin',3),(7,NULL,'greg',1);
 
-/*Table structure for table `question` */
-
-DROP TABLE IF EXISTS `question`;
-
-CREATE TABLE `question` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `exam_id` int(11) DEFAULT NULL,
-  `classification_id` int(11) DEFAULT NULL,
-  `description` varchar(250) DEFAULT NULL,
-  `dcreated` datetime DEFAULT NULL,
-  `dmodified` datetime DEFAULT NULL,
-  `createdby` varchar(30) DEFAULT NULL,
-  `modifiedby` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-
-/*Data for the table `question` */
-
-insert  into `question`(`id`,`exam_id`,`classification_id`,`description`,`dcreated`,`dmodified`,`createdby`,`modifiedby`) values (4,1,1,'Test 2','2013-02-14 15:55:37',NULL,'darryl.anaud',NULL),(5,2,1,'1234','2013-02-14 16:02:49',NULL,'darryl.anaud',NULL),(3,1,1,'Test','2013-02-14 15:25:23',NULL,'darryl.anaud',NULL);
-
-/*Table structure for table `question_answers` */
-
-DROP TABLE IF EXISTS `question_answers`;
-
-CREATE TABLE `question_answers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_id` int(11) DEFAULT NULL,
-  `correct_flag` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-/*Data for the table `question_answers` */
-
 /*Table structure for table `question_choices` */
 
 DROP TABLE IF EXISTS `question_choices`;
@@ -195,6 +111,22 @@ CREATE TABLE `question_choices` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `question_choices` */
+
+/*Table structure for table `tbl_choice` */
+
+DROP TABLE IF EXISTS `tbl_choice`;
+
+CREATE TABLE `tbl_choice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(250) DEFAULT NULL,
+  `dcreated` datetime DEFAULT NULL,
+  `dmodified` datetime DEFAULT NULL,
+  `createdby` varchar(30) DEFAULT NULL,
+  `modifiedby` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `tbl_choice` */
 
 /*Table structure for table `tbl_exam_classification` */
 
@@ -212,6 +144,65 @@ CREATE TABLE `tbl_exam_classification` (
 
 insert  into `tbl_exam_classification`(`id`,`description`,`code`) values (4,'fdsaa','ex002');
 
+/*Table structure for table `tbl_faculty_evaluation_answers` */
+
+DROP TABLE IF EXISTS `tbl_faculty_evaluation_answers`;
+
+CREATE TABLE `tbl_faculty_evaluation_answers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `student_id` int(11) DEFAULT NULL,
+  `answer` int(11) DEFAULT NULL,
+  `answer_text` text,
+  `correct_flag` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+/*Data for the table `tbl_faculty_evaluation_answers` */
+
+/*Table structure for table `tbl_faculty_evaluation_session` */
+
+DROP TABLE IF EXISTS `tbl_faculty_evaluation_session`;
+
+CREATE TABLE `tbl_faculty_evaluation_session` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_set_id` int(11) DEFAULT NULL,
+  `title` varchar(75) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `section_id` int(11) DEFAULT NULL,
+  `faculty_id` int(11) DEFAULT NULL,
+  `dcreated` datetime DEFAULT NULL,
+  `dmodified` datetime DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `modified_by` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `tbl_faculty_evaluation_session` */
+
+/*Table structure for table `tbl_question` */
+
+DROP TABLE IF EXISTS `tbl_question`;
+
+CREATE TABLE `tbl_question` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `quesetion_set_id` int(11) DEFAULT NULL,
+  `classification_id` int(11) DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `dcreated` datetime DEFAULT NULL,
+  `dmodified` datetime DEFAULT NULL,
+  `createdby` varchar(30) DEFAULT NULL,
+  `modifiedby` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+/*Data for the table `tbl_question` */
+
+insert  into `tbl_question`(`id`,`quesetion_set_id`,`classification_id`,`description`,`dcreated`,`dmodified`,`createdby`,`modifiedby`) values (3,1,1,'Test','2013-02-14 15:25:23',NULL,'darryl.anaud',NULL),(4,1,1,'Test 2','2013-02-14 15:55:37',NULL,'darryl.anaud',NULL),(5,2,1,'1234','2013-02-14 16:02:49',NULL,'darryl.anaud',NULL);
+
 /*Table structure for table `tbl_question_classification` */
 
 DROP TABLE IF EXISTS `tbl_question_classification`;
@@ -227,6 +218,27 @@ CREATE TABLE `tbl_question_classification` (
 /*Data for the table `tbl_question_classification` */
 
 insert  into `tbl_question_classification`(`id`,`description`,`code`) values (4,'Multiple Choice','qc0001'),(5,'Yes or No','qc0002'),(6,'test','qc0003'),(7,'a1','12111'),(8,'321','123');
+
+/*Table structure for table `tbl_question_set` */
+
+DROP TABLE IF EXISTS `tbl_question_set`;
+
+CREATE TABLE `tbl_question_set` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `description` varchar(150) DEFAULT NULL,
+  `timePerQuestion` int(4) DEFAULT NULL,
+  `dcreated` datetime DEFAULT NULL,
+  `dmodified` datetime DEFAULT NULL,
+  `createdby` varchar(30) DEFAULT NULL,
+  `modifiedby` varchar(30) DEFAULT NULL,
+  `is_delete` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+/*Data for the table `tbl_question_set` */
+
+insert  into `tbl_question_set`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'exam1','description1',NULL,NULL,NULL,NULL,NULL,NULL),(2,'Test2','Test',3,'2013-02-14 15:59:07',NULL,'darryl.anaud',NULL,NULL);
 
 /*Table structure for table `tbl_user` */
 
