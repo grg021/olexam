@@ -146,6 +146,7 @@ class exam extends MY_Controller{
 
 		function deleteExam(){
 	        $table = "exam";
+			$table2 = "question";
 	        $param = "id";
 	       
 			$db = 'default';
@@ -153,6 +154,7 @@ class exam extends MY_Controller{
 			$filter = "$param = '$id'";
 	
 	        $data = $this->lithefire->deleteRow($db, $table, $filter);
+			$data2 = $this->lithefire->deleteRow($db, $table2, $filter);
 	
 	        die(json_encode($data));
 	    }

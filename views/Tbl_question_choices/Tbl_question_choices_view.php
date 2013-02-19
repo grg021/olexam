@@ -1,8 +1,8 @@
 
 		<div id="mainBody"></div>
 		<script type="text/javascript">
-		 Ext.namespace("Question");
-		 Question.app = function()
+		 Ext.namespace("Tbl_question_choices");
+		 Tbl_question_choices.app = function()
 		 {
 		 	return{
 	 		init: function()
@@ -17,7 +17,7 @@
 	
 	 			var Objstore = new Ext.data.Store({
 	 						proxy: new Ext.data.HttpProxy({
-	 							url: "<?php echo site_url('Question/getQuestion') ?>",
+	 							url: "<?php echo site_url('Tbl_question_choices/getTbl_question_choices') ?>",
 	 							method: "POST"
 	 							}),
 	 						reader: new Ext.data.JsonReader({
@@ -25,7 +25,7 @@
 	 								id: "id",
 	 								totalProperty: "totalCount",
 	 								fields: [
-		{ name: 'id'},{ name: 'exam_id'},{ name: 'classification'},{ name: 'description'}
+		{ name: 'id'},{ name: 'question_id'},{ name: 'description'},{ name: 'correct_flag'}
 		]
  						}),
  						remoteSort: true,
@@ -33,13 +33,11 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-		{header: "ID", width: 75, sortable: true, dataIndex: 'id'},
-		{header: "Classification", width: 150, sortable: true, dataIndex: 'classification'},
-		{header: "Description", width: 350, sortable: true, dataIndex: 'description'}
+		{header: "ID", width: 100, sortable: true, dataIndex: 'id'},{header: "Description", width: 100, sortable: true, dataIndex: 'description'},{header: "Correct Flag", width: 100, sortable: true, dataIndex: 'correct_flag'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
- 				id: 'Questiongrid',
+ 				id: 'Tbl_question_choicesgrid',
  				height: 245,
  				width: '100%',
  				border: true,
@@ -95,7 +93,7 @@
 							icon: '/images/icons/application_add.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: Question.app.Add
+ 					     	handler: Tbl_question_choices.app.Add
 
  					 	},'-',{
  					     	xtype: 'tbbutton',
@@ -103,7 +101,7 @@
 							icon: '/images/icons/application_edit.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: Question.app.Edit
+ 					     	handler: Tbl_question_choices.app.Edit
 
  					 	},'-',{
  					     	xtype: 'tbbutton',
@@ -111,36 +109,28 @@
 							icon: '/images/icons/application_delete.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: Question.app.Delete
- 					 	}
- 	    			 ],
- 	    			 listeners: {
- 	    			 	rowclick: function(grid, r, e){
- 	    			 		var record = grid.getStore().getAt(r);  
+ 					     	handler: Tbl_question_choices.app.Delete
 
-						    var data = record.get("id");
-						   // console.log(data);
- 	    			 		Tbl_question_choices.app.Grid.getStore().setBaseParam("question_id", data);
- 	    			 		Tbl_question_choices.app.Grid.getStore().load();
- 	    			 	}
- 	    			 }
+ 					 	}
+ 	    			 ]
  	    	});
 
- 			Question.app.Grid = grid;
- 		//	Question.app.Grid.getStore().load({params:{start: 0, limit: 25}});
+ 			Tbl_question_choices.app.Grid = grid;
+ 			/*Tbl_question_choices.app.Grid.getStore().load({params:{start: 0, limit: 25}});
 
- 			/*var _window = new Ext.Panel({
- 		        title: 'Question',
+ 			var _window = new Ext.Panel({
+ 		        title: 'Tbl_question_choices',
  		        width: '100%',
  		        height:'auto',
  		        renderTo: 'mainBody',
  		        draggable: false,
  		        layout: 'fit',
- 		        items: [Question.app.Grid],
+ 		        items: [Tbl_question_choices.app.Grid],
  		        resizable: false
  	        });
 
  	        _window.render();*/
+
 
  		},
 		
@@ -148,7 +138,7 @@
 
  		    var form = new Ext.form.FormPanel({
  		        labelWidth: 150,
- 		        url: "<?php echo site_url('Question/addQuestion') ?>",
+ 		        url: "<?php echo site_url('Tbl_question_choices/addTbl_question_choices') ?>",
  		        method: 'POST',
  		        defaultType: 'textfield',
  		        frame: true,
@@ -158,8 +148,6 @@
  					width:'auto',
  					height:'auto',
  					items:[
-				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<?php echo site_url("Question/getClassificationCombo")?>", "Question Type", false, false),
-				
 				{
                     xtype:'textfield',
  		            fieldLabel: 'Description*',
@@ -167,7 +155,15 @@
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'description'
- 		        } 
+ 		        },
+				{
+                    xtype:'textfield',
+ 		            fieldLabel: 'Correct Flag*',
+ 		            name: 'correct_flag',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'correct_flag'
+ 		        }    
  		        
 
  		        		]
@@ -175,20 +171,21 @@
  					]
  		    });
 
- 		    Question.app.Form = form;
+ 		    Tbl_question_choices.app.Form = form;
  		},
 		
  		Add: function(){
-			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
- 			Question.app.setForm();
+ 			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId())){//check if user has selected an item in the grid
+
+ 			Tbl_question_choices.app.setForm();
  			
- 			var sm = exam.app.Grid.getSelectionModel();
+ 			var sm = Question.app.Grid.getSelectionModel();
  			var id = sm.getSelected().data.id;
-			//console.log(sm);
+
  		  	var _window;
 
  		    _window = new Ext.Window({
- 		        title: 'New Question',
+ 		        title: 'New Tbl_question_choices',
  		        width: 510,
  		        height: 190,
  		        layout: 'fit',
@@ -196,14 +193,14 @@
  		        modal: true,
  		        bodyStyle:'padding:5px;',
  		        buttonAlign:'center',
- 		        items: Question.app.Form,
+ 		        items: Tbl_question_choices.app.Form,
  		        buttons: [{
  		         	text: 'Save',
                     icon: '/images/icons/disk.png',  
                     cls:'x-btn-text-icon',
  	                handler: function () {
- 			            if(ExtCommon.util.validateFormFields(Question.app.Form)){//check if all forms are filled up
- 		                Question.app.Form.getForm().submit({
+ 			            if(ExtCommon.util.validateFormFields(Tbl_question_choices.app.Form)){//check if all forms are filled up
+ 		                Tbl_question_choices.app.Form.getForm().submit({
  		                	params: {id: id},
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
@@ -213,7 +210,7 @@
   								     buttons: Ext.Msg.OK,
   								     icon: 'icon'
   								 });
- 				                ExtCommon.util.refreshGrid(Question.app.Grid.getId());
+ 				                ExtCommon.util.refreshGrid(Tbl_question_choices.app.Grid.getId());
  				                _window.destroy();
  			                },
  			                failure: function(f,a){
@@ -242,34 +239,34 @@
  		},
 		
 		Edit: function(){
- 			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId())){//check if user has selected an item in the grid
- 			var sm = Question.app.Grid.getSelectionModel();
+ 			if(ExtCommon.util.validateSelectionGrid(Tbl_question_choices.app.Grid.getId())){//check if user has selected an item in the grid
+ 			var sm = Tbl_question_choices.app.Grid.getSelectionModel();
  			var id = sm.getSelected().data.id;
 
- 			Question.app.setForm();
+ 			Tbl_question_choices.app.setForm();
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:340,
+ 		        height:240,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
  		        bodyStyle:'padding:5px;',
  		        buttonAlign:'center',
- 		        items: Question.app.Form,
+ 		        items: Tbl_question_choices.app.Form,
  		        buttons: [{
  		         	text: 'Save',
                     icon: '/images/icons/disk.png',  
                     cls:'x-btn-text-icon',
  		            handler: function () {
- 			            if(ExtCommon.util.validateFormFields(Question.app.Form)){//check if all forms are filled up
- 		                Question.app.Form.getForm().submit({
- 			                url: "<?php echo site_url('Question/updateQuestion') ?>",
+ 			            if(ExtCommon.util.validateFormFields(Tbl_question_choices.app.Form)){//check if all forms are filled up
+ 		                Tbl_question_choices.app.Form.getForm().submit({
+ 			                url: "<?php echo site_url('Tbl_question_choices/updateTbl_question_choices') ?>",
  			                params: {id: id},
  			                method: 'POST',
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
- 				                ExtCommon.util.refreshGrid(Question.app.Grid.getId());
+ 				                ExtCommon.util.refreshGrid(Tbl_question_choices.app.Grid.getId());
  				                _window.destroy();
  			                },
  			                failure: function(f,a){
@@ -294,8 +291,8 @@
  		        }]
  		    });
 
- 		  	Question.app.Form.getForm().load({
- 				url: "<?php echo site_url('Question/loadQuestion') ?>",
+ 		  	Tbl_question_choices.app.Form.getForm().load({
+ 				url: "<?php echo site_url('Tbl_question_choices/loadTbl_question_choices') ?>",
  				method: 'POST',
  				params: {id: id},
  				timeout: 300000,
@@ -319,8 +316,8 @@
 		Delete: function(){
 
 
-			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId())){//check if user has selected an item in the grid
-			var sm = Question.app.Grid.getSelectionModel();
+			if(ExtCommon.util.validateSelectionGrid(Tbl_question_choices.app.Grid.getId())){//check if user has selected an item in the grid
+			var sm = Tbl_question_choices.app.Grid.getSelectionModel();
 			var id = sm.getSelected().data.id;
 			Ext.Msg.show({
    			title:'Delete Selected',
@@ -329,7 +326,7 @@
    			fn: function(btn, text){
    			if (btn == 'ok'){
    			Ext.Ajax.request({
-                            url: "<?php echo site_url('Question/deleteQuestion') ?>",
+                            url: "<?php echo site_url('Tbl_question_choices/deleteTbl_question_choices') ?>",
 							params:{ id: id},
 							method: "POST",
 							timeout:300000000,
@@ -337,7 +334,7 @@
                 		    	var response = Ext.decode(responseObj.responseText);
 						if(response.success == true)
 						{
-							Question.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							Tbl_question_choices.app.Grid.getStore().load({params:{start:0, limit: 25}});
 							return;
 
 						}
@@ -377,7 +374,7 @@
 		}
 		}();
 
-	 Ext.onReady(Question.app.init, Question.app);
+	 Ext.onReady(Tbl_question_choices.app.init, Tbl_question_choices.app);
 	
 	</script>
 		

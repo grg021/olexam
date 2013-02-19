@@ -1,20 +1,20 @@
 <?php
-class Question extends MY_Controller{
+class Tbl_question_choices extends MY_Controller{
 
-		function Question(){
+		function Tbl_question_choices(){
 			parent::__construct();
 		}
 
 
 		public function index()
 		{
-			$data['title'] = "Question | E-Online";
+			$data['title'] = "Tbl_question_choices | E-Online";
 			$data['userId'] = $this->session->userData('userId');
 			$data['userName'] = $this->session->userData('userName');
-			$this->layout->view('Question/Question_view', $data);
+			$this->layout->view('Tbl_question_choices/Tbl_question_choices_view', $data);
 		}
 
-		function getQuestion(){
+		function getTbl_question_choices(){
         
 	        $start=$this->input->post('start');
 	        $limit=$this->input->post('limit');
@@ -22,22 +22,23 @@ class Question extends MY_Controller{
 	        $sort = $this->input->post('sort');
 	        $dir = $this->input->post('dir');
 	        $query = $this->input->post('query');
+			
+			$question_id = $this->input->post("question_id");
 	
 	        $records = array();
-	        $table = "Question a LEFT JOIN tbl_question_classification b ON a.classification_id = b.id";
-			$exam_id = $this->input->post("exam_id");
-	        $fields = array("a.id","b.description as classification","a.description");
+	        $table = "Tbl_question_choices";			
+	        $fields = array("id","question_id","description","correct_flag",);
 	        $db = 'exam';
-	        $filter = "a.exam_id = '$exam_id'";
+	        $filter = "question_id = '$question_id'";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
-	            $sort = "a.id DESC";
+	            $sort = "id DESC";
 	        }else{
 	        	$sort = "$sort $dir";
 	        }
 			
 			if(!empty($query)){
- 				"(id LIKE '%$query%' OR a.exam_id LIKE '%$query%' OR b.description LIKE '%$query%' OR a.description LIKE '%$query%')";
+ 				"(id LIKE '%$query%' OR question_id LIKE '%$query%' OR description LIKE '%$query%' OR correct_flag LIKE '%$query%')";
 	    	}
 			 
 			
@@ -61,22 +62,19 @@ class Question extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function addQuestion(){
-	        $db = 'default';
-	        $table = 'question';
-			$post = $this->input->post();
+		function addTbl_question_choices(){
+	        $db = 'exam';
+	        $table = "tbl_question_choices";
+			$input = $this->input->post();
 			$id=$this->input->post('id');
 			
-			$input = $post;
-			unset($input['id']);
-			$input['dcreated'] = date("Y-m-d H:i:s");
-			$input['createdby'] = $this->session->userData("userName");
-			$input['exam_id'] = $id;
+			//$input = $post;
+			//unset($input['id']);
+			$input['question_id'] = $id;
 			
-			
-			// uncomment for checking duplicates (change $fieldname)
+			//uncomment for checking duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' and exam_id = '$id'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."'and question_id = '$id'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
@@ -90,16 +88,16 @@ class Question extends MY_Controller{
 	        die(json_encode($data));
     	}
 
-		function loadQuestion(){
+		function loadTbl_question_choices(){
 	        $db = "exam";
 	        
 	
 	        $id=$this->input->post('id');
-	        $table = "Question";
+	        $table = "tbl_question_choices";
 			$param = "id";
 	
 	        $filter = "$param = '$id'";
-	        $fields = array("id","exam_id","classification_id","description","dcreated","dmodified","createdby","modifiedby",);
+	        $fields = array("id","question_id","description","correct_flag",);
 	        $records = array();
 	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
 	
@@ -113,10 +111,10 @@ class Question extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function updateQuestion(){
+		function updateTbl_question_choices(){
 	        $db = 'exam';
 	
-	        $table = "Question";
+	        $table = "Tbl_question_choices";
 	        
 			$param = "id";
 	        $id=$this->input->post('id');
@@ -145,8 +143,8 @@ class Question extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function deleteQuestion(){
-	        $table = "Question";
+		function deleteTbl_question_choices(){
+	        $table = "Tbl_question_choices";
 	        $param = "id";
 	       
 			$db = "exam";
@@ -157,60 +155,5 @@ class Question extends MY_Controller{
 	
 	        die(json_encode($data));
 	    }
-		
-		function getClassificationCombo(){
-        
-        $db = "exam";
-
-        $start=$this->input->post('start');
-        $limit=$this->input->post('limit');
-        //$db = "fr";
-
-
-        $sort = $this->input->post('sort');
-        $dir = $this->input->post('dir');
-        $query = $this->input->post('query');
-        
-		
-		
-        if(empty($sort) && empty($dir)){
-        	if(!empty($sortby))
-            	$sort = "id";
-			else 
-				$sort = "id";
-			
-        }else{
-        	$sort = "id";
-        }
-		
-        $records = array();
-        $table = "tbl_question_classification";
-        $fields = array("id as id", "description as name");
-
-        $filter = "";
-		$group = "";
-		$having = "";
-		
-		if(!empty($query))
-			$filter .= " AND ($id LIKE '%$query%' OR $name LIKE '%$query%')";
-
-        $records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group, $having);
-       // die($this->lithefire->currentQuery());
-
-
-        $temp = array();
-        $total = 0;
-        if($records){
-        foreach($records as $row):
-            $temp[] = $row;
-            $total++;
-
-        endforeach;
-        }
-        $data['data'] = $temp;
-        $data['success'] = true;
-        $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
-        die(json_encode($data));
-    }
 
 }

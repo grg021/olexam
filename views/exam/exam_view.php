@@ -1,4 +1,5 @@
 <?php $this->load->view('Question/Question_view');?>
+<?php $this->load->view('Tbl_question_choices/Tbl_question_choices_view');?>
 		<div id="mainBody"></div>
 		<script type="text/javascript">
 		 Ext.namespace("exam");
@@ -36,15 +37,15 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-			{header: "id", width: 75, sortable: true, dataIndex: 'id'},
-			{header: "name", width: 150, sortable: true, dataIndex: 'name'},
-			{header: "description", width: 250, sortable: true, dataIndex: 'description'},
-			{header: "timePerQuestion", width: 100, sortable: true, dataIndex: 'timePerQuestion'}
+			{header: "ID", width: 75, sortable: true, dataIndex: 'id'},
+			{header: "Name", width: 150, sortable: true, dataIndex: 'name'},
+			{header: "Description", width: 250, sortable: true, dataIndex: 'description'},
+			{header: "Time Per Question", width: 100, sortable: true, dataIndex: 'timePerQuestion'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
  				id: 'examgrid',
- 				height: 390,
+ 				height: 490,
  				width: '100%',
  				border: true,
  				ds: Objstore,
@@ -127,6 +128,8 @@
 						   // console.log(data);
  	    			 		Question.app.Grid.getStore().setBaseParam("exam_id", data);
  	    			 		Question.app.Grid.getStore().load();
+ 	    			 		Tbl_question_choices.app.Grid.getStore().setBaseParam("");
+ 	    			 		Tbl_question_choices.app.Grid.getStore().load();
  	    			 	}
  	    			 }
  	    	});
@@ -137,11 +140,12 @@
 	
 
  			exam.app.qGrid = Question.app.Grid;
+ 			exam.app.cGrid = Tbl_question_choices.app.Grid;
 		
  			var _window = new Ext.Panel({
  		        title: 'Exams',
- 		        width: '100%',
- 		        height: 420,
+ 		        width: 'auto',
+ 		        height: 520,
  		        renderTo: 'mainBody',
  		        draggable: false,
  		        layout: 'fit',
@@ -160,7 +164,11 @@
  		        		columnWidth: .5,
  		        		layout: 'form',
  		        		height: 'auto',
- 		        		items: exam.app.qGrid
+ 		        		items: [
+ 		        			exam.app.qGrid,
+ 		        			exam.app.cGrid
+ 		        			]
+ 		        		
  		        	}
  		        	]
  		        }],
@@ -188,7 +196,7 @@
  					items:[
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'name*',
+ 		            fieldLabel: 'Name*',
  		            name: 'name',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
@@ -196,7 +204,7 @@
  		        },
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'description*',
+ 		            fieldLabel: 'Description*',
  		            name: 'description',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
@@ -204,7 +212,7 @@
  		        },
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'timePerQuestion*',
+ 		            fieldLabel: 'Time Per Question*',
  		            name: 'timePerQuestion',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
@@ -372,6 +380,7 @@
 						if(response.success == true)
 						{
 							exam.app.qGrid.getStore().load({params:{start:0, limit: 25}});
+							exam.app.Grid.getStore().load({params:{start:0, limit: 25}});
 							return;
 
 						}
@@ -406,13 +415,13 @@
 	                }else return;
 
 
-		},
+		}/*,
 		
 		setFormQ: function(){
 
  		    var form = new Ext.form.FormPanel({
  		        labelWidth: 150,
- 		        url: "<?php echo site_url('exam/addquestion') ?>",
+ 		        //url: "<--?php echo site_url('exam/addquestion') ?>",
  		        method: 'POST',
  		        defaultType: 'textfield',
  		        frame: true,
@@ -422,7 +431,7 @@
  					width:'auto',
  					height:'auto',
  					items:[
-				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<?php echo site_url("filereference/getCombo/FILEQUCL/QUCLCODE/DESCRIPTION/DESCRIPTION")?>", "Question Type", false, false),
+				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<--?php echo site_url("filereference/getCombo/FILEQUCL/QUCLCODE/DESCRIPTION/DESCRIPTION")?>", "Question Type", false, false),
 				{
                     xtype:'textfield',
  		            fieldLabel: 'Description*',
@@ -501,7 +510,7 @@
  		  	_window.show();
 			
 		}
-		}
+		}*/
 		
 		}
 		}();
