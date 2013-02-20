@@ -53,7 +53,7 @@
  				        pageSize: 25,
  				        store: Objstore,
  				        displayInfo: true,
- 				        displayMsg: 'Displaying Results {0} - {1} of {2}',
+ 				        displayMsg: 'Displaying Questions {0} - {1} of {2}',
  				        emptyMsg: "No Data Found."
  				    }),
  				tbar: [new Ext.form.ComboBox({
@@ -179,7 +179,7 @@
  		},
 		
  		Add: function(){
-			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
+			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId(), "Please select a set")){//check if user has selected an item in the grid
  			Question.app.setForm();
  			
  			var sm = exam.app.Grid.getSelectionModel();
@@ -250,7 +250,7 @@
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:340,
+ 		        height:190,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -302,6 +302,7 @@
  				waitMsg:'Loading...',
  				success: function(form, action){
                                     _window.show();
+                                    Ext.get("classification_id").dom.value = action.result.data.classification_id;
  				},
  				failure: function(form, action) {
          					Ext.Msg.show({

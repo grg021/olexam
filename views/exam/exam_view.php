@@ -128,8 +128,6 @@
 						   // console.log(data);
  	    			 		Question.app.Grid.getStore().setBaseParam("exam_id", data);
  	    			 		Question.app.Grid.getStore().load();
- 	    			 		Tbl_question_choices.app.Grid.getStore().setBaseParam("");
- 	    			 		Tbl_question_choices.app.Grid.getStore().load();
  	    			 	}
  	    			 }
  	    	});
@@ -143,7 +141,7 @@
  			exam.app.cGrid = Tbl_question_choices.app.Grid;
 		
  			var _window = new Ext.Panel({
- 		        title: 'Exams',
+ 		        title: 'Question Set',
  		        width: 'auto',
  		        height: 520,
  		        renderTo: 'mainBody',
@@ -155,13 +153,13 @@
  		        	height: 'auto',
  		        	items: [
  		        	{
- 		        		columnWidth: .5,
+ 		        		columnWidth: .55,
  		        		layout: 'form',
  		        		height: 'auto',
  		        		items: exam.app.Grid
  		        	},
  		        	{
- 		        		columnWidth: .5,
+ 		        		columnWidth: .45,
  		        		layout: 'form',
  		        		height: 'auto',
  		        		items: [
@@ -380,6 +378,7 @@
 						if(response.success == true)
 						{
 							exam.app.qGrid.getStore().load({params:{start:0, limit: 25}});
+							exam.app.cGrid.getStore().load({params:{start:0, limit: 25}});
 							exam.app.Grid.getStore().load({params:{start:0, limit: 25}});
 							return;
 

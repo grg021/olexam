@@ -26,7 +26,7 @@ class exam extends MY_Controller{
 	        $query = $this->input->post('query');
 	
 	        $records = array();
-	        $table = "exam";
+	        $table = "tbl_question_set";
 	        $fields = array("id","name","description","timePerQuestion");
 	        $db = 'default';
 	        $filter = "";
@@ -64,7 +64,7 @@ class exam extends MY_Controller{
 
 		function addExam(){
 	        $db = 'default';
-	        $table = 'exam';
+	        $table = 'tbl_question_set';
 			$input = $this->input->post();
 			
 			$input['dcreated'] = date("Y-m-d H:i:s");
@@ -145,16 +145,20 @@ class exam extends MY_Controller{
 	    }
 
 		function deleteExam(){
-	        $table = "exam";
-			$table2 = "question";
+	        $table = "tbl_question_set";
+			$table2 = "tbl_question";
 	        $param = "id";
 	       
 			$db = 'default';
 	        $id=$this->input->post('id');
 			$filter = "$param = '$id'";
-	
+			$records = $this->lithefire->fetchAllRecords($db, $table2, "question_set_id = '$id'", array("id"));
+			foreach($records as $row):
+				$this->lithefire->deleteRow($db, "tbl_question_choices", "question_id = '".$row['id']."'");
+			endforeach;
+			$this->lithefire->deleteRow($db, $table2, "question_set_id = '$id'");
 	        $data = $this->lithefire->deleteRow($db, $table, $filter);
-			$data2 = $this->lithefire->deleteRow($db, $table2, $filter);
+			
 	
 	        die(json_encode($data));
 	    }

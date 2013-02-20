@@ -66,7 +66,7 @@ class Tbl_question_choices extends MY_Controller{
 	        $db = 'exam';
 	        $table = "tbl_question_choices";
 			$input = $this->input->post();
-			$id=$this->input->post('id');
+			$id=$this->input->post('question_id');
 			
 			//$input = $post;
 			//unset($input['id']);

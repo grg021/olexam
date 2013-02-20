@@ -51,7 +51,7 @@
  				        pageSize: 25,
  				        store: Objstore,
  				        displayInfo: true,
- 				        displayMsg: 'Displaying Results {0} - {1} of {2}',
+ 				        displayMsg: 'Displaying Choices {0} - {1} of {2}',
  				        emptyMsg: "No Data Found."
  				    }),
  				tbar: [new Ext.form.ComboBox({
@@ -160,7 +160,7 @@
                     xtype:'textfield',
  		            fieldLabel: 'Correct Flag*',
  		            name: 'correct_flag',
- 		            allowBlank:false,
+ 		            allowBlank:true,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'correct_flag'
  		        }    
@@ -201,7 +201,7 @@
  	                handler: function () {
  			            if(ExtCommon.util.validateFormFields(Tbl_question_choices.app.Form)){//check if all forms are filled up
  		                Tbl_question_choices.app.Form.getForm().submit({
- 		                	params: {id: id},
+ 		                	params: {question_id: id},
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
                   		    	 Ext.Msg.show({
@@ -247,7 +247,7 @@
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:240,
+ 		        height:190,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,

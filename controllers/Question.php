@@ -24,11 +24,12 @@ class Question extends MY_Controller{
 	        $query = $this->input->post('query');
 	
 	        $records = array();
-	        $table = "Question a LEFT JOIN tbl_question_classification b ON a.classification_id = b.id";
+			$fr_db = $this->config->item("fr_db");
+	        $table = "tbl_question a LEFT JOIN $fr_db.FILEQUCL b ON a.classification_id = b.QUCLCODE";
 			$exam_id = $this->input->post("exam_id");
-	        $fields = array("a.id","b.description as classification","a.description");
+	        $fields = array("a.id","b.DESCRIPTION as classification","a.description");
 	        $db = 'exam';
-	        $filter = "a.exam_id = '$exam_id'";
+	        $filter = "a.question_set_id = '$exam_id'";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
 	            $sort = "a.id DESC";
@@ -63,7 +64,7 @@ class Question extends MY_Controller{
 
 		function addQuestion(){
 	        $db = 'default';
-	        $table = 'question';
+	        $table = 'tbl_question';
 			$post = $this->input->post();
 			$id=$this->input->post('id');
 			
@@ -71,12 +72,12 @@ class Question extends MY_Controller{
 			unset($input['id']);
 			$input['dcreated'] = date("Y-m-d H:i:s");
 			$input['createdby'] = $this->session->userData("userName");
-			$input['exam_id'] = $id;
+			$input['question_set_id'] = $id;
 			
 			
 			// uncomment for checking duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' and exam_id = '$id'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' and question_set_id = '$id'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
@@ -95,11 +96,12 @@ class Question extends MY_Controller{
 	        
 	
 	        $id=$this->input->post('id');
-	        $table = "Question";
-			$param = "id";
+			$fr_db = $this->config->item("fr_db");
+	        $table = "tbl_uestion a LEFT JOIN $fr_db.FILEQUCL b ON a.classification_id = b.QUCLCODE";
+			$param = "a.id";
 	
 	        $filter = "$param = '$id'";
-	        $fields = array("id","exam_id","classification_id","description","dcreated","dmodified","createdby","modifiedby",);
+	        $fields = array("a.id","a.exam_id","a.classification_id","a.description", "b.DESCRIPTION as classification");
 	        $records = array();
 	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
 	
@@ -116,7 +118,7 @@ class Question extends MY_Controller{
 		function updateQuestion(){
 	        $db = 'exam';
 	
-	        $table = "Question";
+	        $table = "tbl_uestion";
 	        
 			$param = "id";
 	        $id=$this->input->post('id');
@@ -146,13 +148,13 @@ class Question extends MY_Controller{
 	    }
 
 		function deleteQuestion(){
-	        $table = "Question";
+	        $table = "tbl_question";
 	        $param = "id";
 	       
 			$db = "exam";
 	        $id=$this->input->post('id');
 			$filter = "$param = '$id'";
-	
+			$this->lithefire->deleteRow($db, "tbl_question_choices", "question_id = '$id'");
 	        $data = $this->lithefire->deleteRow($db, $table, $filter);
 	
 	        die(json_encode($data));
@@ -160,7 +162,7 @@ class Question extends MY_Controller{
 		
 		function getClassificationCombo(){
         
-        $db = "exam";
+        $db = "fr";
 
         $start=$this->input->post('start');
         $limit=$this->input->post('limit');
@@ -175,24 +177,24 @@ class Question extends MY_Controller{
 		
         if(empty($sort) && empty($dir)){
         	if(!empty($sortby))
-            	$sort = "id";
+            	$sort = "DESCRIPTION";
 			else 
-				$sort = "id";
+				$sort = "DESCRIPTION";
 			
         }else{
-        	$sort = "id";
+        	$sort = "DESCRIPTION";
         }
 		
         $records = array();
-        $table = "tbl_question_classification";
-        $fields = array("id as id", "description as name");
+        $table = "FILEQUCL";
+        $fields = array("QUCLCODE as id", "DESCRIPTION as name");
 
         $filter = "";
 		$group = "";
 		$having = "";
 		
 		if(!empty($query))
-			$filter .= " AND ($id LIKE '%$query%' OR $name LIKE '%$query%')";
+			$filter .= "(QUCLCODE LIKE '%$query%' OR DESCRIPTION LIKE '%$query%')";
 
         $records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group, $having);
        // die($this->lithefire->currentQuery());
