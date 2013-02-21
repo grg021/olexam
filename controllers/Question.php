@@ -25,9 +25,9 @@ class Question extends MY_Controller{
 	
 	        $records = array();
 			$fr_db = $this->config->item("fr_db");
-	        $table = "tbl_question a LEFT JOIN $fr_db.FILEQUCL b ON a.classification_id = b.QUCLCODE";
+	        $table = "tbl_question a LEFT JOIN $fr_db.FILEQUCL b ON a.classification_id = b.QUCLCODE LEFT JOIN $fr_db.FILEQUCA c ON a.category_id = c.QUCACODE";
 			$exam_id = $this->input->post("exam_id");
-	        $fields = array("a.id","b.DESCRIPTION as classification","a.description");
+	        $fields = array("a.id","b.DESCRIPTION AS classification","a.description","c.description AS category");
 	        $db = 'exam';
 	        $filter = "a.question_set_id = '$exam_id'";
 	        $group = "";
@@ -77,7 +77,7 @@ class Question extends MY_Controller{
 			
 			// uncomment for checking duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' and question_set_id = '$id'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "description = '".$this->input->post("description")."' ", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
@@ -97,11 +97,11 @@ class Question extends MY_Controller{
 	
 	        $id=$this->input->post('id');
 			$fr_db = $this->config->item("fr_db");
-	        $table = "tbl_uestion a LEFT JOIN $fr_db.FILEQUCL b ON a.classification_id = b.QUCLCODE";
+	        $table = "tbl_question a LEFT JOIN $fr_db.FILEQUCL b ON a.classification_id = b.QUCLCODE LEFT JOIN $fr_db.FILEQUCA c ON a.category_id = c.QUCACODE";
 			$param = "a.id";
 	
 	        $filter = "$param = '$id'";
-	        $fields = array("a.id","a.exam_id","a.classification_id","a.description", "b.DESCRIPTION as classification");
+	        $fields = array("a.id","a.classification_id","a.category_id","a.description","b.DESCRIPTION AS classification","c.description AS category");
 	        $records = array();
 	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
 	
@@ -118,7 +118,7 @@ class Question extends MY_Controller{
 		function updateQuestion(){
 	        $db = 'exam';
 	
-	        $table = "tbl_uestion";
+	        $table = "tbl_question";
 	        
 			$param = "id";
 	        $id=$this->input->post('id');
@@ -166,7 +166,6 @@ class Question extends MY_Controller{
 
         $start=$this->input->post('start');
         $limit=$this->input->post('limit');
-        //$db = "fr";
 
 
         $sort = $this->input->post('sort');

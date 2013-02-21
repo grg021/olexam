@@ -25,7 +25,7 @@
 	 								id: "id",
 	 								totalProperty: "totalCount",
 	 								fields: [
-		{ name: 'id'},{ name: 'exam_id'},{ name: 'classification'},{ name: 'description'}
+		{ name: 'id'},{ name: 'exam_id'},{ name: 'classification'},{ name: 'description'},{ name: 'category'}
 		]
  						}),
  						remoteSort: true,
@@ -35,7 +35,9 @@
 		var colModel = new Ext.grid.ColumnModel([
 		{header: "ID", width: 75, sortable: true, dataIndex: 'id'},
 		{header: "Classification", width: 150, sortable: true, dataIndex: 'classification'},
-		{header: "Description", width: 350, sortable: true, dataIndex: 'description'}
+		{header: "Category", width: 150, sortable: true, dataIndex: 'category'},
+		{header: "Description", width: 200, sortable: true, dataIndex: 'description'}
+		
 		]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -168,7 +170,7 @@
  					height:'auto',
  					items:[
 				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<?php echo site_url("Question/getClassificationCombo")?>", "Question Type", false, false),
-				
+				ExtCommon.util.createCombo("category", "category_id", "95%", "<?php echo site_url("FILEQUCA/getCategoryCombo")?>", "Category", false, false),
 				{
                     xtype:'textarea',
  		            fieldLabel: 'Description*',
@@ -176,7 +178,7 @@
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'description'
- 		        } 
+ 		       } 
  		        
 
  		        		]
@@ -199,7 +201,7 @@
  		    _window = new Ext.Window({
  		        title: 'New Question',
  		        width: 510,
- 		        height: 220,
+ 		        height: 270,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -312,6 +314,7 @@
  				success: function(form, action){
                                     _window.show();
                                     Ext.get("classification_id").dom.value = action.result.data.classification_id;
+                                    Ext.get("category_id").dom.value = action.result.data.category_id;
  				},
  				failure: function(form, action) {
          					Ext.Msg.show({

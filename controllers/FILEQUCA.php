@@ -25,7 +25,7 @@ class FILEQUCA extends MY_Controller{
 	
 	        $records = array();
 	        $table = "FILEQUCA";
-	        $fields = array("QUCACODE","QUCAIDNO","DESCRIPTION","ORDER","DCREATED","TCREATED","DMODIFIED","TMODIFIED",);
+	        $fields = array("QUCACODE","QUCAIDNO","DESCRIPTION","ORDER_BY");
 	        $db = 'fr';
 	        $filter = "";
 	        $group = "";
@@ -36,7 +36,7 @@ class FILEQUCA extends MY_Controller{
 	        }
 			
 			if(!empty($query)){
- 				"(QUCACODE LIKE '%$query%' OR QUCAIDNO LIKE '%$query%' OR DESCRIPTION LIKE '%$query%' OR ORDER LIKE '%$query%' OR DCREATED LIKE '%$query%' OR TCREATED LIKE '%$query%' OR DMODIFIED LIKE '%$query%' OR TMODIFIED LIKE '%$query%')";
+ 				"(QUCAIDNO LIKE '%$query%' OR DESCRIPTION LIKE '%$query%' OR ORDER LIKE '%$query%')";
 	    	}
 			 
 			
@@ -65,13 +65,13 @@ class FILEQUCA extends MY_Controller{
 	        $table = "FILEQUCA";
 			$input = $this->input->post();
 			
-			/* uncomment for checking duplicates (change $fieldname)
+			//uncomment for checking duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "DESCRIPTION = '".$this->input->post("DESCRIPTION")."'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
-	        }*/
+	        }
 	        
 	        //uncomment for FRs
 			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);
@@ -90,7 +90,7 @@ class FILEQUCA extends MY_Controller{
 			$param = "QUCACODE";
 	
 	        $filter = "$param = '$id'";
-	        $fields = array("QUCACODE","QUCAIDNO","DESCRIPTION","ORDER","DCREATED","TCREATED","DMODIFIED","TMODIFIED",);
+	        $fields = array("QUCACODE","QUCAIDNO","DESCRIPTION","ORDER_BY");
 	        $records = array();
 	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
 	
@@ -123,7 +123,7 @@ class FILEQUCA extends MY_Controller{
 	        }
 			//check for duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' AND QUCACODE != '$id'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "DESCRIPTION = '".$this->input->post("DESCRIPTION")."' AND QUCACODE != '$id'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
@@ -148,5 +148,59 @@ class FILEQUCA extends MY_Controller{
 	
 	        die(json_encode($data));
 	    }
+		
+		function getCategoryCombo(){
+        
+        $db = "fr";
+
+        $start=$this->input->post('start');
+        $limit=$this->input->post('limit');
+
+
+        $sort = $this->input->post('sort');
+        $dir = $this->input->post('dir');
+        $query = $this->input->post('query');
+        
+		
+		
+        if(empty($sort) && empty($dir)){
+        	if(!empty($sortby))
+            	$sort = "DESCRIPTION";
+			else 
+				$sort = "DESCRIPTION";
+			
+        }else{
+        	$sort = "DESCRIPTION";
+        }
+		
+        $records = array();
+        $table = "FILEQUCA";
+        $fields = array("QUCACODE as id", "DESCRIPTION as name");
+
+        $filter = "";
+		$group = "";
+		$having = "";
+		
+		if(!empty($query))
+			$filter .= "(QUCACODE LIKE '%$query%' OR DESCRIPTION LIKE '%$query%')";
+
+        $records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group, $having);
+       // die($this->lithefire->currentQuery());
+
+
+        $temp = array();
+        $total = 0;
+        if($records){
+        foreach($records as $row):
+            $temp[] = $row;
+            $total++;
+
+        endforeach;
+        }
+        $data['data'] = $temp;
+        $data['success'] = true;
+        $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
+        die(json_encode($data));
+    }
 
 }

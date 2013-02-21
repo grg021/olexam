@@ -24,7 +24,7 @@
 	 								id: "id",
 	 								totalProperty: "totalCount",
 	 								fields: [
-		{ name: 'QUCACODE'},{ name: 'QUCAIDNO'},{ name: 'DESCRIPTION'},{ name: 'ORDER'},{ name: 'DCREATED'},{ name: 'TCREATED'},{ name: 'DMODIFIED'},{ name: 'TMODIFIED'}
+		{ name: 'QUCACODE'},{ name: 'QUCAIDNO'},{ name: 'DESCRIPTION'},{ name: 'ORDER_BY'}
 		]
  						}),
  						remoteSort: true,
@@ -32,7 +32,7 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-		{header: "QUCACODE", width: 100, sortable: true, dataIndex: 'QUCACODE'},{header: "QUCAIDNO", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},{header: "DESCRIPTION", width: 100, sortable: true, dataIndex: 'DESCRIPTION'},{header: "ORDER", width: 100, sortable: true, dataIndex: 'ORDER'},{header: "DCREATED", width: 100, sortable: true, dataIndex: 'DCREATED'},{header: "TCREATED", width: 100, sortable: true, dataIndex: 'TCREATED'},{header: "DMODIFIED", width: 100, sortable: true, dataIndex: 'DMODIFIED'},{header: "TMODIFIED", width: 100, sortable: true, dataIndex: 'TMODIFIED'}
+		{header: "QUCACODE", width: 100, sortable: true, dataIndex: 'QUCACODE'},{header: "QUCAIDNO", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},{header: "Description", width: 250, sortable: true, dataIndex: 'DESCRIPTION'},{header: "Order", width: 100, sortable: true, dataIndex: 'ORDER_BY'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -115,12 +115,12 @@
  	    	});
 
  			FILEQUCA.app.Grid = grid;
- 			//FILEQUCA.app.Grid.getStore().load({params:{start: 0, limit: 25}});
+ 			FILEQUCA.app.Grid.getStore().load({params:{start: 0, limit: 25}});
 
  			var _window = new Ext.Window({
  		        title: 'Question Categories',
  		        width: 600,
- 		        height:300,
+ 		        height: 300,
  		        draggable: false,
  		        layout: 'fit',
  		        items: [FILEQUCA.app.Grid],
@@ -145,15 +145,7 @@
  					items:[
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'QUCACODE*',
- 		            name: 'QUCACODE',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'QUCACODE'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'QUCAIDNO*',
+ 		            fieldLabel: 'ID Number*',
  		            name: 'QUCAIDNO',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
@@ -161,7 +153,7 @@
  		        },
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'DESCRIPTION*',
+ 		            fieldLabel: 'Description*',
  		            name: 'DESCRIPTION',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
@@ -169,44 +161,12 @@
  		        },
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'ORDER*',
- 		            name: 'ORDER',
+ 		            fieldLabel: 'Order by*',
+ 		            name: 'ORDER_BY',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
- 		            id: 'ORDER'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'DCREATED*',
- 		            name: 'DCREATED',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'DCREATED'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'TCREATED*',
- 		            name: 'TCREATED',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'TCREATED'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'DMODIFIED*',
- 		            name: 'DMODIFIED',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'DMODIFIED'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'TMODIFIED*',
- 		            name: 'TMODIFIED',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'TMODIFIED'
- 		        }    
+ 		            id: 'ORDER_BY'
+ 		        }
  		        
 
  		        		]
@@ -226,7 +186,7 @@
  		    _window = new Ext.Window({
  		        title: 'New FILEQUCA',
  		        width: 510,
- 		        height: 340,
+ 		        height: 230,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -304,6 +264,7 @@
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
  				                ExtCommon.util.refreshGrid(FILEQUCA.app.Grid.getId());
+ 				                ExtCommon.util.refreshGrid(Question.app.Grid.getId());
  				                _window.destroy();
  			                },
  			                failure: function(f,a){
@@ -372,6 +333,8 @@
 						if(response.success == true)
 						{
 							FILEQUCA.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							Question.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							ExtCommon.util.refreshGrid(Question.app.Grid.getId());
 							return;
 
 						}
