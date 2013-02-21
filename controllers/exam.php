@@ -70,13 +70,13 @@ class exam extends MY_Controller{
 			$input['dcreated'] = date("Y-m-d H:i:s");
 			$input['createdby'] = $this->session->userData("userName");
 			
-			/* uncomment for checking duplicates (change $fieldname)
+			//uncomment for checking duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "name = '".$this->input->post("name")."'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
-	        }*/
+	        }
 	        
 	        //uncomment for FRs
 			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);

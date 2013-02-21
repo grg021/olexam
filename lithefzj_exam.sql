@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v10.00 Beta1
-MySQL - 5.5.27 : Database - lithefzj_exam
+MySQL - 5.5.25a : Database - lithefzj_exam
 *********************************************************************
 */
 
