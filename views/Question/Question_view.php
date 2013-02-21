@@ -118,9 +118,9 @@
 							icon: '/images/icons/application_delete.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: function(){
- 					     		FILEQUCA.app._window.show();
- 					     	}
+ 					     	handler: FILEQUCA.app.getGrid
+ 					     		
+ 					     	
  					 	}
  	    			 ],
  	    			 listeners: {

@@ -9,7 +9,6 @@
 	 		{
 	 			ExtCommon.util.init();
 	 			ExtCommon.util.quickTips();
-	 			this.getGrid();
 	 		},
 	 		getGrid: function()
 	 		{
@@ -126,7 +125,7 @@
  		        layout: 'fit',
  		        items: [FILEQUCA.app.Grid],
  		        resizable: false
- 	        });
+ 	        }).show();
 
 			FILEQUCA.app._window = _window;
  		},
