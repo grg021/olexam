@@ -33,7 +33,7 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-		{header: "ID", width: 100, sortable: true, dataIndex: 'id'},{header: "Description", width: 100, sortable: true, dataIndex: 'description'},{header: "Correct Flag", width: 100, sortable: true, dataIndex: 'correct_flag'}
+		{header: "ID", width: 100, sortable: true, dataIndex: 'id'},{header: "Choice", width: 100, sortable: true, dataIndex: 'description'},{header: "Correct Flag", width: 100, sortable: true, dataIndex: 'correct_flag'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -110,6 +110,28 @@
  							cls:'x-btn-text-icon',
 
  					     	handler: Tbl_question_choices.app.Delete
+
+ 					 	},'-',{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'PRESET',
+							icon: '/images/icons/note_add.png',
+ 							cls:'x-btn-text-icon',
+ 							menu: [
+ 								{
+		 					     	text: 'SAVE AS PRESET',
+		 							cls:'x-btn-text-icon',
+		
+		 					     	handler: Tbl_preset.app.AddPreset
+		
+		 					    },
+		 					 	{
+		 					     	text: 'SELECT PRESET',
+		 							cls:'x-btn-text-icon',
+		
+		 					     	handler: Tbl_preset_choices.app.AddPreset
+		
+		 					 	}
+ 							]
 
  					 	}
  	    			 ]

@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v10.00 Beta1
-MySQL - 5.5.25a : Database - lithefzj_exam
+MySQL - 5.5.27 : Database - lithefzj_exam
 *********************************************************************
 */
 
@@ -140,11 +140,11 @@ CREATE TABLE `module` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module` */
 
-insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'exam','exam',7,NULL,NULL,NULL,1),(15,'Tbl_faculty_evaluation_session','Tbl_faculty_evaluation_session',7,NULL,NULL,NULL,1);
+insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'exam','exam',7,NULL,NULL,NULL,1),(15,'Tbl_faculty_evaluation_session','Tbl_faculty_evaluation_session',7,NULL,NULL,NULL,1),(19,'Tbl_preset','Tbl_preset',13,NULL,NULL,NULL,1),(20,'Tbl_preset_choices','Tbl_preset_choices',14,NULL,NULL,NULL,1),(21,'FILEQUCA','FILEQUCA',15,NULL,NULL,NULL,1),(22,'FILEQUCA','FILEQUCA',16,NULL,NULL,NULL,1);
 
 /*Table structure for table `module_category` */
 
@@ -157,11 +157,11 @@ CREATE TABLE `module_category` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_category` */
 
-insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0),(7,'exam','/images/icons/application.png',NULL,1);
+insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0),(7,'exam','/images/icons/application.png',NULL,1),(16,'FILEQUCA','/images/icons/application.png',NULL,1),(15,'FILEQUCA','/images/icons/application.png',NULL,1);
 
 /*Table structure for table `module_group` */
 
@@ -289,6 +289,36 @@ CREATE TABLE `tbl_faculty_evaluation_session` (
 
 /*Data for the table `tbl_faculty_evaluation_session` */
 
+/*Table structure for table `tbl_preset` */
+
+DROP TABLE IF EXISTS `tbl_preset`;
+
+CREATE TABLE `tbl_preset` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(100) DEFAULT NULL,
+  `dcreated` datetime DEFAULT NULL,
+  `dmodified` datetime DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `modified_by` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `tbl_preset` */
+
+/*Table structure for table `tbl_preset_choices` */
+
+DROP TABLE IF EXISTS `tbl_preset_choices`;
+
+CREATE TABLE `tbl_preset_choices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `preset_id` int(11) DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `correct_flag` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `tbl_preset_choices` */
+
 /*Table structure for table `tbl_question` */
 
 DROP TABLE IF EXISTS `tbl_question`;
@@ -297,6 +327,7 @@ CREATE TABLE `tbl_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_set_id` int(11) DEFAULT NULL,
   `classification_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `description` varchar(250) DEFAULT NULL,
   `dcreated` datetime DEFAULT NULL,
   `dmodified` datetime DEFAULT NULL,
@@ -306,8 +337,6 @@ CREATE TABLE `tbl_question` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question` */
-
-insert  into `tbl_question`(`id`,`question_set_id`,`classification_id`,`description`,`dcreated`,`dmodified`,`createdby`,`modifiedby`) values (2,2,1,'Communication Skills','2013-02-20 16:34:56',NULL,'darryl.anaud',NULL),(3,2,1,'baking skills','2013-02-20 16:38:28',NULL,'darryl.anaud',NULL);
 
 /*Table structure for table `tbl_question_choices` */
 
@@ -322,8 +351,6 @@ CREATE TABLE `tbl_question_choices` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question_choices` */
-
-insert  into `tbl_question_choices`(`id`,`question_id`,`description`,`correct_flag`) values (3,2,'Very good',0),(4,2,'Good',0),(5,2,'Fair',0),(6,3,'Very Good',0),(7,3,'Good',0),(8,3,'Fair',0);
 
 /*Table structure for table `tbl_question_set` */
 

@@ -1,12 +1,8 @@
-<?php $this->load->view('FILEQUCA/FILEQUCA_view');?>
-<?php $this->load->view('Tbl_preset/Tbl_preset_view');?>
-<?php $this->load->view('Tbl_preset_choices/Tbl_preset_choices_view');?>
-<?php $this->load->view('Question/Question_view');?>
-<?php $this->load->view('Tbl_question_choices/Tbl_question_choices_view');?>
+
 		<div id="mainBody"></div>
 		<script type="text/javascript">
-		 Ext.namespace("exam");
-		 exam.app = function()
+		 Ext.namespace("FILEQUCA");
+		 FILEQUCA.app = function()
 		 {
 		 	return{
 	 		init: function()
@@ -21,7 +17,7 @@
 	
 	 			var Objstore = new Ext.data.Store({
 	 						proxy: new Ext.data.HttpProxy({
-	 							url: "<?php echo site_url('exam/getExam') ?>",
+	 							url: "<?php echo site_url('FILEQUCA/getFILEQUCA') ?>",
 	 							method: "POST"
 	 							}),
 	 						reader: new Ext.data.JsonReader({
@@ -29,10 +25,7 @@
 	 								id: "id",
 	 								totalProperty: "totalCount",
 	 								fields: [
-										{ name: 'id'},
-										{ name: 'name'},
-										{ name: 'description'},
-										{ name: 'timePerQuestion'}
+		{ name: 'QUCACODE'},{ name: 'QUCAIDNO'},{ name: 'DESCRIPTION'},{ name: 'ORDER'},{ name: 'DCREATED'},{ name: 'TCREATED'},{ name: 'DMODIFIED'},{ name: 'TMODIFIED'}
 		]
  						}),
  						remoteSort: true,
@@ -40,15 +33,12 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-			{header: "ID", width: 75, sortable: true, dataIndex: 'id'},
-			{header: "Name", width: 150, sortable: true, dataIndex: 'name'},
-			{header: "Description", width: 250, sortable: true, dataIndex: 'description'},
-			{header: "Time Per Question", width: 100, sortable: true, dataIndex: 'timePerQuestion'}
+		{header: "QUCACODE", width: 100, sortable: true, dataIndex: 'QUCACODE'},{header: "QUCAIDNO", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},{header: "DESCRIPTION", width: 100, sortable: true, dataIndex: 'DESCRIPTION'},{header: "ORDER", width: 100, sortable: true, dataIndex: 'ORDER'},{header: "DCREATED", width: 100, sortable: true, dataIndex: 'DCREATED'},{header: "TCREATED", width: 100, sortable: true, dataIndex: 'TCREATED'},{header: "DMODIFIED", width: 100, sortable: true, dataIndex: 'DMODIFIED'},{header: "TMODIFIED", width: 100, sortable: true, dataIndex: 'TMODIFIED'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
- 				id: 'examgrid',
- 				height: 490,
+ 				id: 'FILEQUCAgrid',
+ 				height: 300,
  				width: '100%',
  				border: true,
  				ds: Objstore,
@@ -103,7 +93,7 @@
 							icon: '/images/icons/application_add.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: exam.app.Add
+ 					     	handler: FILEQUCA.app.Add
 
  					 	},'-',{
  					     	xtype: 'tbbutton',
@@ -111,7 +101,7 @@
 							icon: '/images/icons/application_edit.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: exam.app.Edit
+ 					     	handler: FILEQUCA.app.Edit
 
  					 	},'-',{
  					     	xtype: 'tbbutton',
@@ -119,73 +109,32 @@
 							icon: '/images/icons/application_delete.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: exam.app.Delete
+ 					     	handler: FILEQUCA.app.Delete
 
  					 	}
- 	    			 ],
- 	    			 listeners: {
- 	    			 	rowclick: function(grid, r, e){
- 	    			 		var record = grid.getStore().getAt(r);  
-
-						    var data = record.get("id");
-						   // console.log(data);
- 	    			 		Question.app.Grid.getStore().setBaseParam("exam_id", data);
- 	    			 		Question.app.Grid.getStore().load();
- 	    			 	}
- 	    			 }
+ 	    			 ]
  	    	});
 
- 			exam.app.Grid = grid;
- 			exam.app.Grid.getStore().load({params:{start: 0, limit: 25}});
+ 			FILEQUCA.app.Grid = grid;
+ 			//FILEQUCA.app.Grid.getStore().load({params:{start: 0, limit: 25}});
 
-	
-
- 			exam.app.qGrid = Question.app.Grid;
- 			exam.app.cGrid = Tbl_question_choices.app.Grid;
-		
- 			var _window = new Ext.Panel({
- 		        title: 'Question Set',
- 		        width: 'auto',
- 		        height: 520,
- 		        renderTo: 'mainBody',
+ 			var _window = new Ext.Window({
+ 		        title: 'Question Categories',
+ 		        width: 600,
+ 		        height:300,
  		        draggable: false,
  		        layout: 'fit',
- 		        items: [
- 		        {
- 		        	layout: 'column',
- 		        	height: 'auto',
- 		        	items: [
- 		        	{
- 		        		columnWidth: .55,
- 		        		layout: 'form',
- 		        		height: 'auto',
- 		        		items: exam.app.Grid
- 		        	},
- 		        	{
- 		        		columnWidth: .45,
- 		        		layout: 'form',
- 		        		height: 'auto',
- 		        		items: [
- 		        			exam.app.qGrid,
- 		        			exam.app.cGrid
- 		        			]
- 		        		
- 		        	}
- 		        	]
- 		        }],
+ 		        items: [FILEQUCA.app.Grid],
  		        resizable: false
  	        });
 
- 	        _window.render();
-
-
+			FILEQUCA.app._window = _window;
  		},
-		
 		setForm: function(){
 
  		    var form = new Ext.form.FormPanel({
  		        labelWidth: 150,
- 		        url: "<?php echo site_url('exam/addExam') ?>",
+ 		        url: "<?php echo site_url('FILEQUCA/addFILEQUCA') ?>",
  		        method: 'POST',
  		        defaultType: 'textfield',
  		        frame: true,
@@ -197,59 +146,101 @@
  					items:[
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'Name*',
- 		            name: 'name',
+ 		            fieldLabel: 'QUCACODE*',
+ 		            name: 'QUCACODE',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
- 		            id: 'name'
+ 		            id: 'QUCACODE'
  		        },
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'Description*',
- 		            name: 'description',
+ 		            fieldLabel: 'QUCAIDNO*',
+ 		            name: 'QUCAIDNO',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
- 		            id: 'description'
+ 		            id: 'QUCAIDNO'
  		        },
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'Time Per Question*',
- 		            name: 'timePerQuestion',
+ 		            fieldLabel: 'DESCRIPTION*',
+ 		            name: 'DESCRIPTION',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
- 		            id: 'timePerQuestion'
- 		        }  
+ 		            id: 'DESCRIPTION'
+ 		        },
+				{
+                    xtype:'textfield',
+ 		            fieldLabel: 'ORDER*',
+ 		            name: 'ORDER',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'ORDER'
+ 		        },
+				{
+                    xtype:'textfield',
+ 		            fieldLabel: 'DCREATED*',
+ 		            name: 'DCREATED',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'DCREATED'
+ 		        },
+				{
+                    xtype:'textfield',
+ 		            fieldLabel: 'TCREATED*',
+ 		            name: 'TCREATED',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'TCREATED'
+ 		        },
+				{
+                    xtype:'textfield',
+ 		            fieldLabel: 'DMODIFIED*',
+ 		            name: 'DMODIFIED',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'DMODIFIED'
+ 		        },
+				{
+                    xtype:'textfield',
+ 		            fieldLabel: 'TMODIFIED*',
+ 		            name: 'TMODIFIED',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'TMODIFIED'
+ 		        }    
+ 		        
+
  		        		]
  					}
  					]
  		    });
 
- 		    exam.app.Form = form;
+ 		    FILEQUCA.app.Form = form;
  		},
 		
  		Add: function(){
 
- 			exam.app.setForm();
+ 			FILEQUCA.app.setForm();
 
  		  	var _window;
 
  		    _window = new Ext.Window({
- 		        title: 'New exam',
+ 		        title: 'New FILEQUCA',
  		        width: 510,
- 		        height: 210,
+ 		        height: 340,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
  		        bodyStyle:'padding:5px;',
  		        buttonAlign:'center',
- 		        items: exam.app.Form,
+ 		        items: FILEQUCA.app.Form,
  		        buttons: [{
  		         	text: 'Save',
                     icon: '/images/icons/disk.png',  
                     cls:'x-btn-text-icon',
  	                handler: function () {
- 			            if(ExtCommon.util.validateFormFields(exam.app.Form)){//check if all forms are filled up
- 		                exam.app.Form.getForm().submit({
+ 			            if(ExtCommon.util.validateFormFields(FILEQUCA.app.Form)){//check if all forms are filled up
+ 		                FILEQUCA.app.Form.getForm().submit({
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
                   		    	 Ext.Msg.show({
@@ -258,7 +249,7 @@
   								     buttons: Ext.Msg.OK,
   								     icon: 'icon'
   								 });
- 				                ExtCommon.util.refreshGrid(exam.app.Grid.getId());
+ 				                ExtCommon.util.refreshGrid(FILEQUCA.app.Grid.getId());
  				                _window.destroy();
  			                },
  			                failure: function(f,a){
@@ -286,34 +277,34 @@
  		},
 		
 		Edit: function(){
- 			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
- 			var sm = exam.app.Grid.getSelectionModel();
- 			var id = sm.getSelected().data.id;
+ 			if(ExtCommon.util.validateSelectionGrid(FILEQUCA.app.Grid.getId())){//check if user has selected an item in the grid
+ 			var sm = FILEQUCA.app.Grid.getSelectionModel();
+ 			var id = sm.getSelected().data.QUCACODE;
 
- 			exam.app.setForm();
+ 			FILEQUCA.app.setForm();
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height: 210,
+ 		        height:340,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
  		        bodyStyle:'padding:5px;',
  		        buttonAlign:'center',
- 		        items: exam.app.Form,
+ 		        items: FILEQUCA.app.Form,
  		        buttons: [{
  		         	text: 'Save',
                     icon: '/images/icons/disk.png',  
                     cls:'x-btn-text-icon',
  		            handler: function () {
- 			            if(ExtCommon.util.validateFormFields(exam.app.Form)){//check if all forms are filled up
- 		                exam.app.Form.getForm().submit({
- 			                url: "<?php echo site_url('exam/updateExam') ?>",
+ 			            if(ExtCommon.util.validateFormFields(FILEQUCA.app.Form)){//check if all forms are filled up
+ 		                FILEQUCA.app.Form.getForm().submit({
+ 			                url: "<?php echo site_url('FILEQUCA/updateFILEQUCA') ?>",
  			                params: {id: id},
  			                method: 'POST',
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
- 				                ExtCommon.util.refreshGrid(exam.app.Grid.getId());
+ 				                ExtCommon.util.refreshGrid(FILEQUCA.app.Grid.getId());
  				                _window.destroy();
  			                },
  			                failure: function(f,a){
@@ -338,8 +329,8 @@
  		        }]
  		    });
 
- 		  	exam.app.Form.getForm().load({
- 				url: "<?php echo site_url('exam/loadExam') ?>",
+ 		  	FILEQUCA.app.Form.getForm().load({
+ 				url: "<?php echo site_url('FILEQUCA/loadFILEQUCA') ?>",
  				method: 'POST',
  				params: {id: id},
  				timeout: 300000,
@@ -362,9 +353,10 @@
 		
 		Delete: function(){
 
-			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
-			var sm = exam.app.Grid.getSelectionModel();
-			var id = sm.getSelected().data.id;
+
+			if(ExtCommon.util.validateSelectionGrid(FILEQUCA.app.Grid.getId())){//check if user has selected an item in the grid
+			var sm = FILEQUCA.app.Grid.getSelectionModel();
+			var id = sm.getSelected().data.QUCACODE;
 			Ext.Msg.show({
    			title:'Delete Selected',
   			msg: 'Are you sure you want to delete this record?',
@@ -372,7 +364,7 @@
    			fn: function(btn, text){
    			if (btn == 'ok'){
    			Ext.Ajax.request({
-                            url: "<?php echo site_url('exam/deleteExam') ?>",
+                            url: "<?php echo site_url('FILEQUCA/deleteFILEQUCA') ?>",
 							params:{ id: id},
 							method: "POST",
 							timeout:300000000,
@@ -380,9 +372,7 @@
                 		    	var response = Ext.decode(responseObj.responseText);
 						if(response.success == true)
 						{
-							exam.app.qGrid.getStore().load({params:{start:0, limit: 25}});
-							exam.app.cGrid.getStore().load({params:{start:0, limit: 25}});
-							exam.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							FILEQUCA.app.Grid.getStore().load({params:{start:0, limit: 25}});
 							return;
 
 						}
@@ -417,107 +407,12 @@
 	                }else return;
 
 
-		}/*,
-		
-		setFormQ: function(){
-
- 		    var form = new Ext.form.FormPanel({
- 		        labelWidth: 150,
- 		        //url: "<--?php echo site_url('exam/addquestion') ?>",
- 		        method: 'POST',
- 		        defaultType: 'textfield',
- 		        frame: true,
- 		        items: [ {
- 					xtype:'fieldset',
- 					title:'Fields w/ Asterisks are required.',
- 					width:'auto',
- 					height:'auto',
- 					items:[
-				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<--?php echo site_url("filereference/getCombo/FILEQUCL/QUCLCODE/DESCRIPTION/DESCRIPTION")?>", "Question Type", false, false),
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'Description*',
- 		            name: 'description',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'description'
- 		        }
- 		        		]
- 					}
- 					]
- 		    });
-
- 		    exam.app.Form2 = form;
- 	},
-		
-		qAdd: function(){
-			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId())){//check if user has selected an item in the grid
- 			var sm = exam.app.Grid.getSelectionModel();
- 			var id = sm.getSelected().data.id;
-			
-			exam.app.setFormQ();
-
- 		  	var _window;
-
- 		    _window = new Ext.Window({
- 		        title: 'New Question',
- 		        width: 510,
- 		        height: 210,
- 		        layout: 'fit',
- 		        plain:true,
- 		        modal: true,
- 		        bodyStyle:'padding:5px;',
- 		        buttonAlign:'center',
- 		        items: exam.app.Form2,
- 		        buttons: [{
- 		         	text: 'Save',
-                    icon: '/images/icons/disk.png',  
-                    cls:'x-btn-text-icon',
- 	                handler: function () {
- 			            if(ExtCommon.util.validateFormFields(exam.app.Form2)){//check if all forms are filled up
- 		                exam.app.Form2.getForm().submit({
- 		                	params: {id: id},
- 			                success: function(f,action){
-                 		    	Ext.MessageBox.alert('Status', action.result.data);
-                  		    	 Ext.Msg.show({
-  								     title: 'Status',
- 								     msg: action.result.data,
-  								     buttons: Ext.Msg.OK,
-  								     icon: 'icon'
-  								 });
- 				                ExtCommon.util.refreshGrid(exam.app.Grid.getId());
- 				                _window.destroy();
- 			                },
- 			                failure: function(f,a){
- 								Ext.Msg.show({
- 									title: 'Error Alert',
- 									msg: a.result.data,
- 									icon: Ext.Msg.ERROR,
- 									buttons: Ext.Msg.OK
- 								});
- 			                },
- 			                waitMsg: 'Saving Data...'
- 		                });
- 	                }else return;
- 	                }
- 	            },{
- 		            text: 'Cancel',
-                    icon: '/images/icons/cancel.png', 
-                    cls:'x-btn-text-icon',
- 		            handler: function(){
- 			            _window.destroy();
- 		            }
- 		        }]
- 		    });
- 		  	_window.show();
-			
 		}
-		}*/
 		
 		}
 		}();
 
-	 Ext.onReady(exam.app.init, exam.app);
+	 Ext.onReady(FILEQUCA.app.init, FILEQUCA.app);
 	
 	</script>
 		

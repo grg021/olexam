@@ -112,6 +112,15 @@
  							cls:'x-btn-text-icon',
 
  					     	handler: Question.app.Delete
+ 					 	},'-',{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'CATEGORIES',
+							icon: '/images/icons/application_delete.png',
+ 							cls:'x-btn-text-icon',
+
+ 					     	handler: function(){
+ 					     		FILEQUCA.app._window.show();
+ 					     	}
  					 	}
  	    			 ],
  	    			 listeners: {
@@ -161,7 +170,7 @@
 				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<?php echo site_url("Question/getClassificationCombo")?>", "Question Type", false, false),
 				
 				{
-                    xtype:'textfield',
+                    xtype:'textarea',
  		            fieldLabel: 'Description*',
  		            name: 'description',
  		            allowBlank:false,
@@ -190,7 +199,7 @@
  		    _window = new Ext.Window({
  		        title: 'New Question',
  		        width: 510,
- 		        height: 190,
+ 		        height: 220,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -250,7 +259,7 @@
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:190,
+ 		        height:220,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -339,6 +348,7 @@
 						if(response.success == true)
 						{
 							Question.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							Tbl_question_choices.app.Grid.getStore().load({params:{start:0, limit: 25}});
 							return;
 
 						}
