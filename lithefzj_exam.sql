@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v10.00 Beta1
-MySQL - 5.5.27 : Database - lithefzj_exam
+MySQL - 5.5.25a : Database - lithefzj_exam
 *********************************************************************
 */
 
@@ -301,9 +301,11 @@ CREATE TABLE `tbl_preset` (
   `created_by` varchar(50) DEFAULT NULL,
   `modified_by` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_preset` */
+
+insert  into `tbl_preset`(`id`,`description`,`dcreated`,`dmodified`,`created_by`,`modified_by`) values (1,'2','2013-02-22 22:45:28',NULL,'darryl.anaud',NULL),(2,'3','2013-02-22 22:52:52',NULL,'darryl.anaud',NULL),(3,'4','2013-02-22 22:54:44',NULL,'darryl.anaud',NULL);
 
 /*Table structure for table `tbl_preset_choices` */
 
@@ -315,9 +317,11 @@ CREATE TABLE `tbl_preset_choices` (
   `description` varchar(250) DEFAULT NULL,
   `correct_flag` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_preset_choices` */
+
+insert  into `tbl_preset_choices`(`id`,`preset_id`,`description`,`correct_flag`) values (1,NULL,'Yes',0),(2,NULL,'No',1),(3,NULL,'Yes',0),(4,NULL,'No',1),(5,NULL,'Yes',0),(6,NULL,'No',1),(7,NULL,'Yes',0),(8,NULL,'No',1),(9,3,'Yes',0),(10,3,'No',1);
 
 /*Table structure for table `tbl_question` */
 
@@ -334,9 +338,11 @@ CREATE TABLE `tbl_question` (
   `createdby` varchar(30) DEFAULT NULL,
   `modifiedby` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question` */
+
+insert  into `tbl_question`(`id`,`question_set_id`,`classification_id`,`category_id`,`description`,`dcreated`,`dmodified`,`createdby`,`modifiedby`) values (4,2,4,5,'fill in the blanks\n','2013-02-21 16:00:43',NULL,'darryl.anaud',NULL),(5,2,3,4,'yes or no','2013-02-21 16:11:51',NULL,'darryl.anaud',NULL),(6,2,2,4,'question 1','2013-02-21 18:14:14',NULL,'darryl.anaud',NULL);
 
 /*Table structure for table `tbl_question_choices` */
 
@@ -348,9 +354,11 @@ CREATE TABLE `tbl_question_choices` (
   `description` varchar(250) DEFAULT NULL,
   `correct_flag` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question_choices` */
+
+insert  into `tbl_question_choices`(`id`,`question_id`,`description`,`correct_flag`) values (9,4,'Yes',0),(10,4,'No',1),(15,NULL,'Yes',0),(16,NULL,'No',1),(17,NULL,'Yes',0),(18,NULL,'No',1),(19,NULL,'Yes',0),(20,NULL,'No',1),(21,NULL,'Yes',0),(22,NULL,'No',1),(44,5,'Yes',0),(45,5,'No',1);
 
 /*Table structure for table `tbl_question_set` */
 
