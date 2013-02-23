@@ -125,7 +125,7 @@
 		
 		 					    },
 		 					 	{
-		 					     	text: 'SELECT/REPLACE PRESET',
+		 					     	text: 'SELECT PRESET',
 		 							cls:'x-btn-text-icon',
 		
 		 					     	handler: Tbl_preset.app.getGrid

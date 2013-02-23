@@ -9,7 +9,7 @@
 	 		{
 	 			ExtCommon.util.init();
 	 			ExtCommon.util.quickTips();
-	 			this.getGrid();
+	 			//this.getGrid();
 	 		},
 	 		getGrid: function()
 	 		{
@@ -99,12 +99,26 @@
 
  					 	},'-',*/{
  					     	xtype: 'tbbutton',
- 					     	text: 'EDIT',
-							icon: '/images/icons/application_edit.png',
+ 					     	text: 'OPERATIONS',
+							icon: '/images/icons/wrench.png',
  							cls:'x-btn-text-icon',
-
- 					     	handler: Tbl_preset_choices.app.Edit
-
+ 							menu: [
+ 							{
+ 								text: 'ADD',
+								icon: '/images/icons/add.png',
+								handler: Tbl_preset_choices.app.Add
+ 							},
+ 							{
+ 								text: 'EDIT',
+								icon: '/images/icons/pencil.png',
+								handler: Tbl_preset_choices.app.Edit
+ 							},
+ 							{
+ 								text: 'DELETE',
+								icon: '/images/icons/delete.png',
+								handler: Tbl_preset_choices.app.Delete
+ 							}
+ 							]
  					 	}/*,'-',{
  					     	xtype: 'tbbutton',
  					     	text: 'DELETE',

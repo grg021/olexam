@@ -12,6 +12,7 @@
 	 		},
 	 		getGrid: function()
 	 		{
+	 			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId(), "Please select a question set")){
 	 			ExtCommon.util.renderSearchField('searchby');
 	
 	 			var Objstore = new Ext.data.Store({
@@ -28,13 +29,13 @@
 		]
  						}),
  						remoteSort: true,
- 						baseParams: {start: 0, limit: 25}
+ 						baseParams: {start: 0, limit: 25, set_id: exam.app.Grid.getSelectionModel().getSelected().data.id}
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-			{header: "QUCACODE", width: 100, sortable: true, dataIndex: 'QUCACODE'},
-			{header: "QUCAIDNO", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},
-			{header: "Description", width: 250, sortable: true, dataIndex: 'DESCRIPTION'},
+		//	{header: "QUCACODE", width: 100, sortable: true, dataIndex: 'QUCACODE'},
+		//	{header: "QUCAIDNO", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},
+			{header: "Question Category", width: 250, sortable: true, dataIndex: 'DESCRIPTION'},
 			{header: "Order", width: 100, sortable: true, dataIndex: 'ORDER_BY'}
 		]);
 
@@ -131,6 +132,7 @@
  	        }).show();
 
 			FILEQUCA.app._window = _window;
+			}else return;
  		},
 		setForm: function(){
 

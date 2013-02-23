@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v10.00 Beta1
-MySQL - 5.5.25a : Database - lithefzj_exam
+MySQL - 5.5.27 : Database - lithefzj_exam
 *********************************************************************
 */
 
@@ -15,116 +15,6 @@ MySQL - 5.5.25a : Database - lithefzj_exam
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`lithefzj_exam` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
 USE `lithefzj_exam`;
-
-/*Table structure for table `FILEEXCL` */
-
-DROP TABLE IF EXISTS `FILEEXCL`;
-
-CREATE TABLE `FILEEXCL` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(45) DEFAULT NULL,
-  `code` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
-/*Data for the table `FILEEXCL` */
-
-insert  into `FILEEXCL`(`id`,`description`,`code`) values (4,'fdsaa','ex002');
-
-/*Table structure for table `FILEQUCL` */
-
-DROP TABLE IF EXISTS `FILEQUCL`;
-
-CREATE TABLE `FILEQUCL` (
-  `QUCLCODE` int(11) NOT NULL AUTO_INCREMENT,
-  `QUCLIDNO` varchar(5) NOT NULL,
-  `DESCRIPTION` varchar(45) DEFAULT NULL,
-  `DCREATED` date DEFAULT NULL,
-  `TCREATED` time DEFAULT NULL,
-  `DMODIFIED` date DEFAULT NULL,
-  `TMODIFIED` time DEFAULT NULL,
-  PRIMARY KEY (`QUCLCODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-
-/*Data for the table `FILEQUCL` */
-
-insert  into `FILEQUCL`(`QUCLCODE`,`QUCLIDNO`,`DESCRIPTION`,`DCREATED`,`TCREATED`,`DMODIFIED`,`TMODIFIED`) values (4,'qc000','Multiple Choice',NULL,NULL,NULL,NULL),(5,'qc000','Yes or No',NULL,NULL,NULL,NULL),(6,'qc000','test',NULL,NULL,NULL,NULL),(7,'12111','a1',NULL,NULL,NULL,NULL),(8,'123','321',NULL,NULL,NULL,NULL);
-
-/*Table structure for table `exam` */
-
-DROP TABLE IF EXISTS `exam`;
-
-CREATE TABLE `exam` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `description` varchar(150) DEFAULT NULL,
-  `timePerQuestion` int(4) DEFAULT NULL,
-  `dcreated` datetime DEFAULT NULL,
-  `dmodified` datetime DEFAULT NULL,
-  `createdby` varchar(30) DEFAULT NULL,
-  `modifiedby` varchar(30) DEFAULT NULL,
-  `is_delete` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
-
-/*Data for the table `exam` */
-
-insert  into `exam`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'Set 1','set 1',12,NULL,'2013-02-19 17:08:43',NULL,'darryl.anaud',NULL);
-
-/*Table structure for table `examSession` */
-
-DROP TABLE IF EXISTS `examSession`;
-
-CREATE TABLE `examSession` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dateTaken` varchar(45) DEFAULT NULL,
-  `exam_id` int(11) DEFAULT NULL,
-  `examinee_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-/*Data for the table `examSession` */
-
-/*Table structure for table `exam_session` */
-
-DROP TABLE IF EXISTS `exam_session`;
-
-CREATE TABLE `exam_session` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dateTaken` varchar(45) DEFAULT NULL,
-  `exam_id` int(11) DEFAULT NULL,
-  `examinee_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-/*Data for the table `exam_session` */
-
-/*Table structure for table `examinee` */
-
-DROP TABLE IF EXISTS `examinee`;
-
-CREATE TABLE `examinee` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `username` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-/*Data for the table `examinee` */
-
-/*Table structure for table `faculty` */
-
-DROP TABLE IF EXISTS `faculty`;
-
-CREATE TABLE `faculty` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-/*Data for the table `faculty` */
 
 /*Table structure for table `module` */
 
@@ -234,22 +124,6 @@ CREATE TABLE `question_categories` (
 
 /*Data for the table `question_categories` */
 
-/*Table structure for table `tbl_exam_classification` */
-
-DROP TABLE IF EXISTS `tbl_exam_classification`;
-
-CREATE TABLE `tbl_exam_classification` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(45) DEFAULT NULL,
-  `code` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
-/*Data for the table `tbl_exam_classification` */
-
-insert  into `tbl_exam_classification`(`id`,`description`,`code`) values (4,'fdsaa','ex002');
-
 /*Table structure for table `tbl_faculty_evaluation_answers` */
 
 DROP TABLE IF EXISTS `tbl_faculty_evaluation_answers`;
@@ -301,11 +175,11 @@ CREATE TABLE `tbl_preset` (
   `created_by` varchar(50) DEFAULT NULL,
   `modified_by` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_preset` */
 
-insert  into `tbl_preset`(`id`,`description`,`dcreated`,`dmodified`,`created_by`,`modified_by`) values (1,'2','2013-02-22 22:45:28',NULL,'darryl.anaud',NULL),(2,'3','2013-02-22 22:52:52',NULL,'darryl.anaud',NULL),(3,'4','2013-02-22 22:54:44',NULL,'darryl.anaud',NULL);
+insert  into `tbl_preset`(`id`,`description`,`dcreated`,`dmodified`,`created_by`,`modified_by`) values (1,'Yes or no','2013-02-23 15:59:14',NULL,'darryl.anaud',NULL);
 
 /*Table structure for table `tbl_preset_choices` */
 
@@ -317,11 +191,11 @@ CREATE TABLE `tbl_preset_choices` (
   `description` varchar(250) DEFAULT NULL,
   `correct_flag` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_preset_choices` */
 
-insert  into `tbl_preset_choices`(`id`,`preset_id`,`description`,`correct_flag`) values (1,NULL,'Yes',0),(2,NULL,'No',1),(3,NULL,'Yes',0),(4,NULL,'No',1),(5,NULL,'Yes',0),(6,NULL,'No',1),(7,NULL,'Yes',0),(8,NULL,'No',1),(9,3,'Yes',0),(10,3,'No',1);
+insert  into `tbl_preset_choices`(`id`,`preset_id`,`description`,`correct_flag`) values (1,1,'Yes',0),(2,1,'No',1);
 
 /*Table structure for table `tbl_question` */
 
@@ -333,16 +207,15 @@ CREATE TABLE `tbl_question` (
   `classification_id` int(11) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `description` varchar(250) DEFAULT NULL,
+  `position` tinyint(3) DEFAULT NULL,
   `dcreated` datetime DEFAULT NULL,
   `dmodified` datetime DEFAULT NULL,
   `createdby` varchar(30) DEFAULT NULL,
   `modifiedby` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question` */
-
-insert  into `tbl_question`(`id`,`question_set_id`,`classification_id`,`category_id`,`description`,`dcreated`,`dmodified`,`createdby`,`modifiedby`) values (4,2,4,5,'fill in the blanks\n','2013-02-21 16:00:43',NULL,'darryl.anaud',NULL),(5,2,3,4,'yes or no','2013-02-21 16:11:51',NULL,'darryl.anaud',NULL),(6,2,2,4,'question 1','2013-02-21 18:14:14',NULL,'darryl.anaud',NULL);
 
 /*Table structure for table `tbl_question_choices` */
 
@@ -352,13 +225,12 @@ CREATE TABLE `tbl_question_choices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT NULL,
   `description` varchar(250) DEFAULT NULL,
+  `position` tinyint(3) DEFAULT NULL,
   `correct_flag` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question_choices` */
-
-insert  into `tbl_question_choices`(`id`,`question_id`,`description`,`correct_flag`) values (9,4,'Yes',0),(10,4,'No',1),(15,NULL,'Yes',0),(16,NULL,'No',1),(17,NULL,'Yes',0),(18,NULL,'No',1),(19,NULL,'Yes',0),(20,NULL,'No',1),(21,NULL,'Yes',0),(22,NULL,'No',1),(44,5,'Yes',0),(45,5,'No',1);
 
 /*Table structure for table `tbl_question_set` */
 
@@ -368,7 +240,7 @@ CREATE TABLE `tbl_question_set` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `description` varchar(150) DEFAULT NULL,
-  `timePerQuestion` int(4) DEFAULT NULL,
+  `timePerQuestion` int(4) DEFAULT '0',
   `dcreated` datetime DEFAULT NULL,
   `dmodified` datetime DEFAULT NULL,
   `createdby` varchar(30) DEFAULT NULL,
@@ -379,7 +251,7 @@ CREATE TABLE `tbl_question_set` (
 
 /*Data for the table `tbl_question_set` */
 
-insert  into `tbl_question_set`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (2,'Set 1','Set 1 Description',0,'2013-02-20 16:34:36',NULL,'darryl.anaud',NULL,NULL);
+insert  into `tbl_question_set`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'Set 1','teacher evaluation',5,'2013-02-23 16:24:42',NULL,'darryl.anaud',NULL,NULL),(2,'Set 2','Facility Evaluation',0,'2013-02-23 16:26:05','2013-02-23 16:27:39','darryl.anaud','darryl.anaud',NULL);
 
 /*Table structure for table `tbl_user` */
 

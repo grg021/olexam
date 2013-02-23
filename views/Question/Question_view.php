@@ -117,7 +117,7 @@
  					 	},'-',{
  					     	xtype: 'tbbutton',
  					     	text: 'CATEGORIES',
-							icon: '/images/icons/application_delete.png',
+							icon: '/images/icons/folder_page.png',
  							cls:'x-btn-text-icon',
 
  					     	handler: FILEQUCA.app.getGrid

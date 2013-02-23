@@ -94,6 +94,28 @@ class Tbl_preset extends MY_Controller{
 	        die(json_encode($data));
     	}
 
+		public function add($value='')
+		{
+			$db = 'exam';
+	        $table = "tbl_preset";
+			$input = $this->input->post();
+			
+			$input['dcreated'] = date("Y-m-d H:i:s");
+			$input['created_by'] = $this->session->userData("userName");
+			
+			//uncomment for checking duplicates (change $fieldname)
+			$fieldname = 'description';
+	        if($this->lithefire->countFilteredRows($db, $table, "description = '".$this->input->post("description")."'", "")){
+	            $data['success'] = false;
+	            $data['data'] = "Record already exists";
+	            die(json_encode($data));
+	        }
+	        
+			$data = $this->lithefire->insertRow($db, $table, $input);
+			
+			die(json_encode($data));
+		}
+
 		function loadTbl_preset(){
 	        $db = "exam";
 	        
@@ -122,11 +144,13 @@ class Tbl_preset extends MY_Controller{
 	        $table = "Tbl_preset";
 	        
 	        $id=$this->input->post('id');
+			$param = 'id';
+			
 	        $filter = "$param = '$id'";
 	
 	        $input = array();
 	        foreach($this->input->post() as $key => $val){
-	            if($key == 'id')
+	            if($key == $param)
 	                continue;
 	            if(!empty($val)){
 	                $input[$key] = $val;
@@ -138,7 +162,7 @@ class Tbl_preset extends MY_Controller{
 			
 			//check for duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' AND id != '$id'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' AND $param != '$id'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));

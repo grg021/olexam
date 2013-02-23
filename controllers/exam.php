@@ -90,7 +90,7 @@ class exam extends MY_Controller{
 	        $db = "default";
 	        
 	        $id=$this->input->post('id');
-	        $table = "exam";
+	        $table = "tbl_question_set";
 			$param = "id";
 	
 	        $filter = "$param = '$id'";
@@ -111,7 +111,7 @@ class exam extends MY_Controller{
 		function updateExam(){
 	        $db = 'default';
 	
-	        $table = "exam";
+	        $table = "tbl_question_set";
 			
 			$param = "id";
 	        $id=$this->input->post('id');
@@ -121,7 +121,7 @@ class exam extends MY_Controller{
 	        foreach($this->input->post() as $key => $val){
 	            if($key == 'id')
 	                continue;
-	            if(!empty($val)){
+	            if(isset($val) || !empty($val)){
 	                $input[$key] = $val;
 	            }
 	        }

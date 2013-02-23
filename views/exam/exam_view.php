@@ -1,6 +1,6 @@
 <?php $this->load->view('FILEQUCA/FILEQUCA_view');?>
-<?php $this->load->view('Tbl_preset/Tbl_preset_view');?>
 <?php $this->load->view('Tbl_preset_choices/Tbl_preset_choices_view');?>
+<?php $this->load->view('Tbl_preset/Tbl_preset_view');?>
 <?php $this->load->view('Question/Question_view');?>
 <?php $this->load->view('Tbl_question_choices/Tbl_question_choices_view');?>
 		<div id="mainBody"></div>
@@ -131,6 +131,7 @@
 						   // console.log(data);
  	    			 		Question.app.Grid.getStore().setBaseParam("exam_id", data);
  	    			 		Question.app.Grid.getStore().load();
+ 	    			 		
  	    			 	}
  	    			 }
  	    	});
@@ -215,7 +216,8 @@
                     xtype:'textfield',
  		            fieldLabel: 'Time Per Question*',
  		            name: 'timePerQuestion',
- 		            allowBlank:false,
+ 		            allowBlank:true,
+ 		            value: 0,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'timePerQuestion'
  		        }  

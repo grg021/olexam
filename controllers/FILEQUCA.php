@@ -27,7 +27,10 @@ class FILEQUCA extends MY_Controller{
 	        $table = "FILEQUCA";
 	        $fields = array("QUCACODE","QUCAIDNO","DESCRIPTION","ORDER_BY");
 	        $db = 'fr';
-	        $filter = "";
+			
+			$set_id = $this->input->post("set_id");
+			
+	        $filter = "SET_ID = '$set_id'";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
 	            $sort = "QUCACODE DESC";

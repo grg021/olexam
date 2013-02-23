@@ -91,28 +91,31 @@
  					     	xtype: 'tbfill'
  					 	},{
  					     	xtype: 'tbbutton',
- 					     	text: 'SELECT',
-							icon: '/images/icons/application_add.png',
+ 					     	text: 'OPERATIONS',
+							icon: '/images/icons/wrench.png',
  							cls:'x-btn-text-icon',
-
- 					     	handler: Tbl_preset.app.SelectPreset
-
- 					 	},'-',{
- 					     	xtype: 'tbbutton',
- 					     	text: 'EDIT',
-							icon: '/images/icons/application_edit.png',
- 							cls:'x-btn-text-icon',
-
- 					     	handler: Tbl_preset.app.Edit
-
- 					 	},'-',{
- 					     	xtype: 'tbbutton',
- 					     	text: 'DELETE',
-							icon: '/images/icons/application_delete.png',
- 							cls:'x-btn-text-icon',
-
- 					     	handler: Tbl_preset.app.Delete
-
+							menu: [
+							{
+ 								text: 'SELECT',
+								icon: '/images/icons/accept.png',
+								handler: Tbl_preset.app.SelectPreset
+	 						},
+	 						{
+ 								text: 'ADD',
+								icon: '/images/icons/add.png',
+								handler: Tbl_preset.app.Add
+ 							},
+ 							{
+ 								text: 'EDIT',
+								icon: '/images/icons/pencil.png',
+								handler: Tbl_preset.app.Edit
+ 							},
+ 							{
+ 								text: 'DELETE',
+								icon: '/images/icons/delete.png',
+								handler: Tbl_preset.app.Delete
+ 							}
+							]
  					 	}
  	    			 ],
  	    			 listeners: {
@@ -129,7 +132,7 @@
 
  			Tbl_preset.app.Grid = grid;
  			Tbl_preset.app.Grid.getStore().load({params:{start: 0, limit: 25}});
- 			
+ 			Tbl_preset_choices.app.getGrid();
  			Tbl_preset.app.pcGrid = Tbl_preset_choices.app.Grid;
 
  			var _window = new Ext.Window({
