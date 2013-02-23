@@ -32,7 +32,10 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-		{header: "QUCACODE", width: 100, sortable: true, dataIndex: 'QUCACODE'},{header: "QUCAIDNO", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},{header: "Description", width: 250, sortable: true, dataIndex: 'DESCRIPTION'},{header: "Order", width: 100, sortable: true, dataIndex: 'ORDER_BY'}
+			{header: "QUCACODE", width: 100, sortable: true, dataIndex: 'QUCACODE'},
+			{header: "QUCAIDNO", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},
+			{header: "Description", width: 250, sortable: true, dataIndex: 'DESCRIPTION'},
+			{header: "Order", width: 100, sortable: true, dataIndex: 'ORDER_BY'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({

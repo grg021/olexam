@@ -33,12 +33,14 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-		{header: "id", width: 100, sortable: true, dataIndex: 'id'},{header: "question_id", width: 100, sortable: true, dataIndex: 'question_id'},{header: "description", width: 100, sortable: true, dataIndex: 'description'},{header: "correct_flag", width: 100, sortable: true, dataIndex: 'correct_flag'}
+		{header: "ID", width: 75, sortable: true, dataIndex: 'id'},
+		{header: "Description", width: 200, sortable: true, dataIndex: 'description'},
+		{header: "Correct Flag", width: 100, sortable: true, dataIndex: 'correct_flag'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
  				id: 'Tbl_preset_choicesgrid',
- 				height: 300,
+ 				height: 365,
  				width: '100%',
  				border: true,
  				ds: Objstore,
@@ -84,10 +86,10 @@
                 }), {
 					xtype:'tbtext',
 					text:'Search:'
-				},'   ', new Ext.app.SearchField({ store: Objstore, width:250}),
+				},'   ', new Ext.app.SearchField({ store: Objstore, width:150}),
  					    {
  					     	xtype: 'tbfill'
- 					 	},{
+ 					 	},/*{
  					     	xtype: 'tbbutton',
  					     	text: 'ADD',
 							icon: '/images/icons/application_add.png',
@@ -95,7 +97,7 @@
 
  					     	handler: Tbl_preset_choices.app.Add
 
- 					 	},'-',{
+ 					 	},'-',*/{
  					     	xtype: 'tbbutton',
  					     	text: 'EDIT',
 							icon: '/images/icons/application_edit.png',
@@ -103,7 +105,7 @@
 
  					     	handler: Tbl_preset_choices.app.Edit
 
- 					 	},'-',{
+ 					 	}/*,'-',{
  					     	xtype: 'tbbutton',
  					     	text: 'DELETE',
 							icon: '/images/icons/application_delete.png',
@@ -111,7 +113,7 @@
 
  					     	handler: Tbl_preset_choices.app.Delete
 
- 					 	}
+ 					 	}*/
  	    			 ]
  	    	});
 
@@ -137,23 +139,7 @@
  					items:[
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'id*',
- 		            name: 'id',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'id'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'question_id*',
- 		            name: 'question_id',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'question_id'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'description*',
+ 		            fieldLabel: 'Description*',
  		            name: 'description',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
@@ -161,7 +147,7 @@
  		        },
 				{
                     xtype:'textfield',
- 		            fieldLabel: 'correct_flag*',
+ 		            fieldLabel: 'Correct Flag*',
  		            name: 'correct_flag',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
@@ -242,9 +228,9 @@
 
  			Tbl_preset_choices.app.setForm();
  		    _window = new Ext.Window({
- 		        title: 'Update Classification',
+ 		        title: 'Update Preset Choices',
  		        width: 510,
- 		        height:240,
+ 		        height: 185,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,

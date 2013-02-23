@@ -33,7 +33,7 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-		{header: "ID", width: 100, sortable: true, dataIndex: 'id'},{header: "Choice", width: 100, sortable: true, dataIndex: 'description'},{header: "Correct Flag", width: 100, sortable: true, dataIndex: 'correct_flag'}
+		{header: "ID", width: 75, sortable: true, dataIndex: 'id'},{header: "Choice", width: 250, sortable: true, dataIndex: 'description'},{header: "Correct Flag", width: 100, sortable: true, dataIndex: 'correct_flag'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -118,17 +118,17 @@
  							cls:'x-btn-text-icon',
  							menu: [
  								{
-		 					     	text: 'SAVE AS PRESET',
+		 					     	text: 'SAVE AS NEW PRESET',
 		 							cls:'x-btn-text-icon',
 		
 		 					     	handler: Tbl_preset.app.AddPreset
 		
 		 					    },
 		 					 	{
-		 					     	text: 'SELECT PRESET',
+		 					     	text: 'SELECT/REPLACE PRESET',
 		 							cls:'x-btn-text-icon',
 		
-		 					     	handler: Tbl_preset_choices.app.AddPreset
+		 					     	handler: Tbl_preset.app.getGrid
 		
 		 					 	}
  							]

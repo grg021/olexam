@@ -201,7 +201,7 @@
  		    _window = new Ext.Window({
  		        title: 'New Question',
  		        width: 510,
- 		        height: 270,
+ 		        height: 245,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -261,7 +261,7 @@
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:220,
+ 		        height:245,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,

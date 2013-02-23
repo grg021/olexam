@@ -1,3 +1,4 @@
+<?php $this->load->view('Tbl_preset_choices/Tbl_preset_choices_view');?>
 
 		<div id="mainBody"></div>
 		<script type="text/javascript">
@@ -9,7 +10,7 @@
 	 		{
 	 			ExtCommon.util.init();
 	 			ExtCommon.util.quickTips();
-	 			this.getGrid();
+	 			//this.getGrid();
 	 		},
 	 		getGrid: function()
 	 		{
@@ -25,7 +26,7 @@
 	 								id: "id",
 	 								totalProperty: "totalCount",
 	 								fields: [
-		{ name: 'id'},{ name: 'description'},{ name: 'dcreated'},{ name: 'dmodified'},{ name: 'created_by'},{ name: 'modified_by'}
+		{ name: 'id'},{ name: 'description'}
 		]
  						}),
  						remoteSort: true,
@@ -33,12 +34,13 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-		{header: "id", width: 100, sortable: true, dataIndex: 'id'},{header: "description", width: 100, sortable: true, dataIndex: 'description'},{header: "dcreated", width: 100, sortable: true, dataIndex: 'dcreated'},{header: "dmodified", width: 100, sortable: true, dataIndex: 'dmodified'},{header: "created_by", width: 100, sortable: true, dataIndex: 'created_by'},{header: "modified_by", width: 100, sortable: true, dataIndex: 'modified_by'}
+			{header: "ID", width: 75, sortable: true, dataIndex: 'id'},
+			{header: "Description", width: 250, sortable: true, dataIndex: 'description'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
  				id: 'Tbl_presetgrid',
- 				height: 300,
+ 				height: 365,
  				width: '100%',
  				border: true,
  				ds: Objstore,
@@ -84,16 +86,16 @@
                 }), {
 					xtype:'tbtext',
 					text:'Search:'
-				},'   ', new Ext.app.SearchField({ store: Objstore, width:250}),
+				},'   ', new Ext.app.SearchField({ store: Objstore, width:150}),
  					    {
  					     	xtype: 'tbfill'
  					 	},{
  					     	xtype: 'tbbutton',
- 					     	text: 'ADD',
+ 					     	text: 'SELECT',
 							icon: '/images/icons/application_add.png',
  							cls:'x-btn-text-icon',
 
- 					     	handler: Tbl_preset.app.Add
+ 					     	handler: Tbl_preset.app.SelectPreset
 
  					 	},'-',{
  					     	xtype: 'tbbutton',
@@ -112,23 +114,55 @@
  					     	handler: Tbl_preset.app.Delete
 
  					 	}
- 	    			 ]
+ 	    			 ],
+ 	    			 listeners: {
+ 	    			 	rowclick: function(grid, r, e){
+ 	    			 		var record = grid.getStore().getAt(r);  
+
+						    var data = record.get("id");
+						   // console.log(data);
+ 	    			 		Tbl_preset_choices.app.Grid.getStore().setBaseParam("preset_id", data);
+ 	    			 		Tbl_preset_choices.app.Grid.getStore().load();
+ 	    			 	}
+ 	    			 }
  	    	});
 
  			Tbl_preset.app.Grid = grid;
- 	//		Tbl_preset.app.Grid.getStore().load({params:{start: 0, limit: 25}});
-/*
- 			var _window = new Ext.Panel({
- 		        title: 'Tbl_preset',
- 		        width: '100%',
- 		        height:'auto',
- 		        renderTo: 'mainBody',
+ 			Tbl_preset.app.Grid.getStore().load({params:{start: 0, limit: 25}});
+ 			
+ 			Tbl_preset.app.pcGrid = Tbl_preset_choices.app.Grid;
+
+ 			var _window = new Ext.Window({
+ 		        title: 'Preset Choices',
+ 		        width: 800,
+ 		        height: 400,
  		        draggable: false,
  		        layout: 'fit',
- 		        items: [Tbl_preset.app.Grid],
+ 		        items: [
+ 		        {
+ 		        	layout: 'column',
+ 		        	height: 'auto',
+ 		        	items: [
+ 		        	{
+ 		        		columnWidth: .50,
+ 		        		layout: 'form',
+ 		        		height: 'auto',
+ 		        		items: Tbl_preset.app.Grid
+ 		        	},
+ 		        	{
+ 		        		columnWidth: .50,
+ 		        		layout: 'form',
+ 		        		height: 'auto',
+ 		        		items: Tbl_preset.app.pcGrid
+ 		        		
+ 		        	}
+ 		        	]
+ 		        }],
  		        resizable: false
- 	        }); 	   */     
-
+ 	        }).show(); 	      
+ 	        
+			//_window.render();
+			Tbl_preset.app._window = _window;
 
  		},
 		
@@ -220,6 +254,9 @@
  		},
  		
  		AddPreset: function(){
+ 			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId())){//check if user has selected an item in the grid
+ 			var sm = Question.app.Grid.getSelectionModel();
+ 			var id = sm.getSelected().data.id;
  			
 			if(Tbl_question_choices.app.Grid.getStore().getTotalCount() > 0){
  			Tbl_preset.app.setForm();
@@ -243,6 +280,7 @@
  	                handler: function () {
  			            if(ExtCommon.util.validateFormFields(Tbl_preset.app.Form)){//check if all forms are filled up
  		                Tbl_preset.app.Form.getForm().submit({
+ 		        			params: {id: id},
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
                   		    	 Ext.Msg.show({
@@ -251,7 +289,7 @@
   								     buttons: Ext.Msg.OK,
   								     icon: 'icon'
   								 });
- 				                ExtCommon.util.refreshGrid(Tbl_preset.app.Grid.getId());
+ 				                //ExtCommon.util.refreshGrid(Tbl_preset.app.Grid.getId());
  				                _window.destroy();
  			                },
  			                failure: function(f,a){
@@ -286,6 +324,7 @@
  								
  		  		return;
  		  	}
+ 		  	}
  		},
 		
 		Edit: function(){
@@ -295,9 +334,9 @@
 
  			Tbl_preset.app.setForm();
  		    _window = new Ext.Window({
- 		        title: 'Update Classification',
+ 		        title: 'Update Preset Details',
  		        width: 510,
- 		        height:290,
+ 		        height:160,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -416,6 +455,68 @@
    			icon: Ext.MessageBox.QUESTION
 			});
 
+	                }else return;
+
+
+		},
+		
+		SelectPreset: function(){
+			if(ExtCommon.util.validateSelectionGrid(Tbl_preset.app.Grid.getId())){//check if user has selected an item in the grid
+				if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId())){
+				
+			var sm = Tbl_preset.app.Grid.getSelectionModel();
+			var id = sm.getSelected().data.id;
+			
+			var sm2 = Question.app.Grid.getSelectionModel();
+			var id2 = sm2.getSelected().data.id;
+			
+			Ext.Msg.show({
+   			title:'Select Preset',
+  			msg: 'Are you sure you want to select this preset and delete the previous one?',
+   			buttons: Ext.Msg.OKCANCEL,
+   			fn: function(btn, text){
+   			if (btn == 'ok'){
+   			Ext.Ajax.request({
+                            url: "<?php echo site_url('Tbl_preset/selectTbl_preset') ?>",
+							params:{ id: id, id2: id2},
+							method: "POST",
+							timeout:300000000,
+			                success: function(responseObj){
+                		    	var response = Ext.decode(responseObj.responseText);
+						if(response.success == true)
+						{
+							//_window.destroy();
+							Tbl_question_choices.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							return;
+						}
+						else if(response.success == false)
+						{
+							Ext.Msg.show({
+								title: 'Error!',
+								msg: "There was an error encountered. Please try again",
+								icon: Ext.Msg.ERROR,
+								buttons: Ext.Msg.OK
+							});
+
+							return;
+						}
+							},
+			                failure: function(f,a){
+								Ext.Msg.show({
+									title: 'Error Alert',
+									msg: "There was an error encountered. Please try again",
+									icon: Ext.Msg.ERROR,
+									buttons: Ext.Msg.OK
+								});
+			                },
+			                waitMsg: 'Selecting Data...'
+						});
+   			}
+   			},
+
+   			icon: Ext.MessageBox.QUESTION
+			});
+				}
 	                }else return;
 
 

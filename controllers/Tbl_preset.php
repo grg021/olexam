@@ -25,7 +25,7 @@ class Tbl_preset extends MY_Controller{
 	
 	        $records = array();
 	        $table = "Tbl_preset";
-	        $fields = array("id","description","dcreated","dmodified","created_by","modified_by",);
+	        $fields = array("id","description");
 	        $db = 'exam';
 	        $filter = "";
 	        $group = "";
@@ -36,7 +36,7 @@ class Tbl_preset extends MY_Controller{
 	        }
 			
 			if(!empty($query)){
- 				"(id LIKE '%$query%' OR description LIKE '%$query%' OR dcreated LIKE '%$query%' OR dmodified LIKE '%$query%' OR created_by LIKE '%$query%' OR modified_by LIKE '%$query%')";
+ 				"(description LIKE '%$query%')";
 	    	}
 			 
 			
@@ -63,18 +63,31 @@ class Tbl_preset extends MY_Controller{
 		function addTbl_preset(){
 	        $db = 'exam';
 	        $table = "Tbl_preset";
+			$table2 = "tbl_preset_choices";
 			$input = $this->input->post();
 			
-			/* uncomment for checking duplicates (change $fieldname)
+			$input['dcreated'] = date("Y-m-d H:i:s");
+			$input['created_by'] = $this->session->userData("userName");
+			
+			//uncomment for checking duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "description = '".$this->input->post("description")."'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
-	        }*/
+	        }
 	        
 	        //uncomment for FRs
-			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);
+			$input['id'] = $this->lithefire->getNextCharId($db, $table, 'id', 5);
+			
+			$param = "id";
+			$id = $this->input->post('id');
+			
+			$records = $this->lithefire->fetchAllRecords($db, "tbl_question_choices", "question_id = '$id'", array("description","correct_flag"));
+			foreach($records as $row):
+				$row['preset_id'] = $this->lithefire->getNextCharId($db, $table, 'preset_id', 5);
+				$this->lithefire->insertRow($db, "tbl_preset_choices", $row);
+			endforeach;
 			
 	        $data = $this->lithefire->insertRow($db, $table, $input);
 	
@@ -90,7 +103,7 @@ class Tbl_preset extends MY_Controller{
 			$param = "id";
 	
 	        $filter = "$param = '$id'";
-	        $fields = array("id","description","dcreated","dmodified","created_by","modified_by",);
+	        $fields = array("id","description");
 	        $records = array();
 	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
 	
@@ -106,10 +119,8 @@ class Tbl_preset extends MY_Controller{
 
 		function updateTbl_preset(){
 	        $db = 'exam';
-	
 	        $table = "Tbl_preset";
 	        
-			$param = "id";
 	        $id=$this->input->post('id');
 	        $filter = "$param = '$id'";
 	
@@ -121,6 +132,10 @@ class Tbl_preset extends MY_Controller{
 	                $input[$key] = $val;
 	            }
 	        }
+			
+			$input['dmodified'] = date("Y-m-d H:i:s");
+			$input['modified_by'] = $this->session->userData("userName");
+			
 			//check for duplicates (change $fieldname)
 			$fieldname = 'description';
 	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' AND id != '$id'", "")){
@@ -148,5 +163,28 @@ class Tbl_preset extends MY_Controller{
 	
 	        die(json_encode($data));
 	    }
+	
+		function selectTbl_preset(){
+			$db = 'exam';
+	        $table = "Tbl_question_choices";
+			$input = $this->input->post();
+			
+			$id = $this->input->post('id');
+			$id2 = $this->input->post('id2');
+			$param = "question_id";
+			$filter = "$param = '$id2'";
+			
+			$this->lithefire->deleteRow($db, $table, $filter);
+			$records = $this->lithefire->fetchAllRecords($db, "tbl_preset_choices", "preset_id = '$id'", array("description","correct_flag"));
+			foreach($records as $row):
+				$row['question_id'] = $id2;
+				$data = $this->lithefire->insertRow($db, $table, $row);
+			endforeach;
+			
+			die(json_encode($data));
+			
+	        
+			
+		}
 
 }

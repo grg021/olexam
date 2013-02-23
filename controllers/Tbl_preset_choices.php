@@ -24,10 +24,11 @@ class Tbl_preset_choices extends MY_Controller{
 	        $query = $this->input->post('query');
 	
 	        $records = array();
-	        $table = "Tbl_preset_choices";
-	        $fields = array("id","question_id","description","correct_flag",);
+			$preset_id = $this->input->post("preset_id");
+	        $table = "tbl_preset a LEFT JOIN tbl_preset_choices b ON a.id = b.preset_id";
+	        $fields = array("b.id","b.preset_id","b.description","b.correct_flag");
 	        $db = 'exam';
-	        $filter = "";
+	        $filter = "a.id = '$preset_id'";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
 	            $sort = "id DESC";
@@ -36,7 +37,7 @@ class Tbl_preset_choices extends MY_Controller{
 	        }
 			
 			if(!empty($query)){
- 				"(id LIKE '%$query%' OR question_id LIKE '%$query%' OR description LIKE '%$query%' OR correct_flag LIKE '%$query%')";
+ 				"(description LIKE '%$query%')";
 	    	}
 			 
 			
@@ -90,7 +91,7 @@ class Tbl_preset_choices extends MY_Controller{
 			$param = "id";
 	
 	        $filter = "$param = '$id'";
-	        $fields = array("id","question_id","description","correct_flag",);
+	        $fields = array("id","description","correct_flag",);
 	        $records = array();
 	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
 	
