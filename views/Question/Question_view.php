@@ -10,6 +10,7 @@
 	 			ExtCommon.util.init();
 	 			ExtCommon.util.quickTips();
 	 			this.getGrid();
+	 			Question.app._wheight = 275;
 	 		},
 	 		getGrid: function()
 	 		{
@@ -34,9 +35,10 @@
 		
 		var colModel = new Ext.grid.ColumnModel([
 		{header: "ID", width: 75, sortable: true, dataIndex: 'id'},
+		{header: "Question", width: 200, sortable: true, dataIndex: 'description'},
 		{header: "Classification", width: 150, sortable: true, dataIndex: 'classification'},
-		{header: "Category", width: 150, sortable: true, dataIndex: 'category'},
-		{header: "Description", width: 200, sortable: true, dataIndex: 'description'}
+		{header: "Category", width: 150, sortable: true, dataIndex: 'category'}
+		
 		
 		]);
 
@@ -168,9 +170,20 @@
  					title:'Fields w/ Asterisks are required.',
  					width:'auto',
  					height:'auto',
+ 					defaults: {
+ 						selectOnFocus: true
+ 					},
  					items:[
 				ExtCommon.util.createCombo("classification", "classification_id", "95%", "<?php echo site_url("Question/getClassificationCombo")?>", "Question Type", false, false),
-				ExtCommon.util.createCombo("category", "category_id", "95%", "<?php echo site_url("FILEQUCA/getCategoryCombo")?>", "Category", false, false),
+				ExtCommon.util.createCombo("category", "category_id", "95%", "<?php echo site_url("FILEQUCA/getCategoryCombo")?>", "Category", true, false),
+				{
+                    xtype:'numberfield',
+ 		            fieldLabel: 'Order position*',
+ 		            name: 'order_position',
+ 		            allowBlank:false,
+ 		            anchor:'95%',  // anchor width by percentage
+ 		            id: 'position'
+ 		      },
 				{
                     xtype:'textarea',
  		            fieldLabel: 'Description*',
@@ -201,7 +214,7 @@
  		    _window = new Ext.Window({
  		        title: 'New Question',
  		        width: 510,
- 		        height: 245,
+ 		        height: Question.app._wheight,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -261,7 +274,7 @@
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:245,
+ 		        height:Question.app._wheight,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,

@@ -30,7 +30,7 @@ class FILEQUCA extends MY_Controller{
 			
 			$set_id = $this->input->post("set_id");
 			
-	        $filter = "SET_ID = '$set_id'";
+	        $filter = "";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
 	            $sort = "QUCACODE DESC";
@@ -39,7 +39,7 @@ class FILEQUCA extends MY_Controller{
 	        }
 			
 			if(!empty($query)){
- 				"(QUCAIDNO LIKE '%$query%' OR DESCRIPTION LIKE '%$query%' OR ORDER LIKE '%$query%')";
+ 				$filter = "(QUCAIDNO LIKE '%$query%' OR DESCRIPTION LIKE '%$query%' OR ORDER LIKE '%$query%')";
 	    	}
 			 
 			
@@ -77,7 +77,7 @@ class FILEQUCA extends MY_Controller{
 	        }
 	        
 	        //uncomment for FRs
-			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);
+			$input['QUCAIDNO'] = $this->lithefire->getNextCharId($db, $table, 'QUCAIDNO', 5);
 			
 	        $data = $this->lithefire->insertRow($db, $table, $input);
 	

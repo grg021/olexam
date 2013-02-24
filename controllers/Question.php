@@ -85,7 +85,10 @@ class Question extends MY_Controller{
 	        
 	        //uncomment for FRs
 			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);
-			
+			//$this->lithefire->updateRow($db, $table, array("order_position"=>"order_position+1"), "order_position <= ".$post['order_position']." AND question_set_id = ".$post['id']."");
+			$pdo = new PDO("mysql:host=localhost;dbname=".$this->db->database, $this->db->username, $this->db->password);
+			$pdo->query("UPDATE tbl_question SET order_position = order_position+1 WHERE order_position <= ".$post['order_position']." AND question_set_id = '".$post['id']."'");
+			$pdo = null;
 	        $data = $this->lithefire->insertRow($db, $table, $input);
 	
 	        die(json_encode($data));
@@ -97,11 +100,15 @@ class Question extends MY_Controller{
 	
 	        $id=$this->input->post('id');
 			$fr_db = $this->config->item("fr_db");
-	        $table = "tbl_question a LEFT JOIN $fr_db.FILEQUCL b ON a.classification_id = b.QUCLCODE LEFT JOIN $fr_db.FILEQUCA c ON a.category_id = c.QUCACODE";
+	        $table = "tbl_question a LEFT JOIN $fr_db.FILEQUCL b 
+	        ON a.classification_id = b.QUCLCODE LEFT JOIN $fr_db.FILEQUCA c 
+	        ON a.category_id = c.QUCACODE";
+			
 			$param = "a.id";
 	
 	        $filter = "$param = '$id'";
-	        $fields = array("a.id","a.classification_id","a.category_id","a.description","b.DESCRIPTION AS classification","c.description AS category");
+	        $fields = array("a.id","a.classification_id","a.category_id", "a.order_position",
+	        "a.description","b.DESCRIPTION AS classification","c.description AS category");
 	        $records = array();
 	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
 	
@@ -123,12 +130,13 @@ class Question extends MY_Controller{
 			$param = "id";
 	        $id=$this->input->post('id');
 	        $filter = "$param = '$id'";
+			$post = $this->input->post();
 	
 	        $input = array();
-	        foreach($this->input->post() as $key => $val){
+	        foreach($post as $key => $val){
 	            if($key == 'id')
 	                continue;
-	            if(!empty($val)){
+	            if(isset($val) || !empty($val)){
 	                $input[$key] = $val;
 	            }
 	        }
@@ -140,7 +148,9 @@ class Question extends MY_Controller{
 	            die(json_encode($data));
 	        }
 	
-	
+			$pdo = new PDO("mysql:host=localhost;dbname=".$this->db->database, $this->db->username, $this->db->password);
+			$pdo->query("UPDATE tbl_question SET order_position = order_position+1 WHERE order_position <= ".$post['order_position']." AND question_set_id = '".$post['id']."'");
+			$pdo = null;
 	        $data = $this->lithefire->updateRow($db, $table, $input, $filter);
 	
 	

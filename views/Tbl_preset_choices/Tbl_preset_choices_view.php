@@ -178,13 +178,16 @@
  		},
 		
  		Add: function(){
-
+			if(ExtCommon.util.validateSelectionGrid(Tbl_preset.app.Grid.getId(), "Please select an entry on the left grid")){//check if user has selected an item in the grid
+ 			var sm = Tbl_preset.app.Grid.getSelectionModel();
+ 			var id = sm.getSelected().data.id;
+ 			
  			Tbl_preset_choices.app.setForm();
 
  		  	var _window;
 
  		    _window = new Ext.Window({
- 		        title: 'New Tbl_preset_choices',
+ 		        title: 'New Entry',
  		        width: 510,
  		        height: 240,
  		        layout: 'fit',
@@ -200,6 +203,9 @@
  	                handler: function () {
  			            if(ExtCommon.util.validateFormFields(Tbl_preset_choices.app.Form)){//check if all forms are filled up
  		                Tbl_preset_choices.app.Form.getForm().submit({
+ 		                	params: {
+ 		                		preset_id: id
+ 		                	},
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
                   		    	 Ext.Msg.show({
@@ -233,6 +239,7 @@
  		        }]
  		    });
  		  	_window.show();
+ 		  	}else return;
  		},
 		
 		Edit: function(){

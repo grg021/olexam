@@ -12,7 +12,7 @@
 	 		},
 	 		getGrid: function()
 	 		{
-	 			if(ExtCommon.util.validateSelectionGrid(exam.app.Grid.getId(), "Please select a question set")){
+	 			
 	 			ExtCommon.util.renderSearchField('searchby');
 	
 	 			var Objstore = new Ext.data.Store({
@@ -29,14 +29,14 @@
 		]
  						}),
  						remoteSort: true,
- 						baseParams: {start: 0, limit: 25, set_id: exam.app.Grid.getSelectionModel().getSelected().data.id}
+ 						baseParams: {start: 0, limit: 25}
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
 		//	{header: "QUCACODE", width: 100, sortable: true, dataIndex: 'QUCACODE'},
-		//	{header: "QUCAIDNO", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},
-			{header: "Question Category", width: 250, sortable: true, dataIndex: 'DESCRIPTION'},
-			{header: "Order", width: 100, sortable: true, dataIndex: 'ORDER_BY'}
+			{header: "ID", width: 100, sortable: true, dataIndex: 'QUCAIDNO'},
+			{header: "Question Category", width: 250, sortable: true, dataIndex: 'DESCRIPTION'}
+		//	{header: "Order", width: 100, sortable: true, dataIndex: 'ORDER_BY'}
 		]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -132,7 +132,7 @@
  	        }).show();
 
 			FILEQUCA.app._window = _window;
-			}else return;
+			
  		},
 		setForm: function(){
 
@@ -149,28 +149,12 @@
  					height:'auto',
  					items:[
 				{
-                    xtype:'textfield',
- 		            fieldLabel: 'ID Number*',
- 		            name: 'QUCAIDNO',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'QUCAIDNO'
- 		        },
-				{
-                    xtype:'textfield',
+                    xtype:'textarea',
  		            fieldLabel: 'Description*',
  		            name: 'DESCRIPTION',
- 		            allowBlank:false,
+ 		            allowBlank:true,
  		            anchor:'95%',  // anchor width by percentage
  		            id: 'DESCRIPTION'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'Order by*',
- 		            name: 'ORDER_BY',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'ORDER_BY'
  		        }
  		        
 
@@ -189,9 +173,9 @@
  		  	var _window;
 
  		    _window = new Ext.Window({
- 		        title: 'New FILEQUCA',
+ 		        title: 'New Question Category',
  		        width: 510,
- 		        height: 230,
+ 		        height: 200,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -247,9 +231,9 @@
 
  			FILEQUCA.app.setForm();
  		    _window = new Ext.Window({
- 		        title: 'Update Classification',
+ 		        title: 'Update Quesetion Category',
  		        width: 510,
- 		        height:340,
+ 		        height:200,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,

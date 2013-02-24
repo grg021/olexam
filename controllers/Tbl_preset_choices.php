@@ -25,7 +25,7 @@ class Tbl_preset_choices extends MY_Controller{
 	
 	        $records = array();
 			$preset_id = $this->input->post("preset_id");
-	        $table = "tbl_preset a LEFT JOIN tbl_preset_choices b ON a.id = b.preset_id";
+	        $table = "tbl_preset_choices b LEFT JOIN tbl_preset a ON a.id = b.preset_id";
 	        $fields = array("b.id","b.preset_id","b.description","b.correct_flag");
 	        $db = 'exam';
 	        $filter = "a.id = '$preset_id'";

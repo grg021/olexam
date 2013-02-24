@@ -175,11 +175,9 @@ CREATE TABLE `tbl_preset` (
   `created_by` varchar(50) DEFAULT NULL,
   `modified_by` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_preset` */
-
-insert  into `tbl_preset`(`id`,`description`,`dcreated`,`dmodified`,`created_by`,`modified_by`) values (1,'Yes or no','2013-02-23 15:59:14',NULL,'darryl.anaud',NULL);
 
 /*Table structure for table `tbl_preset_choices` */
 
@@ -191,11 +189,9 @@ CREATE TABLE `tbl_preset_choices` (
   `description` varchar(250) DEFAULT NULL,
   `correct_flag` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_preset_choices` */
-
-insert  into `tbl_preset_choices`(`id`,`preset_id`,`description`,`correct_flag`) values (1,1,'Yes',0),(2,1,'No',1);
 
 /*Table structure for table `tbl_question` */
 
@@ -207,7 +203,7 @@ CREATE TABLE `tbl_question` (
   `classification_id` int(11) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `description` varchar(250) DEFAULT NULL,
-  `position` tinyint(3) DEFAULT NULL,
+  `order_position` tinyint(3) DEFAULT NULL,
   `dcreated` datetime DEFAULT NULL,
   `dmodified` datetime DEFAULT NULL,
   `createdby` varchar(30) DEFAULT NULL,
@@ -247,11 +243,9 @@ CREATE TABLE `tbl_question_set` (
   `modifiedby` varchar(30) DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question_set` */
-
-insert  into `tbl_question_set`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'Set 1','teacher evaluation',5,'2013-02-23 16:24:42',NULL,'darryl.anaud',NULL,NULL),(2,'Set 2','Facility Evaluation',0,'2013-02-23 16:26:05','2013-02-23 16:27:39','darryl.anaud','darryl.anaud',NULL);
 
 /*Table structure for table `tbl_user` */
 

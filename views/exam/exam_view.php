@@ -131,6 +131,8 @@
 						   // console.log(data);
  	    			 		Question.app.Grid.getStore().setBaseParam("exam_id", data);
  	    			 		Question.app.Grid.getStore().load();
+ 	    			 		Tbl_question_choices.app.Grid.getStore().setBaseParam("question_id", '');
+ 	    			 		Tbl_question_choices.app.Grid.getStore().load();
  	    			 		
  	    			 	}
  	    			 }

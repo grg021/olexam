@@ -182,7 +182,7 @@ class Tbl_preset extends MY_Controller{
 			$db = "exam";
 	        $id=$this->input->post('id');
 			$filter = "$param = '$id'";
-	
+			$this->lithefire->deleteRow($db, "tbl_preset_choices", "preset_id = '$id'");
 	        $data = $this->lithefire->deleteRow($db, $table, $filter);
 	
 	        die(json_encode($data));
@@ -199,6 +199,28 @@ class Tbl_preset extends MY_Controller{
 			$filter = "$param = '$id2'";
 			
 			$this->lithefire->deleteRow($db, $table, $filter);
+			$records = $this->lithefire->fetchAllRecords($db, "tbl_preset_choices", "preset_id = '$id'", array("description","correct_flag"));
+			foreach($records as $row):
+				$row['question_id'] = $id2;
+				$data = $this->lithefire->insertRow($db, $table, $row);
+			endforeach;
+			
+			die(json_encode($data));
+			
+	        
+			
+		}
+		
+		function appendTbl_preset(){
+			$db = 'exam';
+	        $table = "Tbl_question_choices";
+			$input = $this->input->post();
+			
+			$id = $this->input->post('id');
+			$id2 = $this->input->post('id2');
+			$param = "question_id";
+			$filter = "$param = '$id2'";
+			
 			$records = $this->lithefire->fetchAllRecords($db, "tbl_preset_choices", "preset_id = '$id'", array("description","correct_flag"));
 			foreach($records as $row):
 				$row['question_id'] = $id2;

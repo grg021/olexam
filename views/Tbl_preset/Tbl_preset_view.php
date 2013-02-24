@@ -14,6 +14,7 @@
 	 		},
 	 		getGrid: function()
 	 		{
+	 			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId(), "Please select a question!")){
 	 			ExtCommon.util.renderSearchField('searchby');
 	
 	 			var Objstore = new Ext.data.Store({
@@ -166,7 +167,7 @@
  	        
 			//_window.render();
 			Tbl_preset.app._window = _window;
-
+			}else return;
  		},
 		
 		setForm: function(){
@@ -221,6 +222,7 @@
  	                handler: function () {
  			            if(ExtCommon.util.validateFormFields(Tbl_preset.app.Form)){//check if all forms are filled up
  		                Tbl_preset.app.Form.getForm().submit({
+ 		                	url: "<?php echo site_url('Tbl_preset/add') ?>",
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
                   		    	 Ext.Msg.show({
@@ -257,7 +259,7 @@
  		},
  		
  		AddPreset: function(){
- 			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId())){//check if user has selected an item in the grid
+ 			if(ExtCommon.util.validateSelectionGrid(Question.app.Grid.getId(), "Please select a question!")){//check if user has selected an item in the grid
  			var sm = Question.app.Grid.getSelectionModel();
  			var id = sm.getSelected().data.id;
  			
@@ -427,6 +429,7 @@
 						if(response.success == true)
 						{
 							Tbl_preset.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							Tbl_preset_choices.app.Grid.getStore().load({params:{start:0, limit: 25}});
 							return;
 
 						}
@@ -473,12 +476,15 @@
 			var sm2 = Question.app.Grid.getSelectionModel();
 			var id2 = sm2.getSelected().data.id;
 			
+			if(Tbl_question_choices.app.Grid.getStore().getTotalCount() > 0){
+			Ext.MessageBox.buttonText.yes = "Append";
+			Ext.MessageBox.buttonText.no = "Replace";
 			Ext.Msg.show({
    			title:'Select Preset',
-  			msg: 'Are you sure you want to select this preset and delete the previous one?',
-   			buttons: Ext.Msg.OKCANCEL,
+  			msg: 'Do you want to append or replace the current choices?',
+   			buttons: Ext.Msg.YESNOCANCEL,
    			fn: function(btn, text){
-   			if (btn == 'ok'){
+   			if (btn == 'no'){
    			Ext.Ajax.request({
                             url: "<?php echo site_url('Tbl_preset/selectTbl_preset') ?>",
 							params:{ id: id, id2: id2},
@@ -514,11 +520,86 @@
 			                },
 			                waitMsg: 'Selecting Data...'
 						});
+   			}else{
+   			if (btn == 'yes'){
+   			Ext.Ajax.request({
+                            url: "<?php echo site_url('Tbl_preset/appendTbl_preset') ?>",
+							params:{ id: id, id2: id2},
+							method: "POST",
+							timeout:300000000,
+			                success: function(responseObj){
+                		    	var response = Ext.decode(responseObj.responseText);
+						if(response.success == true)
+						{
+							//_window.destroy();
+							Tbl_question_choices.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							return;
+						}
+						else if(response.success == false)
+						{
+							Ext.Msg.show({
+								title: 'Error!',
+								msg: "There was an error encountered. Please try again",
+								icon: Ext.Msg.ERROR,
+								buttons: Ext.Msg.OK
+							});
+
+							return;
+						}
+							},
+			                failure: function(f,a){
+								Ext.Msg.show({
+									title: 'Error Alert',
+									msg: "There was an error encountered. Please try again",
+									icon: Ext.Msg.ERROR,
+									buttons: Ext.Msg.OK
+								});
+			                },
+			                waitMsg: 'Selecting Data...'
+						});
+   			}
    			}
    			},
 
    			icon: Ext.MessageBox.QUESTION
 			});
+			}else{
+				Ext.Ajax.request({
+                            url: "<?php echo site_url('Tbl_preset/selectTbl_preset') ?>",
+							params:{ id: id, id2: id2},
+							method: "POST",
+							timeout:300000000,
+			                success: function(responseObj){
+                		    	var response = Ext.decode(responseObj.responseText);
+						if(response.success == true)
+						{
+							//_window.destroy();
+							Tbl_question_choices.app.Grid.getStore().load({params:{start:0, limit: 25}});
+							return;
+						}
+						else if(response.success == false)
+						{
+							Ext.Msg.show({
+								title: 'Error!',
+								msg: "There was an error encountered. Please try again",
+								icon: Ext.Msg.ERROR,
+								buttons: Ext.Msg.OK
+							});
+
+							return;
+						}
+							},
+			                failure: function(f,a){
+								Ext.Msg.show({
+									title: 'Error Alert',
+									msg: "There was an error encountered. Please try again",
+									icon: Ext.Msg.ERROR,
+									buttons: Ext.Msg.OK
+								});
+			                },
+			                waitMsg: 'Saving Data...'
+						});
+			}
 				}
 	                }else return;
 

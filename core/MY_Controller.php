@@ -2,7 +2,8 @@
 
 class MY_Controller extends CI_Controller {
 
-
+	
+	
     function __construct()
     {
 
@@ -16,7 +17,6 @@ class MY_Controller extends CI_Controller {
 		$this->load->model('hmvc/lithefire_model','lithefire',TRUE);
 		$this->load->model('hmvc/commonmodel','',TRUE);		
 		$this->load->model('hmvc/faculty_model','',TRUE);
-		
 		$this->load->library('hmvc/layout', array('layout'=>$this->config->item('layout_file'))); 
 		if (!$this->ion_auth->logged_in())
 		{
