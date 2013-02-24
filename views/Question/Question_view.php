@@ -272,7 +272,7 @@
 
  			Question.app.setForm();
  		    _window = new Ext.Window({
- 		        title: 'Update Classification',
+ 		        title: 'Update Question Details',
  		        width: 510,
  		        height:Question.app._wheight,
  		        layout: 'fit',

@@ -231,7 +231,7 @@
 
  			FILEQUCA.app.setForm();
  		    _window = new Ext.Window({
- 		        title: 'Update Quesetion Category',
+ 		        title: 'Update Quesetion Category Details',
  		        width: 510,
  		        height:200,
  		        layout: 'fit',

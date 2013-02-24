@@ -206,9 +206,9 @@
  		  	var _window;
 
  		    _window = new Ext.Window({
- 		        title: 'New Tbl_preset',
+ 		        title: 'New Preset',
  		        width: 510,
- 		        height: 290,
+ 		        height: 160,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,

@@ -238,7 +238,7 @@
  		  	var _window;
 
  		    _window = new Ext.Window({
- 		        title: 'New exam',
+ 		        title: 'New Exam',
  		        width: 510,
  		        height: 210,
  		        layout: 'fit',
@@ -296,7 +296,7 @@
 
  			exam.app.setForm();
  		    _window = new Ext.Window({
- 		        title: 'Update Classification',
+ 		        title: 'Update Exam Details',
  		        width: 510,
  		        height: 210,
  		        layout: 'fit',

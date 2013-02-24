@@ -189,7 +189,7 @@
  		    _window = new Ext.Window({
  		        title: 'New Entry',
  		        width: 510,
- 		        height: 240,
+ 		        height: 185,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -249,7 +249,7 @@
 
  			Tbl_preset_choices.app.setForm();
  		    _window = new Ext.Window({
- 		        title: 'Update Preset Choices',
+ 		        title: 'Update Preset Choice Details',
  		        width: 510,
  		        height: 185,
  		        layout: 'fit',

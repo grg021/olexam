@@ -207,7 +207,7 @@
  		  	var _window;
 
  		    _window = new Ext.Window({
- 		        title: 'New Tbl_question_choices',
+ 		        title: 'New Question Choices',
  		        width: 510,
  		        height: 190,
  		        layout: 'fit',
@@ -267,7 +267,7 @@
 
  			Tbl_question_choices.app.setForm();
  		    _window = new Ext.Window({
- 		        title: 'Update Classification',
+ 		        title: 'Update Question Choice Details',
  		        width: 510,
  		        height:190,
  		        layout: 'fit',
