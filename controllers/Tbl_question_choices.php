@@ -26,7 +26,7 @@ class Tbl_question_choices extends MY_Controller{
 			$question_id = $this->input->post("question_id");
 	
 	        $records = array();
-	        $table = "Tbl_question_choices";			
+	        $table = "tbl_question_choices";			
 	        $fields = array("id","question_id","description","correct_flag",);
 	        $db = 'exam';
 	        $filter = "question_id = '$question_id'";
@@ -114,7 +114,7 @@ class Tbl_question_choices extends MY_Controller{
 		function updateTbl_question_choices(){
 	        $db = 'exam';
 	
-	        $table = "Tbl_question_choices";
+	        $table = "tbl_question_choices";
 	        
 			$param = "id";
 	        $id=$this->input->post('id');
@@ -144,7 +144,7 @@ class Tbl_question_choices extends MY_Controller{
 	    }
 
 		function deleteTbl_question_choices(){
-	        $table = "Tbl_question_choices";
+	        $table = "tbl_question_choices";
 	        $param = "id";
 	       
 			$db = "exam";

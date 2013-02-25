@@ -24,7 +24,7 @@ class Tbl_preset extends MY_Controller{
 	        $query = $this->input->post('query');
 	
 	        $records = array();
-	        $table = "Tbl_preset";
+	        $table = "tbl_preset";
 	        $fields = array("id","description");
 	        $db = 'exam';
 	        $filter = "";
@@ -62,7 +62,7 @@ class Tbl_preset extends MY_Controller{
 
 		function addTbl_preset(){
 	        $db = 'exam';
-	        $table = "Tbl_preset";
+	        $table = "tbl_preset";
 			$table2 = "tbl_preset_choices";
 			$input = $this->input->post();
 			
@@ -121,7 +121,7 @@ class Tbl_preset extends MY_Controller{
 	        
 	
 	        $id=$this->input->post('id');
-	        $table = "Tbl_preset";
+	        $table = "tbl_preset";
 			$param = "id";
 	
 	        $filter = "$param = '$id'";
@@ -141,7 +141,7 @@ class Tbl_preset extends MY_Controller{
 
 		function updateTbl_preset(){
 	        $db = 'exam';
-	        $table = "Tbl_preset";
+	        $table = "tbl_preset";
 	        
 	        $id=$this->input->post('id');
 			$param = 'id';
@@ -176,7 +176,7 @@ class Tbl_preset extends MY_Controller{
 	    }
 
 		function deleteTbl_preset(){
-	        $table = "Tbl_preset";
+	        $table = "tbl_preset";
 	        $param = "id";
 	       
 			$db = "exam";

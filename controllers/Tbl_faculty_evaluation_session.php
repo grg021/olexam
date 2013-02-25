@@ -24,7 +24,7 @@ class Tbl_faculty_evaluation_session extends MY_Controller{
 	        $query = $this->input->post('query');
 	
 	        $records = array();
-	        $table = "Tbl_faculty_evaluation_session";
+	        $table = "tbl_faculty_evaluation_session";
 	        $fields = array("id","question_set_id","title","description","start_date","end_date","section_id","faculty_id","dcreated","dmodified","created_by","modified_by",);
 	        $db = 'exam';
 	        $filter = "";
@@ -62,7 +62,7 @@ class Tbl_faculty_evaluation_session extends MY_Controller{
 
 		function addTbl_faculty_evaluation_session(){
 	        $db = 'exam';
-	        $table = "Tbl_faculty_evaluation_session";
+	        $table = "tbl_faculty_evaluation_session";
 			$input = $this->input->post();
 			
 			/* uncomment for checking duplicates (change $fieldname)
@@ -86,7 +86,7 @@ class Tbl_faculty_evaluation_session extends MY_Controller{
 	        
 	
 	        $id=$this->input->post('id');
-	        $table = "Tbl_faculty_evaluation_session";
+	        $table = "tbl_faculty_evaluation_session";
 			$param = "id";
 	
 	        $filter = "$param = '$id'";
@@ -107,7 +107,7 @@ class Tbl_faculty_evaluation_session extends MY_Controller{
 		function updateTbl_faculty_evaluation_session(){
 	        $db = 'exam';
 	
-	        $table = "Tbl_faculty_evaluation_session";
+	        $table = "tbl_faculty_evaluation_session";
 	        
 			$param = "id";
 	        $id=$this->input->post('id');
@@ -137,7 +137,7 @@ class Tbl_faculty_evaluation_session extends MY_Controller{
 	    }
 
 		function deleteTbl_faculty_evaluation_session(){
-	        $table = "Tbl_faculty_evaluation_session";
+	        $table = "tbl_faculty_evaluation_session";
 	        $param = "id";
 	       
 			$db = "exam";

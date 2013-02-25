@@ -63,7 +63,7 @@ class Tbl_preset_choices extends MY_Controller{
 
 		function addTbl_preset_choices(){
 	        $db = 'exam';
-	        $table = "Tbl_preset_choices";
+	        $table = "tbl_preset_choices";
 			$input = $this->input->post();
 			
 			/* uncomment for checking duplicates (change $fieldname)
@@ -87,7 +87,7 @@ class Tbl_preset_choices extends MY_Controller{
 	        
 	
 	        $id=$this->input->post('id');
-	        $table = "Tbl_preset_choices";
+	        $table = "tbl_preset_choices";
 			$param = "id";
 	
 	        $filter = "$param = '$id'";
@@ -108,7 +108,7 @@ class Tbl_preset_choices extends MY_Controller{
 		function updateTbl_preset_choices(){
 	        $db = 'exam';
 	
-	        $table = "Tbl_preset_choices";
+	        $table = "tbl_preset_choices";
 	        
 			$param = "id";
 	        $id=$this->input->post('id');
@@ -138,7 +138,7 @@ class Tbl_preset_choices extends MY_Controller{
 	    }
 
 		function deleteTbl_preset_choices(){
-	        $table = "Tbl_preset_choices";
+	        $table = "tbl_preset_choices";
 	        $param = "id";
 	       
 			$db = "exam";
