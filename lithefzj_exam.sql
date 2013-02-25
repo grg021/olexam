@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v10.00 Beta1
-MySQL - 5.5.25a : Database - lithefzj_exam
+MySQL - 5.5.27 : Database - lithefzj_exam
 *********************************************************************
 */
 
@@ -30,11 +30,11 @@ CREATE TABLE `module` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module` */
 
-insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'exam','exam',7,NULL,NULL,NULL,1),(15,'Tbl_faculty_evaluation_session','Tbl_faculty_evaluation_session',7,NULL,NULL,NULL,1),(19,'Tbl_preset','Tbl_preset',13,NULL,NULL,NULL,1),(20,'Tbl_preset_choices','Tbl_preset_choices',14,NULL,NULL,NULL,1),(21,'FILEQUCA','FILEQUCA',15,NULL,NULL,NULL,1),(22,'FILEQUCA','FILEQUCA',16,NULL,NULL,NULL,1);
+insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'Manage Question Set','exam',7,NULL,NULL,NULL,1),(23,'Services','FILESERV',5,NULL,NULL,NULL,0);
 
 /*Table structure for table `module_category` */
 
@@ -51,7 +51,7 @@ CREATE TABLE `module_category` (
 
 /*Data for the table `module_category` */
 
-insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0),(7,'exam','/images/icons/application.png',NULL,1),(16,'FILEQUCA','/images/icons/application.png',NULL,1),(15,'FILEQUCA','/images/icons/application.png',NULL,1);
+insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0),(7,'APPLICATIONS','/images/icons/application.png',NULL,1);
 
 /*Table structure for table `module_group` */
 
@@ -76,11 +76,11 @@ CREATE TABLE `module_group_access` (
   `group_id` int(20) DEFAULT NULL,
   `module_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_group_access` */
 
-insert  into `module_group_access`(`id`,`group_id`,`module_id`) values (1,1,1),(2,1,2),(3,1,4),(4,2,4),(5,1,5),(6,3,5),(7,3,4),(8,1,6),(9,1,8),(10,1,9),(11,1,10),(12,1,11);
+insert  into `module_group_access`(`id`,`group_id`,`module_id`) values (1,1,1),(2,1,2),(3,1,4),(4,2,4),(5,1,5),(6,3,5),(7,3,4),(8,1,6),(9,1,8),(10,1,9),(11,1,10),(12,1,11),(13,1,23);
 
 /*Table structure for table `module_group_users` */
 
@@ -92,11 +92,11 @@ CREATE TABLE `module_group_users` (
   `username` varchar(100) DEFAULT NULL,
   `group_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_group_users` */
 
-insert  into `module_group_users`(`id`,`user_id`,`username`,`group_id`) values (1,1,'darryl.anaud',1),(2,NULL,'richard.base',1),(3,NULL,'maribeth.rivas',1),(4,NULL,'niz.nolasco',1),(5,NULL,'apple.aala',2),(6,NULL,'test.admin',3),(7,NULL,'greg',1);
+insert  into `module_group_users`(`id`,`user_id`,`username`,`group_id`) values (1,1,'darryl.anaud',1),(2,NULL,'richard.base',1),(3,NULL,'maribeth.rivas',1),(4,NULL,'niz.nolasco',1),(5,NULL,'apple.aala',2),(6,NULL,'test.admin',3),(7,NULL,'greg',1),(8,NULL,'gary',1);
 
 /*Table structure for table `question_answers` */
 
@@ -175,7 +175,7 @@ CREATE TABLE `tbl_preset` (
   `created_by` varchar(50) DEFAULT NULL,
   `modified_by` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_preset` */
 
@@ -191,7 +191,7 @@ CREATE TABLE `tbl_preset_choices` (
   `description` varchar(250) DEFAULT NULL,
   `correct_flag` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_preset_choices` */
 
@@ -213,7 +213,7 @@ CREATE TABLE `tbl_question` (
   `createdby` varchar(30) DEFAULT NULL,
   `modifiedby` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question` */
 
@@ -230,7 +230,7 @@ CREATE TABLE `tbl_question_choices` (
   `position` tinyint(3) DEFAULT NULL,
   `correct_flag` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question_choices` */
 
@@ -251,11 +251,11 @@ CREATE TABLE `tbl_question_set` (
   `modifiedby` varchar(30) DEFAULT NULL,
   `is_delete` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_question_set` */
 
-insert  into `tbl_question_set`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'RD-004 REV 04','STUDENT\'S EVALUATION OF FACULTY MEMBERS',0,'2013-02-24 19:56:47',NULL,'darryl.anaud',NULL,NULL);
+insert  into `tbl_question_set`(`id`,`name`,`description`,`timePerQuestion`,`dcreated`,`dmodified`,`createdby`,`modifiedby`,`is_delete`) values (1,'RD-004 REV 04','STUDENT\'S EVALUATION OF FACULTY MEMBERS',0,'2013-02-24 19:56:47',NULL,'darryl.anaud',NULL,NULL),(2,'Test eval','Test',0,'2013-02-25 11:55:23',NULL,'darryl.anaud',NULL,NULL);
 
 /*Table structure for table `tbl_user` */
 
@@ -276,11 +276,11 @@ CREATE TABLE `tbl_user` (
   `dmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified_by` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_user` */
 
-insert  into `tbl_user`(`id`,`username`,`password`,`salt`,`user_type_code`,`STUDCODE`,`STUDIDNO`,`ADVICODE`,`ADVIIDNO`,`PARECODE`,`PAREIDNO`,`dmodified`,`modified_by`) values (1,'darryl.anaud','916cb67aa119d20627f839ad29a5068bbee2ca83',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-05-01 09:19:07',NULL),(2,'richard.base','cee8da72db7d001cb40ae3314887380cc4a6882e',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-05-02 16:52:53',NULL),(3,'maribeth.rivas','1409957c57942079d4139f6c8cdf647d4b32cfc2',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-05-02 16:52:31',NULL),(5,'niz.nolasco','37e5c9b2528b6c6e8fc4da450626efd0d77f669f',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-05-02 16:52:43',NULL),(12,'apple.aala','85ecc3653e1fbee400eefba07b9adc2d7b79e62e',NULL,'STUD',287,'3F7N010259',NULL,NULL,NULL,NULL,'2012-05-04 06:30:28',NULL),(13,'test.admin','14fb1e49a92d35e952854a9f4a9740252025b0d5',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-07-31 02:25:20',NULL),(14,'greg','62fd1ecd141171aa41a7b0986c83882b3e3bb743',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-11-29 21:47:13',NULL);
+insert  into `tbl_user`(`id`,`username`,`password`,`salt`,`user_type_code`,`STUDCODE`,`STUDIDNO`,`ADVICODE`,`ADVIIDNO`,`PARECODE`,`PAREIDNO`,`dmodified`,`modified_by`) values (1,'darryl.anaud','916cb67aa119d20627f839ad29a5068bbee2ca83',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-05-01 09:19:07',NULL),(2,'richard.base','cee8da72db7d001cb40ae3314887380cc4a6882e',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-05-02 16:52:53',NULL),(3,'maribeth.rivas','1409957c57942079d4139f6c8cdf647d4b32cfc2',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-05-02 16:52:31',NULL),(5,'niz.nolasco','37e5c9b2528b6c6e8fc4da450626efd0d77f669f',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-05-02 16:52:43',NULL),(12,'apple.aala','85ecc3653e1fbee400eefba07b9adc2d7b79e62e',NULL,'STUD',287,'3F7N010259',NULL,NULL,NULL,NULL,'2012-05-04 06:30:28',NULL),(13,'staff','14fb1e49a92d35e952854a9f4a9740252025b0d5',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2013-02-25 20:41:50',NULL),(14,'greg','62fd1ecd141171aa41a7b0986c83882b3e3bb743',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2012-11-29 21:47:13',NULL),(15,'gary','89552e831c92fd37035401d8d46c9ef4dc82e5c6',NULL,'ADMIN',NULL,NULL,NULL,NULL,NULL,NULL,'2013-02-25 20:42:31',NULL);
 
 /*Table structure for table `tbl_user_type` */
 
