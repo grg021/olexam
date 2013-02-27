@@ -153,9 +153,11 @@ class exam extends MY_Controller{
 	        $id=$this->input->post('id');
 			$filter = "$param = '$id'";
 			$records = $this->lithefire->fetchAllRecords($db, $table2, "question_set_id = '$id'", array("id"));
+			if($records){
 			foreach($records as $row):
 				$this->lithefire->deleteRow($db, "tbl_question_choices", "question_id = '".$row['id']."'");
 			endforeach;
+			}
 			$this->lithefire->deleteRow($db, $table2, "question_set_id = '$id'");
 	        $data = $this->lithefire->deleteRow($db, $table, $filter);
 			

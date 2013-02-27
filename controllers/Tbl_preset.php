@@ -190,7 +190,7 @@ class Tbl_preset extends MY_Controller{
 	
 		function selectTbl_preset(){
 			$db = 'exam';
-	        $table = "Tbl_question_choices";
+	        $table = "tbl_question_choices";
 			$input = $this->input->post();
 			
 			$id = $this->input->post('id');
@@ -213,7 +213,7 @@ class Tbl_preset extends MY_Controller{
 		
 		function appendTbl_preset(){
 			$db = 'exam';
-	        $table = "Tbl_question_choices";
+	        $table = "tbl_question_choices";
 			$input = $this->input->post();
 			
 			$id = $this->input->post('id');
