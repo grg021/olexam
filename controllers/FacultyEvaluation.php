@@ -1,20 +1,20 @@
 <?php
-class Tbl_question_choices extends MY_Controller{
+class FacultyEvaluation extends MY_Controller{
 
-		function Tbl_question_choices(){
+		function FacultyEvaluation(){
 			parent::__construct();
 		}
 
 
 		public function index()
 		{
-			$data['title'] = "Tbl_question_choices | E-Online";
+			$data['title'] = "FacultyEvaluation | E-Online";
 			$data['userId'] = $this->session->userData('userId');
 			$data['userName'] = $this->session->userData('userName');
-			$this->layout->view('Tbl_question_choices/Tbl_question_choices_view', $data);
+			$this->layout->view('FacultyEvaluation/FacultyEvaluation_view', $data);
 		}
 
-		function getTbl_question_choices(){
+		function getFacultyEvaluation(){
         
 	        $start=$this->input->post('start');
 	        $limit=$this->input->post('limit');
@@ -22,14 +22,12 @@ class Tbl_question_choices extends MY_Controller{
 	        $sort = $this->input->post('sort');
 	        $dir = $this->input->post('dir');
 	        $query = $this->input->post('query');
-			
-			$question_id = $this->input->post("question_id");
 	
 	        $records = array();
-	        $table = "tbl_question_choices";			
-	        $fields = array("id","question_id","description","correct_flag",);
+	        $table = "facultyevaluation";
+	        $fields = array("id","description",);
 	        $db = 'exam';
-	        $filter = "question_id = '$question_id'";
+	        $filter = "";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
 	            $sort = "id DESC";
@@ -38,7 +36,7 @@ class Tbl_question_choices extends MY_Controller{
 	        }
 			
 			if(!empty($query)){
- 				"(id LIKE '%$query%' OR question_id LIKE '%$query%' OR description LIKE '%$query%' OR correct_flag LIKE '%$query%')";
+ 				"(id LIKE '%$query%' OR description LIKE '%$query%')";
 	    	}
 			 
 			
@@ -62,23 +60,18 @@ class Tbl_question_choices extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function addTbl_question_choices(){
+		function addFacultyEvaluation(){
 	        $db = 'exam';
-	        $table = "tbl_question_choices";
+	        $table = "facultyevaluation";
 			$input = $this->input->post();
-			$id=$this->input->post('question_id');
 			
-			//$input = $post;
-			//unset($input['id']);
-			$input['question_id'] = $id;
-			
-			//uncomment for checking duplicates (change $fieldname)
+			/* uncomment for checking duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."'and question_id = '$id'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
-	        }
+	        }*/
 	        
 	        //uncomment for FRs
 			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);
@@ -88,16 +81,16 @@ class Tbl_question_choices extends MY_Controller{
 	        die(json_encode($data));
     	}
 
-		function loadTbl_question_choices(){
+		function loadFacultyEvaluation(){
 	        $db = "exam";
 	        
 	
 	        $id=$this->input->post('id');
-	        $table = "tbl_question_choices";
+	        $table = "facultyevaluation";
 			$param = "id";
 	
 	        $filter = "$param = '$id'";
-	        $fields = array("id","question_id","description","correct_flag",);
+	        $fields = array("id","description",);
 	        $records = array();
 	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
 	
@@ -111,27 +104,26 @@ class Tbl_question_choices extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function updateTbl_question_choices(){
+		function updateFacultyEvaluation(){
 	        $db = 'exam';
 	
-	        $table = "tbl_question_choices";
+	        $table = "facultyevaluation";
 	        
 			$param = "id";
 	        $id=$this->input->post('id');
-			$question_id=$this->input->post('question_id');
 	        $filter = "$param = '$id'";
 	
 	        $input = array();
 	        foreach($this->input->post() as $key => $val){
 	            if($key == 'id')
 	                continue;
-	            if(isset($val) || !empty($val)){
+	            if(!empty($val)){
 	                $input[$key] = $val;
 	            }
 	        }
 			//check for duplicates (change $fieldname)
 			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' AND id != '$id' AND question_id = '$question_id'", "")){
+	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' AND id != '$id'", "")){
 	            $data['success'] = false;
 	            $data['data'] = "Record already exists";
 	            die(json_encode($data));
@@ -144,8 +136,8 @@ class Tbl_question_choices extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function deleteTbl_question_choices(){
-	        $table = "tbl_question_choices";
+		function deleteFacultyEvaluation(){
+	        $table = "facultyevaluation";
 	        $param = "id";
 	       
 			$db = "exam";
