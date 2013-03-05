@@ -30,11 +30,11 @@ CREATE TABLE `module` (
   `order` int(10) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module` */
 
-insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Matrix','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'Manage Question Set','exam',7,NULL,NULL,NULL,0),(23,'Services','FILESERV',5,NULL,NULL,NULL,0),(24,'Faculty Evaluation Schedule','FacultyEvaluation',7,NULL,NULL,NULL,0);
+insert  into `module`(`id`,`description`,`link`,`category_id`,`group`,`icon`,`order`,`is_public`) values (1,'User Access Control','userMatrix',1,NULL,NULL,NULL,0),(2,'User Administration','userMatrix/administration',1,NULL,NULL,NULL,0),(3,'Change Password',NULL,2,NULL,NULL,NULL,1),(8,'Exam Classifications','examclassifications',5,NULL,NULL,NULL,0),(9,'Question Classifications','questionclassifications',5,NULL,NULL,NULL,0),(10,'Scaffolding','userMatrix/scaffolding',1,NULL,NULL,NULL,0),(13,'Manage Question Set','exam',7,NULL,NULL,NULL,0),(23,'Services','FILESERV',5,NULL,NULL,NULL,0),(24,'Faculty Evaluation Schedule','FacultyEvaluation',7,NULL,NULL,NULL,0),(25,'View Results','results/',7,NULL,NULL,NULL,1);
 
 /*Table structure for table `module_category` */
 
@@ -51,7 +51,7 @@ CREATE TABLE `module_category` (
 
 /*Data for the table `module_category` */
 
-insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',NULL,0),(2,'MY ACCOUNT','/images/icons/user.png',NULL,1),(3,'FACILITIES','/images/icons/package.png',NULL,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',NULL,1),(5,'FILEREFERENCE','/images/icons/folder.png',NULL,0),(7,'APPLICATIONS','/images/icons/application.png',NULL,1);
+insert  into `module_category`(`id`,`description`,`icon`,`order`,`is_public`) values (1,'USER MATRIX','/images/icons2/hammer_screwdriver.png',4,0),(2,'MY ACCOUNT','/images/icons/user.png',1,1),(3,'FACILITIES','/images/icons/package.png',5,NULL),(4,'MANAGE LIBRARIES','/images/icons/package.png',6,1),(5,'FILEREFERENCE','/images/icons/folder.png',2,0),(7,'APPLICATIONS','/images/icons/application.png',3,1);
 
 /*Table structure for table `module_group` */
 
@@ -76,7 +76,7 @@ CREATE TABLE `module_group_access` (
   `group_id` int(20) DEFAULT NULL,
   `module_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_group_access` */
 
