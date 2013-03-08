@@ -26,9 +26,6 @@
 	 								totalProperty: "totalCount",
 	 								fields: [
 		{ name: 'id'},{ name: 'description'}
- 										{ name: "STUDIDNO"},
-                                        { name: "IDNO"},
-                                        { name: "NAME"}
 		]
  						}),
  						remoteSort: true,
@@ -37,7 +34,6 @@
 		
 		var colModel = new Ext.grid.ColumnModel([
 		{header: "id", width: 100, sortable: true, dataIndex: 'id'},{header: "description", width: 100, sortable: true, dataIndex: 'description'}
-			{ header: "Student Name", width: 300, sortable: true, dataIndex: "NAME" },
 		]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -121,61 +117,6 @@
 
  			FacultyEvaluation.app.Grid = grid;
  			FacultyEvaluation.app.Grid.getStore().load({params:{start: 0, limit: 25}});
- 			
- 			
- 			var filter_form = new Ext.form.FormPanel({
- 				labelWidth: 80,
- 		        url:"",
- 		        method: 'POST',
- 		        defaultType: 'textfield',
- 		        frame: true,
-				// height: 100,
-                id: 'teacherForm',
-                // autoScroll: true,
-                // width: 900,
- 		        items: [{
- 		        	xtype:'fieldset',
- 					width:'auto',
- 					height:'auto',
- 					items: [{
- 						layout:'column',
-			            width: 'auto',
-			            items: [{
-			            	columnWidth:.33,
-	 	 			        layout: 'form',
-	 	 			        items: [
-	 	 			        	ExtCommon.util.createCombo("yearlevel", "yearlevel_id", "95%", "<?php echo site_url("FacultyEvaluation/getYearLevelCombo")?>", "Year Level*", false, false),
-	 	 			        	ExtCommon.util.createCombo("gender", "gender_id", "95%", "<?php echo site_url("FacultyEvaluation/getGenderCombo")?>", "Gender*", false, false)
-	 	 			        ]
-			            },{
-		            		columnWidth:.33,
- 	 			          	layout: 'form',
- 	 			          	items: [
- 	 			          		FacultyEvaluation.app.sectionCombo()
- 	 			          		//ExtCommon.util.createCombo("section", "section_id", "95%", "<--?php echo site_url("FacultyEvaluation/getSectionCombo")?>", "Section*", false, false),
-                           	]
-			            },{
-			            	columnWidth:.33,
-	 	 			        layout: 'form',
-	 	 			        items: [
-	 	 			        	FacultyEvaluation.app.subjectCombo()
-	 	 			        	//ExtCommon.util.createCombo("subject", "subject_id", "95%", "<--?php echo site_url("FacultyEvaluation/getSubjectCombo")?>", "Subject*", false, false)
-	 	 			        ]
-			            }]
- 					}]    	
- 		        }],
- 		        buttons: [{
- 		         	text: 'Refresh List',
-                    icon: '/images/icons/arrow_rotate_clockwise.png',
- 	                handler: function(){
-                    	//if(ExtCommon.util.validateFormFields(filter_form)){//check if all forms are filled up
-                        	FacultyEvaluation.app.Grid.getStore().load();
-						//}else return;
-					}
- 	            }]
- 			});
- 			
- 			FacultyEvaluation.app.filter_form = filter_form;
 
  			var _window = new Ext.Panel({
  		        title: 'Faculty Evaluation Schedule',
@@ -422,141 +363,7 @@
 	                }else return;
 
 
-		},
-		
-		sectionCombo: function(){
-
-		return {
-			xtype:'combo',
-			id:'SECTION',
-			hiddenName: 'SECTIDNO',
-            hiddenId: 'SECTIDNO',
-			name: 'SECTION',
-			valueField: 'id',
-			displayField: 'name',
-			//width: 100,
-			anchor: '95%',
-			triggerAction: 'all',
-			minChars: 2,
-			forceSelection: true,
-			enableKeyEvents: true,
-			pageSize: 10,
-			resizable: true,
-			readOnly: false,
-			minListWidth: 300,
-			allowBlank: false,
-			store: new Ext.data.JsonStore({
-			id: 'idsocombo',
-			root: 'data',
-			totalProperty: 'totalCount',
-			fields:[{name: 'id'}, {name: 'name'}],
-			url: "<?php echo site_url("FacultyEvaluation/getSectionCombo"); ?>",
-			baseParams: {start: 0, limit: 10}
-
-			}),
-			listeners: {
-				beforequery: function(qe){
-							
-									Ext.get("SUBJIDNO").dom.value  = '';
-                                    Ext.getCmp("subject").setRawValue("");
-				},
-			select: function (combo, record, index){
-			this.setRawValue(record.get('name'));
-			Ext.get(this.hiddenName).dom.value  = record.get('id');
-
-			},
-			blur: function(){
-			var val = this.getRawValue();
-			this.setRawValue.defer(1, this, [val]);
-			this.validate();
-			},
-			render: function() {
-			this.el.set({qtip: 'Type at least ' + this.minChars + ' characters to search for a course'});
-
-			},
-			keypress: {buffer: 100, fn: function() {
-			Ext.get(this.hiddenName).dom.value  = '';
-			if(!this.getRawValue()){
-			this.doQuery('', true);
 		}
-			}}
-			},
-			fieldLabel: 'Section*'
-
-			}
-	},
-	
-	subjectCombo: function(){
-
-		return {
-			xtype:'combo',
-			id:'subject',
-			hiddenName: 'SUBJIDNO',
-                        hiddenId: 'SUBJIDNO',
-			name: 'subject',
-			valueField: 'id',
-			displayField: 'name',
-			//width: 100,
-			anchor: '95%',
-			triggerAction: 'all',
-			minChars: 2,
-			forceSelection: true,
-			enableKeyEvents: true,
-			pageSize: 10,
-			resizable: true,
-			readOnly: false,
-			minListWidth: 300,
-			allowBlank: false,
-			store: new Ext.data.JsonStore({
-			id: 'idsocombo',
-			root: 'data',
-			totalProperty: 'totalCount',
-			fields:[{name: 'id'}, {name: 'name'}, {name: 'description'}, {name: 'UNITS_TTL'}, {name: 'ADVISER'}, {name: 'SECTION'}, {name: 'COURSE'}],
-			url: "<?php echo site_url("FacultyEvaluation/getSubjectCombo"); ?>",
-			baseParams: {start: 0, limit: 10}
-
-			}),
-			listeners: {
-                        beforequery: function(qe)
-					{
-						if (Ext.get("SECTIDNO").dom.value == "")
-							return false;
-					delete qe.combo.lastQuery;
-				    this.store.baseParams = {SECTIDNO: Ext.get("SECTIDNO").dom.value};
-
-			            /*var o = {start: 0, limit:10};
-			            this.store.baseParams = this.store.baseParams || {};
-			            this.store.baseParams[this.paramName] = '';
-			            this.store.load({params:o, timeout: 300000});*/
-					},
-
-			select: function (combo, record, index){
-			this.setRawValue(record.get('name'));
-			Ext.get(this.hiddenName).dom.value  = record.get('id');
-                        //ogs_grade_entry.app.Grid.getStore().setBaseParam("SCHEIDNO", record.get('id'));
-
-
-			},
-			blur: function(){
-			var val = this.getRawValue();
-			this.setRawValue.defer(1, this, [val]);
-			this.validate();
-			},
-			render: function() {
-			this.el.set({qtip: 'Type at least ' + this.minChars + ' characters to search for a subject'});
-
-			},
-			keypress: {buffer: 100, fn: function() {
-			Ext.get(this.hiddenName).dom.value  = '';
-			if(!this.getRawValue()){
-			this.doQuery('', true);
-			}
-			}}
-			},
-			fieldLabel: 'Subject*'
-
-			}
-	},
 		
 		}
 		}();
