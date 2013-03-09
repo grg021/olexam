@@ -47,6 +47,8 @@
 
 $active_group = 'default';
 $active_record = TRUE;
+include_once("active_semester.php");
+ini_set("memory_limit", "128M");
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'lithefzj_darryl';
@@ -95,6 +97,22 @@ $db['exam']['dbcollat'] = 'utf8_general_ci';
 $db['exam']['swap_pre'] = '';
 $db['exam']['autoinit'] = TRUE;
 $db['exam']['stricton'] = FALSE;
+
+$db['ogs']['hostname'] = 'localhost';
+$db['ogs']['username'] = 'lithefzj_darryl';
+$db['ogs']['password'] = 'LeyyeL03@!';
+$db['ogs']['database'] = 'lithefzj_ogs'.SEMEIDNO;
+$db['ogs']['dbdriver'] = 'mysql';
+$db['ogs']['dbprefix'] = '';
+$db['ogs']['pconnect'] = TRUE;
+$db['ogs']['db_debug'] = TRUE;
+$db['ogs']['cache_on'] = FALSE;
+$db['ogs']['cachedir'] = '';
+$db['ogs']['char_set'] = 'utf8';
+$db['ogs']['dbcollat'] = 'utf8_general_ci';
+$db['ogs']['swap_pre'] = '';
+$db['ogs']['autoinit'] = TRUE;
+$db['ogs']['stricton'] = FALSE;
 
 
 /* End of file database.php */
