@@ -136,6 +136,7 @@ CREATE TABLE `tbl_faculty_evaluation_answers` (
   `answer` int(11) DEFAULT NULL,
   `answer_text` text,
   `correct_flag` tinyint(1) DEFAULT NULL,
+  `date_answered` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 

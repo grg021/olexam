@@ -24,14 +24,16 @@ class FacultyEvaluation extends MY_Controller{
 	        $query = $this->input->post('query');
 	
 	        $records = array();
-	        $table = "tbl_faculty_evaluation_session";
-	        $fields = array("id","title","description","start_date", "end_date", "faculty_id");
+			$fr_db = $this->config->item("fr_db");
+			
+	        $table = "tbl_faculty_evaluation_session a LEFT JOIN $fr_db.FILEADVI b ON a.faculty_id = b.ADVICODE LEFT JOIN tbl_question_set c ON a.question_set_id = c.id";
+	        $fields = array("a.id","c.name as title","c.description","start_date", "end_date", "faculty_id", "b.ADVISER as faculty");
 	        $db = 'exam';
 			
 	        $filter = "";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
-	            $sort = "dcreated DESC";
+	            $sort = "a.dcreated DESC";
 	        }else{
 	        	$sort = "$sort $dir";
 	        }
@@ -63,33 +65,41 @@ class FacultyEvaluation extends MY_Controller{
 
 		function getStudents(){
         
-	        $start=$this->input->post('start');
+	    $start=$this->input->post('start');
         $limit=$this->input->post('limit');
         $db = "ogs";
+		$filter = "";
 
 
         $sort = $this->input->post('sort');
         $dir = $this->input->post('dir');
-        $SCHEIDNO = $this->input->post('SCHEIDNO');
-		$SEMEIDNO = $this->input->post('SEMEIDNO');
+		
+		$YEAR = $this->input->post('YEAR');
+		$SECTIDNO = $this->input->post('SECTIDNO');
 
         $querystring = $this->input->post('query');
 		
-		/*if($SCHEIDNO)
-            $filter = "SCHEIDNO = '$SCHEIDNO'";
-		else
-			die();*/
-			
+		if(!empty($YEAR) && strtolower($YEAR) != 'all year level')
+            $filter = "YEAR = '$YEAR'";
+		
+		if(!empty($SECTIDNO)){	
+			if(!empty($filter))
+				$filter .= " AND SECTIDNO = '$SECTIDNO'";
+			else
+				$filter = "SECTIDNO = '$SECTIDNO'";
+		}
 		$group = "";
 		$having = "";
 
         $query = array();
 
-        if(!empty($querystring))
-        $filter .= " AND (STUDIDNO LIKE '%$querystring%' OR IDNO LIKE '%$querystring%' OR NAME LIKE '%$querystring%')";
-		else {
-			$filter = "";
+        if(!empty($querystring)){
+		if(!empty($filter))
+        	$filter .= " AND (STUDIDNO LIKE '%$querystring%' OR IDNO LIKE '%$querystring%' OR NAME LIKE '%$querystring%')";
+		else
+			$filter = "(STUDIDNO LIKE '%$querystring%' OR IDNO LIKE '%$querystring%' OR NAME LIKE '%$querystring%')";
 		}
+	
 
         if(empty($sort) && empty($dir)){
             $sort = "NAME ASC";
@@ -100,7 +110,9 @@ class FacultyEvaluation extends MY_Controller{
 		$default_db = $this->config->item("default_db");
         $records = array();
         $table = "COLLEGE";
-        $fields = array("*");
+        $fields = array("STUDCODE", "STUDIDNO", "NAME", "IDNO");
+		
+		
 
         $records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group, $having);
        // die($this->db->last_query());
@@ -123,23 +135,38 @@ class FacultyEvaluation extends MY_Controller{
 	    }
 
 		function addFacultyEvaluation(){
+			$pdo = new PDO($this->config->item("EXAM_DSN"), $this->config->item("USER"), $this->config->item("PASS"));
+			
 	        $db = 'exam';
-	        $table = "facultyevaluation";
-			$input = $this->input->post();
+			$user = $this->session->userdata("userName");
+	        $table = "tbl_faculty_evaluation_session";
+			$post = $this->input->post();
 			
-			/* uncomment for checking duplicates (change $fieldname)
-			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."'", "")){
-	            $data['success'] = false;
-	            $data['data'] = "Record already exists";
-	            die(json_encode($data));
-	        }*/
-	        
-	        //uncomment for FRs
-			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);
+			$s_date = date("Y-m-d H:i:s", strtotime($post['start_date']." ".$post['start_time']));
+			$e_date = date("Y-m-d H:i:s", strtotime($post['end_date']." ".$post['end_time']));
 			
+			$input = array("question_set_id"=>$post['question_set_id'], "start_date"=>$s_date, "end_date"=>$e_date, "faculty_id"=>$post['faculty_id'], "created_by"=>$user);
 	        $data = $this->lithefire->insertRow($db, $table, $input);
-	
+			
+			$s = $this->input->post('students');
+			$s = str_replace("\\", "", $s);
+			$s = json_decode($s);
+			
+			$question_query = $pdo->prepare("SELECT id FROM tbl_question WHERE question_set_id = ?");
+			$insert_query = $pdo->prepare("INSERT INTO tbl_faculty_evaluation_answers (evaluation_id, question_id, student_id) VALUES (?,?,?)");
+			$question_query->execute(array($post['question_set_id']));
+			
+			$questions = $question_query->fetchAll();
+			
+			if(!empty($s->data)){
+				foreach($s->data as $row):
+					foreach($questions as $r):
+							$insert_query->execute(array($data['id'], $r['id'], $row));
+					endforeach;
+				endforeach;
+				
+			}
+			$pdo = null;
 	        die(json_encode($data));
     	}
 
@@ -213,7 +240,7 @@ class FacultyEvaluation extends MY_Controller{
 		
 		function getYearLevelCombo(){
         
-	        $db = "ogs";
+	        $db = "fr";
 	
 	        $start=$this->input->post('start');
 	        $limit=$this->input->post('limit');
@@ -236,8 +263,8 @@ class FacultyEvaluation extends MY_Controller{
 	        }
 			
 	        $records = array();
-	        $table = "FILESECT";
-	        $fields = array("DISTINCT YEAR as name");
+	        $table = "FILESTLE";
+	        $fields = array("STLECODE as id", "YEAR as name");
 	
 	        $filter = "";
 			$group = "";
@@ -308,7 +335,6 @@ class FacultyEvaluation extends MY_Controller{
 	        $temp = array();
 	        $total = 0;
 	        if($records){
-	        	$temp[] = array("id"=>0, "name"=>"All Gender");
 	        foreach($records as $row):
 	            $temp[] = $row;
 	            $total++;
@@ -327,7 +353,7 @@ class FacultyEvaluation extends MY_Controller{
 	
 	        $start=$this->input->post('start');
 	        $limit=$this->input->post('limit');
-	
+			$year_level = $this->input->post('YEAR');
 	
 	        $sort = $this->input->post('sort');
 	        $dir = $this->input->post('dir');
@@ -344,11 +370,15 @@ class FacultyEvaluation extends MY_Controller{
 	        $fields = array("SECTIDNO as id", "SECTION as name");
 	
 	        $filter = "ACTIVATED = 1";
+			
+			if($year_level && $year_level != "All Year Level")
+				$filter .= " AND YEAR = '$year_level'";
+			
 			$group = "";
 			$having = "";
 			
 			if(!empty($query))
-				$filter .= "(SECTIDNO LIKE '%$query%' OR SECTION LIKE '%$query%')";
+				$filter .= " AND (SECTIDNO LIKE '%$query%' OR SECTION LIKE '%$query%')";
 	
 	        $records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group, $having);
 	       // die($this->lithefire->currentQuery());
@@ -372,7 +402,7 @@ class FacultyEvaluation extends MY_Controller{
 
 		function getSubjectCombo(){
         
-	        $start=$this->input->post('start');
+	    $start=$this->input->post('start');
         $limit=$this->input->post('limit');
 		$SECTIDNO = $this->input->post('SECTIDNO');
         $adviser_id = $this->session->userdata('userCode');
@@ -383,7 +413,7 @@ class FacultyEvaluation extends MY_Controller{
         $sort = $this->input->post('sort');
         $dir = $this->input->post('dir');
         $querystring = $this->input->post('query');
-        $ADVIIDNO = $this->input->post('ADVIIDNO');
+       // $ADVIIDNO = $this->input->post('ADVIIDNO');
 		$filter = "";
 		$group = "";
 		$having = "";
@@ -418,9 +448,8 @@ class FacultyEvaluation extends MY_Controller{
         	$sort = "$sort $dir";
         }
 		
-		//$fr_db = $this->config->item("fr_db");
-		//$default_db = $this->config->item("default_db");
-        $fr_db = "lithefzj_engine";
+		$fr_db = $this->config->item("fr_db");
+		
 		
        	$database = "";
         
@@ -458,4 +487,98 @@ class FacultyEvaluation extends MY_Controller{
         $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
         die(json_encode($data));
     	}
+
+		public function getQuestionSetCombo($value='')
+		{
+			$start=$this->input->post('start');
+	        $limit=$this->input->post('limit');
+	
+	        $sort = $this->input->post('sort');
+	        $dir = $this->input->post('dir');
+	        $query = $this->input->post('query');
+	
+	        $records = array();
+	        $table = "tbl_question_set";
+	        $fields = array("id", "name", "description");
+	        $db = 'exam';
+			
+	        $filter = "";
+	        $group = "";
+			if(empty($sort) && empty($dir)){
+	            $sort = "dcreated DESC";
+	        }else{
+	        	$sort = "$sort $dir";
+	        }
+			
+			if(!empty($query)){
+ 				$filter = "(name LIKE '%$query%' OR description LIKE '%$query%')";
+	    	}
+			 
+			
+			
+			$records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group);
+	
+	        $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
+	
+	        $temp = array();
+	        $total = 0;
+	        if($records){
+	        foreach($records as $row):
+	
+	            $temp[] = $row;
+	            $total++;
+	
+	        endforeach;
+	        }
+	        $data['data'] = $temp;
+	        $data['success'] = true;
+	        die(json_encode($data));
+		}
+
+		public function getFacultyCombo($value='')
+		{
+			$start=$this->input->post('start');
+	        $limit=$this->input->post('limit');
+	
+	        $sort = $this->input->post('sort');
+	        $dir = $this->input->post('dir');
+	        $query = $this->input->post('query');
+	
+	        $records = array();
+	        $table = "FILEADVI";
+	        $fields = array("ADVICODE as id", "ADVISER as name",);
+	        $db = 'fr';
+			
+	        $filter = "";
+	        $group = "";
+			if(empty($sort) && empty($dir)){
+	            $sort = "ADVISER";
+	        }else{
+	        	$sort = "$sort $dir";
+	        }
+			
+			if(!empty($query)){
+ 				$filter = "(ADVISER LIKE '%$query%')";
+	    	}
+			 
+			
+			
+			$records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group);
+	
+	        $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
+	
+	        $temp = array();
+	        $total = 0;
+	        if($records){
+	        foreach($records as $row):
+	
+	            $temp[] = $row;
+	            $total++;
+	
+	        endforeach;
+	        }
+	        $data['data'] = $temp;
+	        $data['success'] = true;
+	        die(json_encode($data));
+		}
 }

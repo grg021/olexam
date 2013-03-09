@@ -1,4 +1,9 @@
-
+<style type="text/css">
+.selected{
+   background-color: blue !important;
+   color: white !important;
+}
+</style>
 		<div id="mainBody"></div>
 		<script type="text/javascript">
 		 Ext.namespace("FacultyEvaluation");
@@ -9,6 +14,7 @@
 	 		{
 	 			ExtCommon.util.init();
 	 			ExtCommon.util.quickTips();
+	 			ExtCommon.util.validations();
 	 			this.getGrid();
 	 		},
 	 		getGrid: function()
@@ -25,7 +31,7 @@
 	 								id: "id",
 	 								totalProperty: "totalCount",
 	 								fields: [
-	 									{name: "id"},
+	 									{ name: "id"},
  										{ name: "title"},
                                         { name: "description"},
                                         { name: "start_date"},
@@ -40,10 +46,10 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-			{ header: "Title", width: 200, sortable: true, dataIndex: "title" },
-			{ header: "Description", width: 200, sortable: true, dataIndex: "description" },
-			{ header: "Start Date", width: 100, sortable: true, dataIndex: "start_date" },
-			{ header: "End Date", width: 100, sortable: true, dataIndex: "end_date" },
+			{ header: "Title", width: 170, sortable: true, dataIndex: "title" },
+			{ header: "Description", width: 300, sortable: true, dataIndex: "description" },
+			{ header: "Start Date", width: 150, sortable: true, dataIndex: "start_date" },
+			{ header: "End Date", width: 150, sortable: true, dataIndex: "end_date" },
 			{ header: "Faculty", width: 200, sortable: true, dataIndex: "faculty" }
 		]);
 
@@ -136,32 +142,7 @@
  		        	xtype:'fieldset',
  					width:'auto',
  					height:'auto',
- 					items: [{
- 						layout:'column',
-			            width: 'auto',
-			            items: [{
-			            	columnWidth:.33,
-	 	 			        layout: 'form',
-	 	 			        items: [
-	 	 			        	ExtCommon.util.createCombo("yearlevel", "yearlevel_id", "95%", "<?php echo site_url("FacultyEvaluation/getYearLevelCombo")?>", "Year Level*", false, false),
-	 	 			        	ExtCommon.util.createCombo("gender", "gender_id", "95%", "<?php echo site_url("FacultyEvaluation/getGenderCombo")?>", "Gender*", false, false)
-	 	 			        ]
-			            },{
-		            		columnWidth:.33,
- 	 			          	layout: 'form',
- 	 			          	items: [
- 	 			          		FacultyEvaluation.app.sectionCombo()
- 	 			          		//ExtCommon.util.createCombo("section", "section_id", "95%", "<--?php echo site_url("FacultyEvaluation/getSectionCombo")?>", "Section*", false, false),
-                           	]
-			            },{
-			            	columnWidth:.33,
-	 	 			        layout: 'form',
-	 	 			        items: [
-	 	 			        	FacultyEvaluation.app.subjectCombo()
-	 	 			        	//ExtCommon.util.createCombo("subject", "subject_id", "95%", "<--?php echo site_url("FacultyEvaluation/getSubjectCombo")?>", "Subject*", false, false)
-	 	 			        ]
-			            }]
- 					}]    	
+ 					items: []    	
  		        }],
  		        buttons: [{
  		         	text: 'Refresh List',
@@ -193,39 +174,240 @@
  		},
 		
 		setForm: function(){
-
+			FacultyEvaluation.app.studentGrid();
+			
  		    var form = new Ext.form.FormPanel({
- 		        labelWidth: 150,
  		        url: "<?php echo site_url('FacultyEvaluation/addFacultyEvaluation') ?>",
  		        method: 'POST',
  		        defaultType: 'textfield',
  		        frame: true,
  		        items: [ {
  					xtype:'fieldset',
- 					title:'Fields w/ Asterisks are required.',
+ 					//title:'Fields w/ Asterisks are required.',
  					width:'auto',
  					height:'auto',
  					items:[
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'id*',
- 		            name: 'id',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'id'
- 		        },
-				{
-                    xtype:'textfield',
- 		            fieldLabel: 'description*',
- 		            name: 'description',
- 		            allowBlank:false,
- 		            anchor:'95%',  // anchor width by percentage
- 		            id: 'description'
- 		        }    
- 		        
-
- 		        		]
+ 					{
+ 						layout: 'column',
+ 						width: 'auto',
+ 						items: [
+ 							{
+ 								columnWidth: .5,
+ 								layout: 'form',
+ 								items: [
+ 								FacultyEvaluation.app.questionSetCombo(),
+ 								{
+ 									xtype: 'textarea',
+ 									id: 'qs_description',
+ 									name: 'qs_description',
+ 									anchor: '95%',
+ 									fieldLabel: 'Description',
+ 									readOnly: true
+ 								}
+ 								]
+ 							},
+ 							{
+ 								columnWidth: .5,
+ 								layout: 'form',
+ 								items: [
+ 								{
+ 									xtype: "button",
+ 									text: "View Questions",
+ 									handler: function(){
+ 										
+ 									}
+ 								}
+ 								]
+ 							}
+ 						]
  					}
+ 		        		]
+ 					},
+ 					{
+ 					xtype:'fieldset',
+ 					width:'auto',
+ 					height:'auto',
+ 					labelWidth: 75,
+ 					items:[
+ 					{
+ 						layout: 'column',
+ 						width: 'auto',
+ 						items: [
+ 							{
+ 								columnWidth: .5,
+ 								layout: 'form',
+ 								items: [
+ 								ExtCommon.util.createCombo("faculty_set", "faculty_id", "95%", "<?php echo site_url("facultyEvaluation/getFacultyCombo");?>", "Faculty*", false, false)
+ 								]
+ 							}
+ 							
+ 						]
+ 					},
+ 					{
+ 						layout: 'column',
+ 						width: 'auto',
+ 						items: [
+ 							{
+ 								columnWidth: .30,
+ 								layout: 'form',
+ 								defaults: {
+	 	 			        	 msgTarget: 'qtip'
+	 	 			        	},
+ 								items: [
+ 								{
+	 								xtype: 'datefield',
+			 	 			        fieldLabel: 'Start Date*',
+			 	 			        name: 'start_date',
+			 	 			        id: 'start_date',
+			 	 			        allowBlank: false,
+			 	 			        format: 'Y-m-d',
+			 	 			        anchor: '100%',
+                                    vtype: 'daterange',
+                                    endDateField: 'end_date'
+								}
+ 								]
+ 							},
+ 							{
+ 								columnWidth: .20,
+ 								layout: 'form',
+ 								labelWidth: 1,
+ 								defaults: {
+	 	 			        	 msgTarget: 'qtip'
+	 	 			        	},
+ 								items: [
+ 								{
+                                   xtype: 'timefield',
+                                   name: 'start_time',
+                                   id: 'start_time',
+                                   allowBlank: false,
+                                   minValue: '00:00:00',
+                                   maxValue: '23:00:00',
+                                   increment: 5,
+                                   format: 'H:i:s',
+                                   anchor: '87.8%',
+                                   vtype: 'timerange',
+                                   endTimeField: 'end_time'
+                                }
+ 								]
+ 							},
+ 							{
+ 								columnWidth: .30,
+ 								layout: 'form',
+ 								defaults: {
+	 	 			        	 msgTarget: 'qtip'
+	 	 			        	},
+ 								items: [
+ 								{
+	 								xtype: 'datefield',
+			 	 			        fieldLabel: 'End Date*',
+			 	 			        name: 'end_date',
+			 	 			        id: 'end_date',
+			 	 			        allowBlank: false,
+			 	 			        format: 'Y-m-d',
+			 	 			        anchor: '100%',
+			 	 			        msgTarget: 'qtip',
+                                   vtype: 'daterange',
+                                   startDateField: 'start_date'
+								}
+ 								]
+ 							},
+ 							{
+ 								columnWidth: .20,
+ 								layout: 'form',
+ 								labelWidth: 1,
+ 								defaults: {
+	 	 			        	 msgTarget: 'qtip'
+	 	 			        	},
+ 								items: [
+ 								{
+                                   xtype: 'timefield',
+                                   name: 'end_time',
+                                   id: 'end_time',
+                                   allowBlank: false,
+                                   minValue: '00:00:00',
+                                   maxValue: '23:00:00',
+                                   increment: 5,
+                                   format: 'H:i:s',
+                                   anchor: '87.8%',
+                                   msgTarget: 'qtip',
+                                   vtype: 'timerange',
+                                   startTimeField: 'start_time'
+                                }
+ 								]
+ 							}
+ 							
+ 						]
+ 					}
+ 		        		]
+ 					},
+ 					{
+ 					xtype:'fieldset',
+ 					width:'auto',
+ 					height:'auto',
+ 					labelWidth: 75,
+ 					items:[
+ 						{
+ 						layout:'column',
+			            width: 'auto',
+			            items: [{
+			            	columnWidth:.33,
+	 	 			        layout: 'form',
+	 	 			        defaults: {
+	 	 			        	 msgTarget: 'qtip'
+	 	 			        },
+	 	 			        items: [
+	 	 			        	FacultyEvaluation.app.yearCombo()
+	 	 			        	
+	 	 			        ]
+			            },{
+		            		columnWidth:.33,
+ 	 			          	layout: 'form',
+ 	 			          	items: [
+ 	 			          		FacultyEvaluation.app.sectionCombo()
+ 	 			          		
+                           	]
+			            },{
+			            	columnWidth:.33,
+	 	 			        layout: 'form',
+	 	 			        items: [
+	 	 			        	ExtCommon.util.createCombo("gender", "gender_id", "95%", "<?php echo site_url("FacultyEvaluation/getGenderCombo")?>", "Gender*", true, false)
+	 	 			        ]
+			            }]
+ 					}/*,
+ 					{
+ 						layout:'column',
+			            width: 'auto',
+			            items: [{
+			            	columnWidth:.33,
+	 	 			        layout: 'form',
+	 	 			        defaults: {
+	 	 			        	 msgTarget: 'qtip'
+	 	 			        },
+	 	 			        items: [
+	 	 			        	FacultyEvaluation.app.subjectCombo()
+	 	 			        	
+	 	 			        ]
+			            },{
+		            		columnWidth:.66,
+ 	 			          	layout: 'form',
+ 	 			          	items: [
+ 	 			          		{
+ 	 			          			xtype: 'textfield',
+ 	 			          			id: 's_description',
+ 	 			          			name: 's_description',
+ 	 			          			fieldLabel: 'Description',
+ 	 			          			anchor: '97.5%',
+ 	 			          			readOnly: true
+ 	 			          		}
+ 	 			          		
+                           	]
+			            }]
+ 					}*/
+ 					
+ 					]
+ 					
+ 					},
+ 					FacultyEvaluation.app.sGrid
  					]
  		    });
 
@@ -235,6 +417,7 @@
  		Add: function(){
 
  			FacultyEvaluation.app.setForm();
+ 			
 
  		  	var _window;
 
@@ -255,6 +438,7 @@
  	                handler: function () {
  			            if(ExtCommon.util.validateFormFields(FacultyEvaluation.app.Form)){//check if all forms are filled up
  		                FacultyEvaluation.app.Form.getForm().submit({
+ 		                	params: {students: Ext.util.JSON.encode(FacultyEvaluation.app.selectedStudents)},
  			                success: function(f,action){
                  		    	Ext.MessageBox.alert('Status', action.result.data);
                   		    	 Ext.Msg.show({
@@ -433,6 +617,7 @@
 			name: 'SECTION',
 			valueField: 'id',
 			displayField: 'name',
+			 msgTarget: 'qtip',
 			//width: 100,
 			anchor: '95%',
 			triggerAction: 'all',
@@ -455,14 +640,21 @@
 			}),
 			listeners: {
 				beforequery: function(qe){
-							
-									Ext.get("SUBJIDNO").dom.value  = '';
-                                    Ext.getCmp("subject").setRawValue("");
+									if (Ext.get("yearlevel_id").dom.value == "")
+											return false;
+									
+								    this.store.baseParams = {YEAR: Ext.getCmp("yearlevel").getRawValue()};
+								    
+									//Ext.get("SUBJIDNO").dom.value  = '';
+                                  //  Ext.getCmp("subject").setRawValue("");
+                                    
+                                    delete qe.combo.lastQuery;
 				},
 			select: function (combo, record, index){
 			this.setRawValue(record.get('name'));
 			Ext.get(this.hiddenName).dom.value  = record.get('id');
-
+			FacultyEvaluation.app.sGrid.getStore().load();
+			
 			},
 			blur: function(){
 			var val = this.getRawValue();
@@ -470,8 +662,7 @@
 			this.validate();
 			},
 			render: function() {
-			this.el.set({qtip: 'Type at least ' + this.minChars + ' characters to search for a course'});
-
+			this.el.set({qtip: 'Type at least ' + this.minChars + ' characters to search for a section'});
 			},
 			keypress: {buffer: 100, fn: function() {
 			Ext.get(this.hiddenName).dom.value  = '';
@@ -484,19 +675,78 @@
 
 			}
 	},
-	
+	questionSetCombo: function(){
+
+		return {
+			xtype:'combo',
+			id:'question_set',
+			hiddenName: 'question_set_id',
+            hiddenId: 'question_set_id',
+			name: 'question_set',
+			valueField: 'id',
+			displayField: 'name',
+			anchor: '95%',
+			triggerAction: 'all',
+			minChars: 2,
+			forceSelection: true,
+			enableKeyEvents: true,
+			pageSize: 10,
+			 msgTarget: 'qtip',
+			resizable: true,
+			readOnly: false,
+			minListWidth: 300,
+			allowBlank: false,
+			store: new Ext.data.JsonStore({
+			id: 'idsocombo',
+			root: 'data',
+			totalProperty: 'totalCount',
+			fields:[{name: 'id'}, {name: 'name'}, {name: 'description'}],
+			url: "<?php echo site_url("FacultyEvaluation/getQuestionSetCombo"); ?>",
+			baseParams: {start: 0, limit: 10}
+			}),
+			listeners: {
+            beforequery: function(qe)
+			{
+			delete qe.combo.lastQuery;
+			},
+			select: function (combo, record, index){
+			this.setRawValue(record.get('name'));
+			Ext.get(this.hiddenName).dom.value  = record.get('id');
+			Ext.getCmp("qs_description").setValue(record.get("description"));
+			},
+			blur: function(){
+			var val = this.getRawValue();
+			this.setRawValue.defer(1, this, [val]);
+			this.validate();
+			},
+			render: function() {
+			this.el.set({qtip: 'Type at least ' + this.minChars + ' characters to search for a question set'});
+
+			},
+			keypress: {buffer: 100, fn: function() {
+			Ext.get(this.hiddenName).dom.value  = '';
+			if(!this.getRawValue()){
+			this.doQuery('', true);
+			}
+			}}
+			},
+			fieldLabel: 'Question Set*'
+
+			}
+	},
 	subjectCombo: function(){
 
 		return {
 			xtype:'combo',
 			id:'subject',
 			hiddenName: 'SUBJIDNO',
-                        hiddenId: 'SUBJIDNO',
+            hiddenId: 'SUBJIDNO',
 			name: 'subject',
 			valueField: 'id',
 			displayField: 'name',
 			//width: 100,
 			anchor: '95%',
+			 msgTarget: 'qtip',
 			triggerAction: 'all',
 			minChars: 2,
 			forceSelection: true,
@@ -505,7 +755,7 @@
 			resizable: true,
 			readOnly: false,
 			minListWidth: 300,
-			allowBlank: false,
+			allowBlank: true,
 			store: new Ext.data.JsonStore({
 			id: 'idsocombo',
 			root: 'data',
@@ -523,10 +773,6 @@
 					delete qe.combo.lastQuery;
 				    this.store.baseParams = {SECTIDNO: Ext.get("SECTIDNO").dom.value};
 
-			            /*var o = {start: 0, limit:10};
-			            this.store.baseParams = this.store.baseParams || {};
-			            this.store.baseParams[this.paramName] = '';
-			            this.store.load({params:o, timeout: 300000});*/
 					},
 
 			select: function (combo, record, index){
@@ -556,6 +802,278 @@
 
 			}
 	},
+	yearCombo: function(){
+
+		return {
+			xtype:'combo',
+			id:'yearlevel',
+			hiddenName: 'yearlevel_id',
+            hiddenId: 'yearlevel_id',
+			name: 'yearlevel',
+			valueField: 'id',
+			displayField: 'name',
+			//width: 100,
+			anchor: '95%',
+			 msgTarget: 'qtip',
+			triggerAction: 'all',
+			minChars: 2,
+			forceSelection: true,
+			enableKeyEvents: true,
+			pageSize: 10,
+			resizable: true,
+			readOnly: false,
+			minListWidth: 300,
+			allowBlank: true,
+			store: new Ext.data.JsonStore({
+			id: 'idsocombo',
+			root: 'data',
+			totalProperty: 'totalCount',
+			fields:[{name: 'id'}, {name: 'name'}, {name: 'description'}, {name: 'UNITS_TTL'}, {name: 'ADVISER'}, {name: 'SECTION'}, {name: 'COURSE'}],
+			url: "<?php echo site_url("FacultyEvaluation/getYearLevelCombo"); ?>",
+			baseParams: {start: 0, limit: 10}
+
+			}),
+			listeners: {
+                        beforequery: function(qe)
+					{
+					Ext.get("SECTIDNO").dom.value  = '';
+                    Ext.getCmp("SECTION").setRawValue("");
+					delete qe.combo.lastQuery;
+				 
+					},
+
+			select: function (combo, record, index){
+			this.setRawValue(record.get('name'));
+			Ext.get(this.hiddenName).dom.value  = record.get('id');
+                        //ogs_grade_entry.app.Grid.getStore().setBaseParam("SCHEIDNO", record.get('id'));
+
+
+			},
+			blur: function(){
+			var val = this.getRawValue();
+			this.setRawValue.defer(1, this, [val]);
+			this.validate();
+			},
+			render: function() {
+			this.el.set({qtip: 'Type at least ' + this.minChars + ' characters to search for a year'});
+
+			},
+			keypress: {buffer: 100, fn: function() {
+			Ext.get(this.hiddenName).dom.value  = '';
+			if(!this.getRawValue()){
+			this.doQuery('', true);
+			}
+			}}
+			},
+			fieldLabel: 'Year*'
+
+			}
+	},
+	studentGrid: function(){
+			function isSet(me)
+	 	    {
+	 	      if (me == null || me == '')
+	 	       return 0;
+	 	      else
+	 	       return 1;
+	 	    }
+	 	    
+			ExtCommon.util.renderSearchField('searchby');
+			
+			FacultyEvaluation.app.selectedStudents = {data: new Array()};
+	
+	 		var Objstore = new Ext.data.Store({
+	 						proxy: new Ext.data.HttpProxy({
+	 							url: "<?php echo site_url('FacultyEvaluation/getStudents') ?>",
+	 							method: "POST"
+	 							}),
+	 						reader: new Ext.data.JsonReader({
+	 								root: "data",
+	 								id: "id",
+	 								totalProperty: "totalCount",
+	 								fields: [
+	 									{ name: "STUDCODE"},
+                                        { name: "IDNO"},
+                                        { name: "NAME"}
+                                        
+		]
+ 						}),
+ 						remoteSort: true,
+ 						baseParams: {start: 0, limit: 100},
+ 						listeners: {
+ 							beforeload: function(s){
+ 								if(isSet(Ext.get("yearlevel_id").dom.value) && isSet(isSet(Ext.get("SECTIDNO").dom.value))){
+ 									s.setBaseParam("YEAR", Ext.getCmp("yearlevel").getRawValue());
+ 									s.setBaseParam("SECTIDNO", Ext.get("SECTIDNO").dom.value);
+ 									
+ 									if(isSet(Ext.get("gender_id").dom.value) && isSet(Ext.getCmp("gender").getRawValue()))
+ 										s.setBaseParam("GENDIDNO", Ext.get("gender_id").dom.value);
+ 									else
+ 										s.setBaseParam("GENDIDNO", "");
+ 									
+ 									//if(isSet(Ext.get("SUBJIDNO").dom.value) && isSet(Ext.getCmp("subject").getRawValue()))
+ 									//	s.setBaseParam("SUBJIDNO", Ext.get("SUBJIDNO").dom.value);
+ 									//else
+ 									//	s.setBaseParam("SUBJIDNO", "");
+ 										
+ 									return 1;
+ 								}else{
+ 									return false;
+ 								}
+ 							}
+ 						}
+ 					});
+ 					
+ 		
+ 	     
+		var gridView = new Ext.grid.GridView({ 
+                getRowClass : function (row, index) { 
+                    var cls = '',
+                    data = row.data,
+                    student = FacultyEvaluation.app.selectedStudents.data.indexOf(data.STUDCODE);
+                    
+                    if(student != -1){
+                    	cls = 'selected';
+                    }
+                    return cls; 
+                } 
+        });
+        
+		var colModel = new Ext.grid.ColumnModel([
+			{ header: "ID No.", width: 100, sortable: true, dataIndex: "IDNO" },
+			{ header: "Name", width: 250, sortable: true, dataIndex: "NAME" },
+			{
+                xtype: 'actioncolumn',
+                width: 50,
+                items: [{
+                    icon   : '/images/icons/delete.png',  // Use a URL in the icon config
+                    tooltip: 'Remove Filter',
+                    handler: function(grid, rowIndex, colIndex) {
+                        var rec = Objstore.getAt(rowIndex);
+                        var row = FacultyEvaluation.app.selectedStudents.data.indexOf(rec.get('STUDCODE'));
+                       // console.log(rec.get('id')+ " " + row);
+                        if(row != - 1){
+                        FacultyEvaluation.app.selectedStudents.data.splice(row, 1);
+                        FacultyEvaluation.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+                        }
+                    //    console.log(FacultyEvaluation.app.selectedStudents.data);
+                       // console.log(rec.get('id')+ " " + row);
+                    }
+                }, {
+                    icon   : '/images/icons/add.png',  // Use a URL in the icon config
+                    tooltip: 'Add Filter',
+                    handler: function(grid, rowIndex, colIndex) {
+                        var rec = Objstore.getAt(rowIndex),
+                        student = FacultyEvaluation.app.selectedStudents.data.indexOf(rec.get('STUDCODE'));
+                        if(student == -1){
+                         FacultyEvaluation.app.selectedStudents.data.push(rec.get('STUDCODE'));
+                        // hrisv2_my_whereabouts.app.Grid.getStore().setBaseParam("employees", Ext.util.JSON.encode(hrisv2_my_whereabouts.app.employees));
+                         FacultyEvaluation.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+                        }
+                       // console.log(FacultyEvaluation.app.selectedStudents);
+                    }
+                }]
+            }
+		]);
+
+ 			var grid = new Ext.grid.GridPanel({
+ 				id: 's_grid',
+ 				height: 240,
+ 				width: '100%',
+ 				border: true,
+ 				view: gridView,
+ 				ds: Objstore,
+ 				cm:  colModel,
+ 				sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+ 	        	loadMask: true,
+ 	        	bbar:
+ 	        		new Ext.PagingToolbar({
+ 		        		autoShow: true,
+ 				        pageSize: 100,
+ 				        store: Objstore,
+ 				        displayInfo: true,
+ 				        displayMsg: 'Displaying Results {0} - {1} of {2}',
+ 				        emptyMsg: "No Data Found."
+ 				    }),
+ 				tbar: [new Ext.form.ComboBox({
+                    fieldLabel: 'Search',
+                    hiddenName:'searchby-form',
+                    id: 'searchby',
+                    typeAhead: true,
+                    triggerAction: 'all',
+                    emptyText:'Search By...',
+                    selectOnFocus:true,
+                    store: new Ext.data.SimpleStore({
+				         id:0
+				        ,fields:
+				            [
+				             'myId',   //numeric value is the key
+				             'myText' //the text value is the value
+
+				            ]
+
+
+				         , data: [['id', 'ID'], ['sd', 'Short Description'], ['ld', 'Long Description']]
+
+			        }),
+				    valueField:'myId',
+				    displayField:'myText',
+				    mode:'local',
+                    width:100,
+                    hidden: true
+
+                }), {
+					xtype:'tbtext',
+					text:'Search:'
+				},'   ', new Ext.app.SearchField({ store: Objstore, width:250}),
+ 					    {
+ 					     	xtype: 'tbfill'
+ 					 	},{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'SELECT ALL',
+							icon: '/images/icons/application_add.png',
+ 							cls:'x-btn-text-icon',
+ 							handler: function(){
+ 								if(FacultyEvaluation.app.sGrid.getStore().getTotalCount()){
+ 									FacultyEvaluation.app.sGrid.getStore().each(
+ 										function(f){
+ 											var st = FacultyEvaluation.app.selectedStudents.data.indexOf(f.data.STUDCODE);
+					                        if(st == -1){
+					                         FacultyEvaluation.app.selectedStudents.data.push(f.data.STUDCODE);
+					                        }
+					                        
+ 										}, this
+ 									);
+ 									FacultyEvaluation.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+ 									console.log(FacultyEvaluation.app.selectedStudents.data);
+ 								}else{
+ 									Ext.Msg.show({
+  								     title: 'Status',
+ 								     msg: "No records in the grid",
+  								     buttons: Ext.Msg.OK,
+  								     icon: Ext.Msg.WARNING
+  								 });
+ 								}
+ 								//
+ 							}
+
+ 					 	},'-',{
+ 					     	xtype: 'tbbutton',
+ 					     	text: 'CLEAR SELECTION',
+							icon: '/images/icons2/delete.png',
+ 							cls:'x-btn-text-icon',
+ 							handler: function(){
+ 								FacultyEvaluation.app.selectedStudents = {data: new Array()};
+ 								FacultyEvaluation.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+ 							}
+
+ 					 	}
+ 	    			 ]
+ 	    	});
+
+ 			FacultyEvaluation.app.sGrid = grid;
+ 			
+	}
 		
 		}
 		}();
