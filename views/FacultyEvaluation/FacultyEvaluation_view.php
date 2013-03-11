@@ -237,7 +237,7 @@
  								columnWidth: .5,
  								layout: 'form',
  								items: [
- 								ExtCommon.util.createCombo("faculty_set", "faculty_id", "95%", "<?php echo site_url("facultyEvaluation/getFacultyCombo");?>", "Faculty*", false, false)
+ 								ExtCommon.util.createCombo("faculty_set", "faculty_id", "95%", "<?php echo site_url("FacultyEvaluation/getFacultyCombo");?>", "Faculty*", false, false)
  								]
  							}
  							
@@ -954,7 +954,7 @@
                        // console.log(rec.get('id')+ " " + row);
                         if(row != - 1){
                         FacultyEvaluation.app.selectedStudents.data.splice(row, 1);
-                        FacultyEvaluation.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+                        FacultyEvaluation.app.sGrid.getStore().load();
                         }
                     //    console.log(FacultyEvaluation.app.selectedStudents.data);
                        // console.log(rec.get('id')+ " " + row);
@@ -968,7 +968,7 @@
                         if(student == -1){
                          FacultyEvaluation.app.selectedStudents.data.push(rec.get('STUDCODE'));
                         // hrisv2_my_whereabouts.app.Grid.getStore().setBaseParam("employees", Ext.util.JSON.encode(hrisv2_my_whereabouts.app.employees));
-                         FacultyEvaluation.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+                         FacultyEvaluation.app.sGrid.getStore().load();
                         }
                        // console.log(FacultyEvaluation.app.selectedStudents);
                     }
@@ -1044,7 +1044,7 @@
 					                        
  										}, this
  									);
- 									FacultyEvaluation.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+ 									FacultyEvaluation.app.sGrid.getStore().load();
  									console.log(FacultyEvaluation.app.selectedStudents.data);
  								}else{
  									Ext.Msg.show({
@@ -1064,7 +1064,7 @@
  							cls:'x-btn-text-icon',
  							handler: function(){
  								FacultyEvaluation.app.selectedStudents = {data: new Array()};
- 								FacultyEvaluation.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+ 								FacultyEvaluation.app.sGrid.getStore().load();
  							}
 
  					 	}

@@ -119,22 +119,29 @@ class eStudent extends CI_Controller{
 				$r = 0;
 				$ctr = count($records);
 				foreach($records as $row):
-					$output .= "{xtype: 'label', text: '".($r+1).". ".$row['description']."', cls: 'questionlabel'},";
+					//$output .= "{xtype: 'label', text: '".($r+1).". ".$row['description']."', cls: 'questionlabel'},";
 					switch ($row['classification_id']):
 						case 5:
 							
 							$output .= "{
 					            xtype: 'radiogroup',
-					            fieldLabel: '',
+					            fieldLabel: '<span class=\"questionlabel\">".($r+1).". ".$row['description']."</span>',
 					            columns: 1,
+					            cls: 'radioOdd',
 					            items: [";
 					      			$choices_query->setFetchMode(PDO::FETCH_OBJ);
 						            $choices_query->execute(array($row['id']));
 									$choices = $choices_query->fetchAll();
 									$r_choices = 0;
 									$ctr_choices = count($choices);
+									$class = "";
 									foreach ($choices as $choice) {
-										$output .= "{boxLabel: '".$choice->description."', name: 'mc_".$row['id']."', inputValue: ".$choice->id."}";
+										if($r_choices%2 != 0){
+											$class = "columnOdd";
+										}else{
+											$class = "";
+										}
+										$output .= "{boxLabel: '".$choice->description."', name: 'mc_".$row['id']."', inputValue: ".$choice->id.", cls: '$class'}";
 										$r_choices++;
 							
 										if($r_choices != $ctr_choices){
