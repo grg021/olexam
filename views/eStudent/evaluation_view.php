@@ -22,6 +22,9 @@
 		background: #e7eaef;
 		
 	}
+	#evalform .x-panel-mc { padding-top: 25px; }
+	#evalform .x-column-inner .x-form-item { padding-left: 10px; }
+	#evalform .x-column-inner .x-form-item .x-form-cb-label { padding-left: 5px; }
 </style>
 <div id="mainBody"></div>
 		<script type="text/javascript">
@@ -47,6 +50,8 @@
  		        labelWidth: 50,
  		        autoScroll: true,
  		        buttonAlign: 'center',
+ 		        id: 'evalform',
+ 		        title: 'Evaluation Form',
  		        items: [<?php echo $fields; ?>, {xtype: 'hidden', name: 'question_set_id', value: <?php echo $question_set_id; ?>}, {xtype: 'hidden', name: 'evaluation_id', value: <?php echo $evaluation_id; ?>}],
  		        buttons: [
  		        {
