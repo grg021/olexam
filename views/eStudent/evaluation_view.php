@@ -4,16 +4,18 @@
 		font-size: 11pt;
 		font-family: helvetica;
 		margin-left: 20px;
+		color: #dd7b33;
 		
 	}
 	
 	.radioOdd{
 		background: #f0f4f7;
 		font-family: helvetica;
-		color: #dd7b33;
+		color: #334466;
 		margin-left: 50px;
 		margin-top: 20px;
 		margin-bottom: 20px;
+		margin-right: 5%;
 	}
 	
 	.columnOdd{
