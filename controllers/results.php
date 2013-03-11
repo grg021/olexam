@@ -16,7 +16,11 @@ class results extends MY_Controller{
 			
 		}
 
-		function getExam(){
+		function getStudents(){
+			
+			$param = "a.evaluation_id";
+	        $id=$this->input->post('evaluation_id');
+	        $filter = "$param = '$id'";
         
 	        $start=$this->input->post('start');
 	        $limit=$this->input->post('limit');
@@ -26,23 +30,21 @@ class results extends MY_Controller{
 	        $query = $this->input->post('query');
 	
 	        $records = array();
-	        $table = "tbl_question_set";
-	        $fields = array("id","name","description","timePerQuestion");
+	        $table = "tbl_faculty_evaluation_answers a JOIN lithefzj_ogs00004.COLLEGE b ON a.student_id = b.STUDCODE";
+	        $fields = array("DISTINCT b.IDNO, b.NAME, b.STUDCODE");
 	        $db = 'default';
-	        $filter = "";
-	        $group = "";
+	        //$filter = "";
+	        $group = "a.student_id";
 			if(empty($sort) && empty($dir)){
-	            $sort = "id ASC";
+	            $sort = "b.NAME ASC";
 	        }else{
 	        	$sort = "$sort $dir";
 	        }
 			
 			if(!empty($query)){
- 				"(id LIKE '%$query%' OR name LIKE '%$query%' OR description LIKE '%$query%' OR timePerQuestion LIKE '%$query%')";
+ 				"(NAME LIKE '%$query%')";
 	    	}
 			 
-			
-			
 			$records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group);
 	
 	        $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
@@ -61,128 +63,30 @@ class results extends MY_Controller{
 	        $data['success'] = true;
 	        die(json_encode($data));
 	    }
-
-		function addExam(){
-	        $db = 'default';
-	        $table = 'tbl_question_set';
-			$input = $this->input->post();
-			
-			$input['dcreated'] = date("Y-m-d H:i:s");
-			$input['createdby'] = $this->session->userData("userName");
-			
-			//uncomment for checking duplicates (change $fieldname)
-			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "name = '".$this->input->post("name")."'", "")){
-	            $data['success'] = false;
-	            $data['data'] = "Record already exists";
-	            die(json_encode($data));
-	        }
-	        
-	        //uncomment for FRs
-			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);
-			
-	        $data = $this->lithefire->insertRow($db, $table, $input);
-	
-	        die(json_encode($data));
-    	}
-
-		function loadExam(){
-	        $db = "default";
-	        
-	        $id=$this->input->post('id');
-	        $table = "tbl_question_set";
-			$param = "id";
-	
-	        $filter = "$param = '$id'";
-	        $fields = array("*");
-	        $records = array();
-	        $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
-	
-	        $temp = array();
-	
-	        foreach($records as $row):
-	            $data["data"] = $row;
-	        endforeach;
-	        $data['success'] = true;
-	
-	        die(json_encode($data));
-	    }
-
-		function updateExam(){
-	        $db = 'default';
-	
-	        $table = "tbl_question_set";
-			
-			$param = "id";
-	        $id=$this->input->post('id');
-	        $filter = "$param = '$id'";
-	
-	        $input = array();
-	        foreach($this->input->post() as $key => $val){
-	            if($key == 'id')
-	                continue;
-	            if(isset($val) || !empty($val)){
-	                $input[$key] = $val;
-	            }
-	        }
-			
-	        $input['dmodified'] = date("Y-m-d H:i:s");
-			$input['modifiedby'] = $this->session->userData("userName");
-			
-			//check for duplicates (change $fieldname)
-			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' AND id != '$id'", "")){
-	            $data['success'] = false;
-	            $data['data'] = "Record already exists";
-	            die(json_encode($data));
-	        }
-	
-	
-	        $data = $this->lithefire->updateRow($db, $table, $input, $filter);
-	
-	
-	        die(json_encode($data));
-	    }
-
-		function deleteExam(){
-	        $table = "tbl_question_set";
-			$table2 = "tbl_question";
-	        $param = "id";
-	       
-			$db = 'default';
-	        $id=$this->input->post('id');
-			$filter = "$param = '$id'";
-			$records = $this->lithefire->fetchAllRecords($db, $table2, "question_set_id = '$id'", array("id"));
-			if($records){
-			foreach($records as $row):
-				$this->lithefire->deleteRow($db, "tbl_question_choices", "question_id = '".$row['id']."'");
-			endforeach;
-			}
-			$this->lithefire->deleteRow($db, $table2, "question_set_id = '$id'");
-	        $data = $this->lithefire->deleteRow($db, $table, $filter);
-			
-	
-	        die(json_encode($data));
-	    }
 		
-		function getquestion(){
-        
+		function getQuestion(){
+			
 	        $start=$this->input->post('start');
 	        $limit=$this->input->post('limit');
-			$id=$this->input->post('id');
+			$id=$this->input->post('STUDCODE');
 	
 	        $sort = $this->input->post('sort');
 	        $dir = $this->input->post('dir');
 	        $query = $this->input->post('query');
+			
+			$s = $this->input->post('students');
+			$s = str_replace("\\", "", $s);
+			$s = json_decode($s); 
+			 
 	
 	        $records = array();
-	        $table = "question ";
-	        $fields = array("id","classification_id","description");
+	        $table = "tbl_faculty_evaluation_answers a LEFT JOIN tbl_question b ON a.question_id = b.id LEFT JOIN lithefzj_engine.FILEQUCL c ON b.classification_id = c.QUCLCODE LEFT JOIN lithefzj_engine.FILEQUCA d ON b.category_id = d.QUCACODE";
+	        $fields = array("a.student_id, a.question_id, a.answer, a.answer_text, a.correct_flag, a.date_answered, b.description, c.DESCRIPTION AS classification, d.description AS category");
 	        $db = 'default';
-	        $filter = "exam_id = '$id'";
+	        $filter = "a.student_id IN a.student_id";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
-	            $sort = "id DESC";
+	            $sort = "a.question_id DESC";
 	        }else{
 	        	$sort = "$sort $dir";
 	        }
@@ -191,6 +95,7 @@ class results extends MY_Controller{
  				"(id LIKE '%$query%' description LIKE '%$query%')";
 	    	}
 			 
+			
 			$records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group);
 	
 	        $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
@@ -210,33 +115,5 @@ class results extends MY_Controller{
 	        die(json_encode($data));
 	    }
 
-		function addquestion(){
-	        $db = 'default';
-	        $table = 'question';
-			$post = $this->input->post();
-			$id=$this->input->post('id');
-			
-			$input = $post;
-			unset($input['id']);
-			$input['dcreated'] = date("Y-m-d H:i:s");
-			$input['createdby'] = $this->session->userData("userName");
-			$input['exam_id'] = $id;
-			
-			
-			// uncomment for checking duplicates (change $fieldname)
-			$fieldname = 'description';
-	        if($this->lithefire->countFilteredRows($db, $table, "$fieldname = '".$this->input->post("$fieldname")."' and exam_id = '$id'", "")){
-	            $data['success'] = false;
-	            $data['data'] = "Record already exists";
-	            die(json_encode($data));
-	        }
-	        
-	        //uncomment for FRs
-			//$input['IDNO'] = $this->lithefire->getNextCharId($db, $table, 'IDNO', 5);
-			
-	        $data = $this->lithefire->insertRow($db, $table, $input);
-	
-	        die(json_encode($data));
-    	}
 
 }
