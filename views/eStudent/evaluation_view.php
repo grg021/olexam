@@ -3,17 +3,22 @@
 		font-weight: bold;
 		font-size: 11pt;
 		font-family: helvetica;
+		margin-left: 20px;
+		
 	}
 	
 	.radioOdd{
 		background: #f0f4f7;
 		font-family: helvetica;
 		color: #dd7b33;
+		margin-left: 50px;
+		margin-top: 20px;
+		margin-bottom: 20px;
 	}
 	
 	.columnOdd{
-		background: white;
-		color: white;
+		background: #e7eaef;
+		
 	}
 </style>
 <div id="mainBody"></div>

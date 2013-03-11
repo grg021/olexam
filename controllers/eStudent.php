@@ -141,7 +141,7 @@ class eStudent extends CI_Controller{
 										}else{
 											$class = "";
 										}
-										$output .= "{boxLabel: '".$choice->description."', name: 'mc_".$row['id']."', inputValue: ".$choice->id.", cls: '$class'}";
+										$output .= "{boxLabel: '".$choice->description."', name: 'mc_".$row['id']."', inputValue: ".$choice->id.", itemCls: '$class'}";
 										$r_choices++;
 							
 										if($r_choices != $ctr_choices){
@@ -154,7 +154,7 @@ class eStudent extends CI_Controller{
 							
 						break;
 						case 2:
-							$output .= "{xtype: 'textarea', anchor: '95%', name: 'essay_".$row['id']."', id: '".$row['id']."', height: 170}";
+							$output .= "{xtype: 'textarea', fieldLabel: '<span class=\"questionlabel\">".($r+1).". ".$row['description']."</span>', anchor: '95%', name: 'essay_".$row['id']."', id: '".$row['id']."', height: 170, style: 'marginLeft: 50px'}";
 					endswitch;
 					
 					$r++;
