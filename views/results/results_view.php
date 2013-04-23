@@ -228,6 +228,8 @@
                         	if(row != - 1){
                         		results.app.selectedStudents.data.splice(row, 1);
                         		results.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+                        		results.app.eGrid.getStore().setBaseParam("selectedStudents", results.app.selectedStudents.data.toString());
+                         		results.app.eGrid.getStore().load({params:{start: 0, limit: 25}});
                         	}
                     	}	
                 	}, {
@@ -240,6 +242,8 @@
                         	if(student == -1){
                          		results.app.selectedStudents.data.push(rec.get('STUDCODE'));
                          		results.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+                         		results.app.eGrid.getStore().setBaseParam("selectedStudents", results.app.selectedStudents.data.toString());
+                         		results.app.eGrid.getStore().load({params:{start: 0, limit: 25}});
                         	}
                     }
                 }]
@@ -312,6 +316,8 @@
  									);
  									results.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
  									console.log(results.app.selectedStudents.data);
+ 									results.app.eGrid.getStore().setBaseParam("selectedStudents", results.app.selectedStudents.data.toString());
+                         			results.app.eGrid.getStore().load({params:{start: 0, limit: 25}});
  								}else{
  									Ext.Msg.show({
   								     title: 'Status',
@@ -331,17 +337,19 @@
  							handler: function(){
  								results.app.selectedStudents = {data: new Array()};
  								results.app.sGrid.getStore().load({params:{start: 0, limit: 25}});
+ 								results.app.eGrid.getStore().setBaseParam("selectedStudents", results.app.selectedStudents.data.toString());
+                         		results.app.eGrid.getStore().load({params:{start: 0, limit: 25}});
  							}
 
  					 	}
- 	    			 ], listeners: {
+ 	    			 ]/*, listeners: {
  	    			 	rowclick: function(grid, r, e){
  	    			 		var record = grid.getStore().getAt(r);
 						    var data = record.get("STUDCODE");
- 	    			 		results.app.eGrid.getStore().setBaseParam("STUDCODE", data);
  	    			 		results.app.eGrid.getStore().load();
- 	    			 	}
- 	    			 }
+ 	    			 	}rid.getStore().setBaseParam("STUDCODE", data);
+ 	    			 		results.app.eG
+ 	    			 }*/
  	    	});
 
  			results.app.sGrid = sgrid;
@@ -376,7 +384,7 @@
  					});
 
 
- 			var grid = new Ext.grid.GridPanel({
+ 			var egrid = new Ext.grid.GridPanel({
  				id: 'employee_grid',
  				height: 205,
  				width: '100%',
@@ -389,7 +397,7 @@
  						  { header: "Classification", width: 150, sortable: true, dataIndex: "classification"},
  						  { header: "Answer", width: 100, sortable: true, dataIndex: "answer"},
  						  { header: "Answer Text", width: 100, sortable: true, dataIndex: "answer_text"},
- 						  { header: "Is Correct", width: 50, sortable: true, dataIndex: "correct_flag"},
+ 						  { header: "Is Correct", width: 100, sortable: true, dataIndex: "correct_flag"},
  						  { header: "Date Answered", width: 100, sortable: true, dataIndex: "date_answered"}
  						]
  				),
@@ -439,7 +447,7 @@
                                                 }
  	    			 ]
  	    	});
- 			results.app.eGrid = grid;
+ 			results.app.eGrid = egrid;
 		}
 	
 		 //end of functions

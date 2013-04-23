@@ -68,8 +68,15 @@ class results extends MY_Controller{
 			
 	        $start=$this->input->post('start');
 	        $limit=$this->input->post('limit');
-			$id=$this->input->post('STUDCODE');
-	
+			
+			$id=$this->input->post('selectedStudents');
+			$param = "a.student_id";
+			$temp2 = array();
+	        if(empty($id))
+	        	$filter = "$param IN ('')";
+			else
+	        	$filter = "$param IN ($id)";
+			
 	        $sort = $this->input->post('sort');
 	        $dir = $this->input->post('dir');
 	        $query = $this->input->post('query');
@@ -83,10 +90,9 @@ class results extends MY_Controller{
 	        $table = "tbl_faculty_evaluation_answers a LEFT JOIN tbl_question b ON a.question_id = b.id LEFT JOIN lithefzj_engine.FILEQUCL c ON b.classification_id = c.QUCLCODE LEFT JOIN lithefzj_engine.FILEQUCA d ON b.category_id = d.QUCACODE";
 	        $fields = array("a.student_id, a.question_id, a.answer, a.answer_text, a.correct_flag, a.date_answered, b.description, c.DESCRIPTION AS classification, d.description AS category");
 	        $db = 'default';
-	        $filter = "a.student_id IN a.student_id";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
-	            $sort = "a.question_id DESC";
+	            $sort = "a.question_id ASC";
 	        }else{
 	        	$sort = "$sort $dir";
 	        }

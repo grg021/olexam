@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v10.00 Beta1
-MySQL - 5.5.27 : Database - lithefzj_exam
+MySQL - 5.5.25a : Database - lithefzj_exam
 *********************************************************************
 */
 
@@ -76,11 +76,11 @@ CREATE TABLE `module_group_access` (
   `group_id` int(20) DEFAULT NULL,
   `module_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 /*Data for the table `module_group_access` */
 
-insert  into `module_group_access`(`id`,`group_id`,`module_id`) values (1,1,1),(2,1,2),(3,1,4),(4,2,4),(5,1,5),(6,3,5),(7,3,4),(8,1,6),(9,1,8),(10,1,9),(11,1,10),(12,1,11),(13,1,23),(14,1,13),(15,1,24),(18,2,26),(19,1,26);
+insert  into `module_group_access`(`id`,`group_id`,`module_id`) values (1,1,1),(2,1,2),(3,1,4),(4,2,4),(5,1,5),(6,3,5),(7,3,4),(8,1,6),(9,1,8),(10,1,9),(11,1,10),(12,1,11),(13,1,23),(14,1,13),(15,1,24),(18,2,26),(19,1,26),(20,1,25);
 
 /*Table structure for table `module_group_users` */
 
