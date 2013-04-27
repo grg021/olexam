@@ -25,9 +25,15 @@ class FacultyEvaluation extends MY_Controller{
 	
 	        $records = array();
 			$fr_db = $this->config->item("fr_db");
+			$ogs_db = $this->config->item("ogs_db");
 			
-	        $table = "tbl_faculty_evaluation_session a LEFT JOIN $fr_db.FILEADVI b ON a.faculty_id = b.ADVICODE LEFT JOIN tbl_question_set c ON a.question_set_id = c.id";
-	        $fields = array("a.id","c.name as title","c.description","start_date", "end_date", "faculty_id", "b.ADVISER as faculty");
+	        $table = "tbl_faculty_evaluation_session a LEFT JOIN $fr_db.FILEADVI b ON a.faculty_id = b.ADVICODE LEFT JOIN tbl_question_set c ON a.question_set_id = c.id 
+	        LEFT JOIN $ogs_db.FILESCHE d ON a.SCHEIDNO = d.SCHEIDNO
+	        LEFT JOIN $ogs_db.FILESUBJ e ON d.SUBJIDNO = e.SUBJIDNO
+	        LEFT JOIN $fr_db.FILEDAYS f ON d.DAYSIDNO = f.DAYSIDNO
+	        LEFT JOIN $fr_db.FILETIME g ON d.TIMEIDNO = g.TIMEIDNO";
+	        $fields = array("a.id","c.name as title","c.description","start_date", "end_date", "faculty_id", "b.ADVISER as faculty", 
+	        "CONCAT(e.SUBJCODE, ' ', '(',e.COURSEDESC,')') as subject", "CONCAT(f.DAYS, ' ', g.TIME) as schedule");
 	        $db = 'exam';
 			
 	        $filter = "";
@@ -74,11 +80,12 @@ class FacultyEvaluation extends MY_Controller{
         $sort = $this->input->post('sort');
         $dir = $this->input->post('dir');
 		
-		$YEAR = $this->input->post('YEAR');
-		$SECTIDNO = $this->input->post('SECTIDNO');
+		//$YEAR = $this->input->post('YEAR');
+		//$SECTIDNO = $this->input->post('SECTIDNO');
+		$SCHEIDNO = $this->input->post('SCHEIDNO');
 
         $querystring = $this->input->post('query');
-		
+		/*
 		if(!empty($YEAR) && strtolower($YEAR) != 'all year level')
             $filter = "YEAR = '$YEAR'";
 		
@@ -87,7 +94,9 @@ class FacultyEvaluation extends MY_Controller{
 				$filter .= " AND SECTIDNO = '$SECTIDNO'";
 			else
 				$filter = "SECTIDNO = '$SECTIDNO'";
-		}
+		}*/
+		$filter = "a.SCHEIDNO = $SCHEIDNO";
+		
 		$group = "";
 		$having = "";
 
@@ -109,8 +118,8 @@ class FacultyEvaluation extends MY_Controller{
 		$fr_db = $this->config->item("fr_db");
 		$default_db = $this->config->item("default_db");
         $records = array();
-        $table = "COLLEGE";
-        $fields = array("STUDCODE", "STUDIDNO", "NAME", "IDNO");
+        $table = "GRADES a LEFT JOIN COLLEGE b ON a.STUDIDNO = b.STUDIDNO";
+        $fields = array("b.STUDCODE", "b.STUDIDNO", "b.NAME", "b.IDNO");
 		
 		
 
@@ -142,10 +151,11 @@ class FacultyEvaluation extends MY_Controller{
 	        $table = "tbl_faculty_evaluation_session";
 			$post = $this->input->post();
 			
+			
 			$s_date = date("Y-m-d H:i:s", strtotime($post['start_date']." ".$post['start_time']));
 			$e_date = date("Y-m-d H:i:s", strtotime($post['end_date']." ".$post['end_time']));
 			
-			$input = array("question_set_id"=>$post['question_set_id'], "start_date"=>$s_date, "end_date"=>$e_date, "faculty_id"=>$post['faculty_id'], "created_by"=>$user);
+			$input = array("question_set_id"=>$post['question_set_id'], "start_date"=>$s_date, "end_date"=>$e_date, "faculty_id"=>$post['faculty_id'], "created_by"=>$user, "SCHEIDNO"=>$post['SCHEIDNO']);
 	        $data = $this->lithefire->insertRow($db, $table, $input);
 			
 			$s = $this->input->post('students');
@@ -404,23 +414,24 @@ class FacultyEvaluation extends MY_Controller{
         
 	    $start=$this->input->post('start');
         $limit=$this->input->post('limit');
-		$SECTIDNO = $this->input->post('SECTIDNO');
-        $adviser_id = $this->session->userdata('userCode');
+		//$SECTIDNO = $this->input->post('SECTIDNO');
+        //$adviser_id = $this->session->userdata('userCode');
+		$faculty_id = $this->input->post('faculty_id');
 
         $db = "ogs";
 
 
         $sort = $this->input->post('sort');
         $dir = $this->input->post('dir');
-        $querystring = $this->input->post('query');
+        $query = $this->input->post('query');
        // $ADVIIDNO = $this->input->post('ADVIIDNO');
 		$filter = "";
-		$group = "";
+		$group = "a.SUBJCODE";
 		$having = "";
 		
-		if($SECTIDNO)
-            $filter="a.SECTIDNO = '$SECTIDNO'";
-		
+		//if($SECTIDNO)
+            //$filter="a.SECTIDNO = '$SECTIDNO'";
+		/*
 		if($this->session->userdata('userType') == "FACU"){
         if(empty($filter))
 			$filter = "a.ADVIIDNO = '$adviser_id'";
@@ -433,9 +444,9 @@ class FacultyEvaluation extends MY_Controller{
 		else
             $filter.=" AND a.ADVIIDNO = '$ADVIIDNO'";
 		}
-        }
+        }*/
         
-
+		/*
         $query = array();
 
          if(!empty($querystring))
@@ -447,21 +458,24 @@ class FacultyEvaluation extends MY_Controller{
         }else{
         	$sort = "$sort $dir";
         }
-		
+		*/
 		$fr_db = $this->config->item("fr_db");
 		
 		
        	$database = "";
         
         $records = array();
-        $table = $database."FILESCHE a LEFT JOIN ".$fr_db.".FILESUBJ b ON a.SUBJIDNO = b.SUBJIDNO LEFT JOIN $fr_db.FILEADVI c ON a.ADVIIDNO = c.ADVIIDNO";
-        $fields = array('a.SCHEIDNO', 'a.SUBJCODE', 'b.COURSEDESC', "b.UNITS_TTL", "c.ADVISER", "a.SECTIDNO", "a.COURIDNO");
+        $table = "FILESCHE a LEFT JOIN FILESUBJ b ON a.SUBJIDNO = b.SUBJIDNO LEFT JOIN $fr_db.FILEADVI c ON a.ADVIIDNO = c.ADVIIDNO";
+        $fields = array('DISTINCT a.SUBJIDNO', 'a.SUBJCODE', 'b.COURSEDESC');
 
 
 
         //$filter = "a.SUBJIDNO = b.SUBJIDNO AND a.DAYSIDNO = c.DAYSIDNO AND a.TIMEIDNO = d.TIMEIDNO";
         //$filter .= " AND a.SEMEIDNO = '$semester_id'";
-        
+        $filter = "c.ADVIIDNO = $faculty_id";
+		
+		if(!empty($query))
+				$filter .= " AND (a.SUBJCODE LIKE '%$query%')";
 
         $records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group, $having);
        // die($this->db->last_query());
@@ -471,13 +485,13 @@ class FacultyEvaluation extends MY_Controller{
         $total = 0;
         if($records){
         foreach($records as $row):
-			
+			/*
 			$section = $this->lithefire->getFieldWhere("ogs", $database."FILESECT", "SECTIDNO = '".$row['SECTIDNO']."'", "SECTION");
 			$course = $this->lithefire->getFieldWhere("fr", "FILECOUR", "COURIDNO = '".$row['COURIDNO']."'", "COURSE");
-			
-            $tmp_row = array("id"=>$row['SCHEIDNO'], "name"=>$row['SUBJCODE']." (".$row['COURSEDESC'].")", 
-            "description"=>$row['COURSEDESC'], 'UNITS_TTL'=>$row['UNITS_TTL'], "ADVISER"=>$row['ADVISER'], "SECTION"=>$section, "COURSE"=>$course);
-            $temp[] = $tmp_row;
+			*/
+            $tmp_row = array("id"=>$row['SUBJIDNO'], "name"=>$row['SUBJCODE']." (".$row['COURSEDESC'].")","description"=>$row['COURSEDESC']);
+			  
+			$temp[] = $tmp_row;
             $total++;
 
         endforeach;
@@ -487,7 +501,53 @@ class FacultyEvaluation extends MY_Controller{
         $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
         die(json_encode($data));
     	}
+		
+		function getScheduleCombo(){
+        
+	    $start=$this->input->post('start');
+        $limit=$this->input->post('limit');
+		$SUBJIDNO = $this->input->post('SUBJIDNO');
 
+        $db = "ogs";
+
+
+        $sort = $this->input->post('sort');
+        $dir = $this->input->post('dir');
+        $querystring = $this->input->post('query');
+		$filter = "";
+		$group = "";
+		$having = "";
+		
+		$fr_db = $this->config->item("fr_db");
+		
+       	$database = "";
+        
+        $records = array();
+        $table = "FILESCHE a LEFT JOIN $fr_db.FILEDAYS b ON a.DAYSIDNO = b.DAYSIDNO LEFT JOIN $fr_db.FILETIME c ON a.TIMEIDNO = c.TIMEIDNO";
+        $fields = array('a.SCHEIDNO', 'b.DAYSIDNO', 'b.DAYS', 'c.TIMEIDNO', 'c.TIME');
+
+        $filter = "a.SUBJIDNO = $SUBJIDNO";
+
+        $records = $this->lithefire->getAllRecords($db, $table, $fields, $start, $limit, $sort, $filter, $group, $having);
+       
+        $temp = array();
+        $total = 0;
+        if($records){
+        foreach($records as $row):
+			
+            $tmp_row = array("SCHEIDNO"=>$row['SCHEIDNO'], "TIMEIDNO"=>$row['TIMEIDNO'], "DAYSIDNO"=>$row['DAYSIDNO']." (".$row['DAYS'].")","DAYS"=>$row['DAYS']. " (".$row['TIME'].")","TIME"=>$row['TIME']);
+           
+			$temp[] = $tmp_row;
+            $total++;
+
+        endforeach;
+        }
+        $data['data'] = $temp;
+        $data['success'] = true;
+        $data['totalCount'] = $this->lithefire->countFilteredRows($db, $table, $filter, $group);
+        die(json_encode($data));
+    	}
+		
 		public function getQuestionSetCombo($value='')
 		{
 			$start=$this->input->post('start');

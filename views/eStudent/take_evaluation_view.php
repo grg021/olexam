@@ -33,7 +33,9 @@
                                         { name: "end_date"},
                                         { name: "faculty_id"},
                                         { name: "faculty"},
-                                        { name: "status"}
+                                        { name: "status"},
+                                        { name: "subject"},
+                                        { name: "schedule"}
                                         
 		]
  						}),
@@ -47,7 +49,9 @@
 			{ header: "Start Date", width: 150, sortable: true, dataIndex: "start_date" },
 			{ header: "End Date", width: 150, sortable: true, dataIndex: "end_date" },
 			{ header: "Faculty", width: 200, sortable: true, dataIndex: "faculty" },
-			{ header: "Status", width: 100, sortable: true, dataIndex: "status" }
+			{ header: "Status", width: 100, sortable: true, dataIndex: "status" },
+			{ header: "Subject", width: 300, sortable: true, dataIndex: "subject" },
+			{ header: "Schedule", width: 300, sortable: true, dataIndex: "schedule" }
 		]);
 
  			var grid = new Ext.grid.GridPanel({

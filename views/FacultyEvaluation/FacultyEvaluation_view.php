@@ -37,7 +37,9 @@
                                         { name: "start_date"},
                                         { name: "end_date"},
                                         { name: "faculty_id"},
-                                        { name: "faculty"}
+                                        { name: "faculty"},
+                                        { name: "subject"},
+                                        { name: "schedule"}
                                         
 		]
  						}),
@@ -48,9 +50,11 @@
 		var colModel = new Ext.grid.ColumnModel([
 			{ header: "Title", width: 170, sortable: true, dataIndex: "title" },
 			{ header: "Description", width: 300, sortable: true, dataIndex: "description" },
-			{ header: "Start Date", width: 150, sortable: true, dataIndex: "start_date" },
-			{ header: "End Date", width: 150, sortable: true, dataIndex: "end_date" },
-			{ header: "Faculty", width: 200, sortable: true, dataIndex: "faculty" }
+			{ header: "Start Date", width: 125, sortable: true, dataIndex: "start_date" },
+			{ header: "End Date", width: 125, sortable: true, dataIndex: "end_date" },
+			{ header: "Faculty", width: 200, sortable: true, dataIndex: "faculty" },
+			{ header: "Subject", width: 300, sortable: true, dataIndex: "subject" },
+			{ header: "Schedule", width: 300, sortable: true, dataIndex: "schedule" }
 		]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -237,10 +241,29 @@
  								columnWidth: .5,
  								layout: 'form',
  								items: [
- 								ExtCommon.util.createCombo("faculty_set", "faculty_id", "95%", "<?php echo site_url("FacultyEvaluation/getFacultyCombo");?>", "Faculty*", false, false)
+ 									
+ 										ExtCommon.util.createCombo("faculty_set", "faculty_id", "95%", "<?php echo site_url("FacultyEvaluation/getFacultyCombo");?>", "Faculty*", false, false)
+ 					
  								]
  							}
- 							
+ 						]
+ 					},{
+ 						layout: 'column',
+ 						width: 'auto',
+ 						items: [
+ 							{
+			            		columnWidth: .5,
+	 	 			        	layout: 'form',
+	 	 			        	items: [
+	 	 			        		FacultyEvaluation.app.subjectCombo()
+	 	 			        	]
+			            	},{
+			            		columnWidth: .5,
+	 	 			        	layout: 'form',
+	 	 			        	items: [
+	 	 			        		FacultyEvaluation.app.scheduleCombo()
+	 	 			        	]
+			            	}
  						]
  					},
  					{
@@ -340,7 +363,7 @@
  					}
  		        		]
  					},
- 					{
+ 					/*{
  					xtype:'fieldset',
  					width:'auto',
  					height:'auto',
@@ -370,7 +393,7 @@
 			            	columnWidth:.33,
 	 	 			        layout: 'form',
 	 	 			        items: [
-	 	 			        	ExtCommon.util.createCombo("gender", "gender_id", "95%", "<?php echo site_url("FacultyEvaluation/getGenderCombo")?>", "Gender*", true, false)
+	 	 			        	ExtCommon.util.createCombo("gender", "gender_id", "95%", "<--?php echo site_url("FacultyEvaluation/getGenderCombo")?>", "Gender*", true, false)
 	 	 			        ]
 			            }]
  					}/*,
@@ -402,11 +425,11 @@
  	 			          		
                            	]
 			            }]
- 					}*/
+ 					}
  					
  					]
  					
- 					},
+ 					},*/
  					FacultyEvaluation.app.sGrid
  					]
  		    });
@@ -760,7 +783,7 @@
 			id: 'idsocombo',
 			root: 'data',
 			totalProperty: 'totalCount',
-			fields:[{name: 'id'}, {name: 'name'}, {name: 'description'}, {name: 'UNITS_TTL'}, {name: 'ADVISER'}, {name: 'SECTION'}, {name: 'COURSE'}],
+			fields:[{name: 'id'}, {name: 'name'}, {name: 'description'}],
 			url: "<?php echo site_url("FacultyEvaluation/getSubjectCombo"); ?>",
 			baseParams: {start: 0, limit: 10}
 
@@ -768,11 +791,10 @@
 			listeners: {
                         beforequery: function(qe)
 					{
-						if (Ext.get("SECTIDNO").dom.value == "")
+						if (Ext.get("faculty_id").dom.value == "")
 							return false;
 					delete qe.combo.lastQuery;
-				    this.store.baseParams = {SECTIDNO: Ext.get("SECTIDNO").dom.value};
-
+				    this.store.baseParams = {faculty_id: Ext.get("faculty_id").dom.value};
 					},
 
 			select: function (combo, record, index){
@@ -799,6 +821,77 @@
 			}}
 			},
 			fieldLabel: 'Subject*'
+
+			}
+	},
+	scheduleCombo: function(){
+
+		return {
+			xtype:'combo',
+			id:'schedule',
+			hiddenName: 'SCHEIDNO',
+            hiddenId: 'SCHEIDNO',
+			name: 'schedule',
+			valueField: 'SCHEIDNO',
+			displayField: 'DAYS',
+			//width: 100,
+			anchor: '95%',
+			 msgTarget: 'qtip',
+			triggerAction: 'all',
+			minChars: 2,
+			forceSelection: true,
+			enableKeyEvents: true,
+			pageSize: 10,
+			resizable: true,
+			readOnly: false,
+			minListWidth: 300,
+			allowBlank: true,
+			store: new Ext.data.JsonStore({
+			id: 'idsocombo',
+			root: 'data',
+			totalProperty: 'totalCount',
+			fields:[{name: 'SCHEIDNO'}, {name: 'DAYSIDNO'}, {name: 'TIMEIDNO'}, {name: 'TIME'}, {name: 'DAYS'}],
+			url: "<?php echo site_url("FacultyEvaluation/getScheduleCombo"); ?>",
+			baseParams: {start: 0, limit: 10}
+
+			}),
+			listeners: {
+                        beforequery: function(qe)
+					{
+						if (Ext.get("SUBJIDNO").dom.value == "")
+							return false;
+					delete qe.combo.lastQuery;
+				    this.store.baseParams = {SUBJIDNO: Ext.get("SUBJIDNO").dom.value};
+
+					},
+
+			select: function (combo, record, index){
+			this.setRawValue(record.get('DAYS'));
+			Ext.get(this.hiddenName).dom.value = record.get('DAYSIDNO');
+			Ext.get(this.hiddenName).dom.value = record.get('TIMEIDNO');
+			Ext.get(this.hiddenName).dom.value = record.get('SCHEIDNO');
+			FacultyEvaluation.app.sGrid.getStore().load();
+                        //ogs_grade_entry.app.Grid.getStore().setBaseParam("SCHEIDNO", record.get('id'));
+
+
+			},
+			blur: function(){
+			var val = this.getRawValue();
+			this.setRawValue.defer(1, this, [val]);
+			this.validate();
+			},
+			render: function() {
+			this.el.set({qtip: 'Type at least ' + this.minChars + ' characters to search for a subject'});
+
+			},
+			keypress: {buffer: 100, fn: function() {
+			Ext.get(this.hiddenName).dom.value  = '';
+			if(!this.getRawValue()){
+			this.doQuery('', true);
+			}
+			}}
+			},
+			fieldLabel: 'Schedule*'
 
 			}
 	},
@@ -902,14 +995,15 @@
  						baseParams: {start: 0, limit: 100},
  						listeners: {
  							beforeload: function(s){
- 								if(isSet(Ext.get("yearlevel_id").dom.value) && isSet(isSet(Ext.get("SECTIDNO").dom.value))){
- 									s.setBaseParam("YEAR", Ext.getCmp("yearlevel").getRawValue());
- 									s.setBaseParam("SECTIDNO", Ext.get("SECTIDNO").dom.value);
+ 								if(isSet(Ext.get("SCHEIDNO").dom.value) && isSet(isSet(Ext.get("SUBJIDNO").dom.value))){
+ 									//s.setBaseParam("YEAR", Ext.getCmp("yearlevel").getRawValue());
+ 									//s.setBaseParam("SECTIDNO", Ext.get("SECTIDNO").dom.value);
+ 									s.setBaseParam("SCHEIDNO", Ext.get("SCHEIDNO").dom.value);
  									
- 									if(isSet(Ext.get("gender_id").dom.value) && isSet(Ext.getCmp("gender").getRawValue()))
- 										s.setBaseParam("GENDIDNO", Ext.get("gender_id").dom.value);
- 									else
- 										s.setBaseParam("GENDIDNO", "");
+ 									//if(isSet(Ext.get("gender_id").dom.value) && isSet(Ext.getCmp("gender").getRawValue()))
+ 										//s.setBaseParam("GENDIDNO", Ext.get("gender_id").dom.value);
+ 									//else
+ 										//s.setBaseParam("GENDIDNO", "");
  									
  									//if(isSet(Ext.get("SUBJIDNO").dom.value) && isSet(Ext.getCmp("subject").getRawValue()))
  									//	s.setBaseParam("SUBJIDNO", Ext.get("SUBJIDNO").dom.value);
