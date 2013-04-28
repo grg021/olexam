@@ -460,6 +460,29 @@
                     cls:'x-btn-text-icon',
  	                handler: function () {
  			            if(ExtCommon.util.validateFormFields(FacultyEvaluation.app.Form)){//check if all forms are filled up
+ 			            	
+ 			            	if(FacultyEvaluation.app.sGrid.getStore().getTotalCount()){
+ 									FacultyEvaluation.app.sGrid.getStore().each(
+ 										function(f){
+ 											var st = FacultyEvaluation.app.selectedStudents.data.indexOf(f.data.STUDCODE);
+					                        if(st == -1){
+					                         FacultyEvaluation.app.selectedStudents.data.push(f.data.STUDCODE);
+					                        }
+					                        
+ 										}, this
+ 									);
+ 									FacultyEvaluation.app.sGrid.getStore().load();
+ 									console.log(FacultyEvaluation.app.selectedStudents.data);
+ 								}else{
+ 									Ext.Msg.show({
+  								     title: 'Status',
+ 								     msg: "No records in the grid",
+  								     buttons: Ext.Msg.OK,
+  								     icon: Ext.Msg.WARNING
+  								 });
+ 								}
+ 			            	
+ 			            	
  		                FacultyEvaluation.app.Form.getForm().submit({
  		                	params: {students: Ext.util.JSON.encode(FacultyEvaluation.app.selectedStudents)},
  			                success: function(f,action){
@@ -1035,7 +1058,7 @@
         
 		var colModel = new Ext.grid.ColumnModel([
 			{ header: "ID No.", width: 100, sortable: true, dataIndex: "IDNO" },
-			{ header: "Name", width: 250, sortable: true, dataIndex: "NAME" },
+			{ header: "Name", width: 250, sortable: true, dataIndex: "NAME" }/*,
 			{
                 xtype: 'actioncolumn',
                 width: 50,
@@ -1067,12 +1090,12 @@
                        // console.log(FacultyEvaluation.app.selectedStudents);
                     }
                 }]
-            }
+            }*/
 		]);
 
  			var grid = new Ext.grid.GridPanel({
  				id: 's_grid',
- 				height: 240,
+ 				height: 270,
  				width: '100%',
  				border: true,
  				view: gridView,
@@ -1116,7 +1139,7 @@
                     width:100,
                     hidden: true
 
-                }), {
+                })/*, {
 					xtype:'tbtext',
 					text:'Search:'
 				},'   ', new Ext.app.SearchField({ store: Objstore, width:250}),
@@ -1161,7 +1184,7 @@
  								FacultyEvaluation.app.sGrid.getStore().load();
  							}
 
- 					 	}
+ 					 	}*/
  	    			 ]
  	    	});
 

@@ -35,7 +35,9 @@
                                         { name: "start_date"},
                                         { name: "end_date"},
                                         { name: "faculty_id"},
-                                        { name: "faculty"}
+                                        { name: "faculty"},
+                                        { name: "subject"},
+                                        { name: "schedule"}
                                         
 		]
  						}),
@@ -44,11 +46,13 @@
  					});
 		
 		var colModel = new Ext.grid.ColumnModel([
-			{ header: "Title", width: 200, sortable: true, dataIndex: "title" },
+			{ header: "Title", width: 170, sortable: true, dataIndex: "title" },
 			{ header: "Description", width: 300, sortable: true, dataIndex: "description" },
-			{ header: "Start Date", width: 150, sortable: true, dataIndex: "start_date" },
-			{ header: "End Date", width: 150, sortable: true, dataIndex: "end_date" },
-			{ header: "Faculty", width: 200, sortable: true, dataIndex: "faculty" }
+			{ header: "Start Date", width: 125, sortable: true, dataIndex: "start_date" },
+			{ header: "End Date", width: 125, sortable: true, dataIndex: "end_date" },
+			{ header: "Faculty", width: 200, sortable: true, dataIndex: "faculty" },
+			{ header: "Subject", width: 300, sortable: true, dataIndex: "subject" },
+			{ header: "Schedule", width: 300, sortable: true, dataIndex: "schedule" }
 		]);
 
  			var grid = new Ext.grid.GridPanel({
