@@ -158,7 +158,7 @@ class FacultyEvaluation extends MY_Controller{
 			$input = array("question_set_id"=>$post['question_set_id'], "start_date"=>$s_date, "end_date"=>$e_date, "faculty_id"=>$post['faculty_id'], "created_by"=>$user, "SCHEIDNO"=>$post['SCHEIDNO']);
 	        $data = $this->lithefire->insertRow($db, $table, $input);
 			
-			$s = $this->input->post('students');
+			$s = $this->input->post('students'); 
 			$s = str_replace("\\", "", $s);
 			$s = json_decode($s);
 			
