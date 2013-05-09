@@ -158,9 +158,15 @@ class FacultyEvaluation extends MY_Controller{
 			$input = array("question_set_id"=>$post['question_set_id'], "start_date"=>$s_date, "end_date"=>$e_date, "faculty_id"=>$post['faculty_id'], "created_by"=>$user, "SCHEIDNO"=>$post['SCHEIDNO']);
 	        $data = $this->lithefire->insertRow($db, $table, $input);
 			
+			/* 
 			$s = $this->input->post('students'); 
 			$s = str_replace("\\", "", $s);
 			$s = json_decode($s);
+			*/
+			
+			$student_query = $pdo->prepare("SELECT b.STUDCODE as id FROM lithefzj_ogs00004.GRADES a LEFT JOIN lithefzj_ogs00004.COLLEGE b ON a.STUDIDNO = b.STUDIDNO WHERE a.SCHEIDNO = ?");
+			$student_query->execute(array($post['SCHEIDNO']));
+			$s = $student_query->fetchAll();
 			
 			$question_query = $pdo->prepare("SELECT id FROM tbl_question WHERE question_set_id = ?");
 			$insert_query = $pdo->prepare("INSERT INTO tbl_faculty_evaluation_answers (evaluation_id, question_id, student_id) VALUES (?,?,?)");
@@ -168,14 +174,15 @@ class FacultyEvaluation extends MY_Controller{
 			
 			$questions = $question_query->fetchAll();
 			
-			if(!empty($s->data)){
-				foreach($s->data as $row):
+			if(!empty($s)){
+				foreach($s as $row):
 					foreach($questions as $r):
-							$insert_query->execute(array($data['id'], $r['id'], $row));
+							$insert_query->execute(array($data['id'], $r['id'], $row['id']));
 					endforeach;
 				endforeach;
 				
 			}
+			//else die(json_encode($s));
 			$pdo = null;
 	        die(json_encode($data));
     	}

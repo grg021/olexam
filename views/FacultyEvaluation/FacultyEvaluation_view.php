@@ -460,7 +460,7 @@
                     cls:'x-btn-text-icon',
  	                handler: function () {
  			            if(ExtCommon.util.validateFormFields(FacultyEvaluation.app.Form)){//check if all forms are filled up
- 			            	
+ 			            	/*
  			            	if(FacultyEvaluation.app.sGrid.getStore().getTotalCount()){
  									FacultyEvaluation.app.sGrid.getStore().each(
  										function(f){
@@ -481,7 +481,7 @@
   								     icon: Ext.Msg.WARNING
   								 });
  								}
- 			            	
+ 			            	*/
  			            	
  		                FacultyEvaluation.app.Form.getForm().submit({
  		                	params: {students: Ext.util.JSON.encode(FacultyEvaluation.app.selectedStudents)},
