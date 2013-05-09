@@ -39,7 +39,7 @@ class FacultyEvaluation extends MY_Controller{
 	        $filter = "";
 	        $group = "";
 			if(empty($sort) && empty($dir)){
-	            $sort = "a.dcreated DESC";
+	            $sort = "a.id DESC";
 	        }else{
 	        	$sort = "$sort $dir";
 	        }
@@ -155,7 +155,10 @@ class FacultyEvaluation extends MY_Controller{
 			$s_date = date("Y-m-d H:i:s", strtotime($post['start_date']." ".$post['start_time']));
 			$e_date = date("Y-m-d H:i:s", strtotime($post['end_date']." ".$post['end_time']));
 			
+			
 			$input = array("question_set_id"=>$post['question_set_id'], "start_date"=>$s_date, "end_date"=>$e_date, "faculty_id"=>$post['faculty_id'], "created_by"=>$user, "SCHEIDNO"=>$post['SCHEIDNO']);
+	        $input['dcreated'] = date("Y-m-d");
+			$input['created_by'] = $this->session->userData("userName");
 	        $data = $this->lithefire->insertRow($db, $table, $input);
 			
 			/* 
