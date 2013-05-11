@@ -41,14 +41,14 @@ class ExamClassifications extends CI_Controller{
 
 
         $records = array();
-        $table = "tbl_exam_classification";
-        $fields = array("id", "code", "description");
+        $table = "FILEEXCL";
+        $fields = array("EXCLCODE", "EXCLIDNO", "description");
 
-        $db = 'default';
+        $db = 'fr';
         $filter = "";
         $group = "";
 		if(empty($sort) && empty($dir)){
-            $sort = "code";
+            $sort = "EXCLCODE DESC";
         }else{
         	$sort = "$sort $dir";
         }
@@ -81,10 +81,11 @@ class ExamClassifications extends CI_Controller{
 
 	function addExamClassification(){
 		$this->load->model('lithefire_model','lithefire',TRUE);
-        $db = 'default';
-        $table = "tbl_exam_classification";
+        $db = 'fr';
+        $table = "FILEEXCL";
 		$input = $this->input->post();
-        if($this->lithefire->countFilteredRows($db, $table, "code = '".$this->input->post("code")."'", "")){
+		
+        if($this->lithefire->countFilteredRows($db, $table, "EXCLIDNO = '".$this->input->post("EXCLIDNO")."' OR description = '".$this->input->post("description")."'", "")){
             $data['success'] = false;
             $data['data'] = "Record already exists";
             die(json_encode($data));
@@ -97,15 +98,15 @@ class ExamClassifications extends CI_Controller{
 
     function loadExamClassification(){
         $this->load->model('lithefire_model','lithefire',TRUE);
-        $db = "default";
+        $db = "fr";
         
 
         $id=$this->input->post('id');
-        $table = "tbl_exam_classification";
-		$param = "id";
+        $table = "FILEEXCL";
+		$param = "EXCLIDNO";
 
         $filter = "$param = '$id'";
-        $fields = array("id", "code", "description");
+        $fields = array("EXCLCODE", "EXCLIDNO", "description");
 
         $records = array();
         $records = $this->lithefire->getRecordWhere($db, $table, $filter, $fields);
@@ -125,12 +126,12 @@ class ExamClassifications extends CI_Controller{
     
     function updateExamClassification(){
         $this->load->model('lithefire_model', 'lithefire', TRUE);
-        $db = 'default';
+        $db = 'fr';
 
-        $table = "tbl_exam_classification";
+        $table = "FILEEXCL";
         
        // $fields = $this->input->post();
-		$param = "id";
+		$param = "EXCLIDNO";
         $id=$this->input->post('id');
         $filter = "$param = '$id'";
 
@@ -143,7 +144,7 @@ class ExamClassifications extends CI_Controller{
             }
         }
 
-        if($this->lithefire->countFilteredRows($db, $table, "code = '".$this->input->post("code")."' AND id != '$id'", "")){
+        if($this->lithefire->countFilteredRows($db, $table, "(EXCLIDNO = '".$this->input->post("EXCLIDNO")."' OR description = '".$this->input->post("description")."' ) AND EXCLIDNO != '$id'", "")){
             $data['success'] = false;
             $data['data'] = "Record already exists";
             die(json_encode($data));
@@ -159,14 +160,12 @@ class ExamClassifications extends CI_Controller{
     function deleteExamClassification(){
         $this->load->model('lithefire_model', 'lithefire', TRUE);
         
-
-        $table = "tbl_exam_classification";
-        $param = "id";
+        $table = "FILEEXCL";
+        $param = "EXCLIDNO";
        // $fields = $this->input->post();
-		$db = "default";
+		$db = "fr";
         $id=$this->input->post('id');
-		$filter = "$param = $id";
-
+		$filter = "$param = '$id'";
         $data = $this->lithefire->deleteRow($db, $table, $filter);
 
         die(json_encode($data));

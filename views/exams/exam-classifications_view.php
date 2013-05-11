@@ -24,8 +24,8 @@
  								id: "id",
  								totalProperty: "totalCount",
  								fields: [
- 											{ name: "id"},
- 											{ name: "code"},
+ 											{ name: "EXCLCODE"},
+ 											{ name: "EXCLIDNO"},
  											{ name: "description"}
  										]
  						}),
@@ -34,9 +34,8 @@
  					});
  					
     var colModel = new Ext.grid.ColumnModel([
-        {header: "Id", width: 40, sortable: true, dataIndex: 'id'},
-        {header: "Code", width: 60, sortable: true, dataIndex: 'code'},
-        {header: "Description", width: 120, sortable: true, dataIndex: 'description'}
+        {header: "Id", width: 100, sortable: true, dataIndex: 'EXCLIDNO'},
+        {header: "Description", width: 200, sortable: true, dataIndex: 'description'}
     ]);
 
  			var grid = new Ext.grid.GridPanel({
@@ -164,10 +163,10 @@
                             xtype:'textfield',
  		            fieldLabel: 'Code *',
                             autoCreate : {tag: "input", type: "text", size: "20", autocomplete: "off", maxlength: "128"},
- 		            name: 'code',
+ 		            name: 'EXCLIDNO',
  		            allowBlank:false,
  		            anchor:'95%',  // anchor width by percentage
- 		            id: 'code'
+ 		            id: 'EXCLIDNO'
  		        },
  		        		{
 
@@ -196,7 +195,7 @@
  		    _window = new Ext.Window({
  		        title: 'New Exam',
  		        width: 510,
- 		        height: 250,
+ 		        height: 180,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -250,13 +249,13 @@
 
  			if(ExtCommon.util.validateSelectionGrid(olexam_category.app.Grid.getId())){//check if user has selected an item in the grid
  			var sm = olexam_category.app.Grid.getSelectionModel();
- 			var id = sm.getSelected().data.id;
+ 			var id = sm.getSelected().data.EXCLIDNO;
 
  			olexam_category.app.setForm();
  		    _window = new Ext.Window({
  		        title: 'Update Classification',
  		        width: 510,
- 		        height:250,
+ 		        height: 180,
  		        layout: 'fit',
  		        plain:true,
  		        modal: true,
@@ -326,7 +325,7 @@
 
 			if(ExtCommon.util.validateSelectionGrid(olexam_category.app.Grid.getId())){//check if user has selected an item in the grid
 			var sm = olexam_category.app.Grid.getSelectionModel();
-			var id = sm.getSelected().data.id;
+			var id = sm.getSelected().data.EXCLIDNO;
 			Ext.Msg.show({
    			title:'Delete',
   			msg: 'Are you sure you want to delete this record?',
